@@ -88,7 +88,7 @@ function wrap_file() {
     # to something not in the current directory; coqchk uses -o for
     # something other than file output, so we just exclude these three
     # files
-    if [[ "$file" != *.orig ]] && [[ "$file" != *coqdep* ]] && [[ "$file" != *coq_makefile* ]] && [[ "$file" != *coqchk* ]] && [[ "$file" != *.txt ]]; then
+    if [[ "$file" != *.orig ]] && [[ "$file" != *coqdep* ]] && [[ "$file" != *coq_makefile* ]] && [[ "$file" != *coqchk* ]] && [[ "$file" != *.txt ]] && [[ "$file" != *rocqdep* ]] && [[ "$file" != *rocq_makefile* ]] && [[ "$file" != *rocqchk* ]]; then
         # if [[ "$file" == *coqc* ]] || [[ "$file" == *coqtop* ]]; then
         #     config="$(./"$file" --config)"
         # elif [[ "$file" == *rocq* ]]; then
@@ -107,6 +107,14 @@ function wrap_file() {
         # if [ ! -z "$coqcorelib" ]; then
         #     ocamlpath_fragment="export OCAMLPATH=\"$(dirname "$coqcorelib")\${OCAMLPATH:+:\$OCAMLPATH}\""
         # fi
+        extra_fragment=""
+        if [[ "$file" == *rocq ]] || [[ "$file" == *rocq.byte ]]; then
+            { extra_fragment=$(cat); } <<EOF
+if [[ "\$1" == "makefile" ]] || [[ "\$1" == "dep" ]] || [[ "\$1" == "check" ]]; then
+    exec "\$progname" "\$@"
+fi
+EOF
+        fi
         cat > "$file.new" <<EOF
 #!/usr/bin/env bash
 
@@ -115,6 +123,7 @@ DIR="\$( cd "\$( dirname "\${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 progname="\$DIR/$file.orig"
 baseargs=("\$progname")
 args=("\$progname")
+${extra_fragment}
 
 next_is_dir=no
 next_is_special=no
@@ -215,7 +224,7 @@ export -f wrap_file
 function unwrap_file() {
     local file="$1"
     # we only unwrap files that we have wrapped
-    if [[ "$file" != *.orig ]] && [[ "$file" != *coqdep* ]] && [[ "$file" != *coq_makefile* ]] && [[ "$file" != *coqchk* ]]; then
+    if [[ "$file" != *.orig ]] && [[ "$file" != *coqdep* ]] && [[ "$file" != *coq_makefile* ]] && [[ "$file" != *coqchk* ]] && [[ "$file" != *rocqdep* ]] && [[ "$file" != *rocq_makefile* ]] && [[ "$file" != *rocqchk* ]]; then
         if [ -f "$file.orig" ]; then
             mv -f "$file.orig" "$file" || exit $?
         fi
