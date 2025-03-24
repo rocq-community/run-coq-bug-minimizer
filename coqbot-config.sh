@@ -110,7 +110,7 @@ function wrap_file() {
         extra_fragment=""
         if [[ "$file" == *rocq ]] || [[ "$file" == *rocq.byte ]]; then
             { extra_fragment=$(cat); } <<EOF
-if [[ "\$1" == "makefile" ]] || [[ "\$1" == "dep" ]] || [[ "\$1" == "check" ]]; then
+if [[ "\$1" != "c" ]] && [[ "\$1" != "compile" ]]; then
     exec "\$progname" "\$@"
 fi
 EOF
