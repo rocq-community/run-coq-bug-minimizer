@@ -77,8 +77,8 @@ printf '::endgroup::\n'
 printf '::group::wrap binaries\n'
 for coqdir in "${CI_BASE_BUILD_DIR}"/coq-{failing,passing}; do
     tmpcoqdir="${COQ_CI_BASE_BUILD_DIR}"
-    # mv "${coqdir}" "${tmpcoqdir}"
-    ln -s "${coqdir}" "${tmpcoqdir}"
+    mv "${coqdir}" "${tmpcoqdir}"
+    # ln -s "${coqdir}" "${tmpcoqdir}"
     pushd "${tmpcoqdir}/_install_ci/bin" >/dev/null
     printf "::warning::(%s) %s/coqc --config: %s\n" "${coqdir}" "$(pwd)" "$(./coqc --config | tr '\n' '\r' | sed 's/\r/%0A/g')"
     ./coqc --config | sed "s,${tmpcoqdir}/,${coqdir}/,g; "'s,^\([^=]*\)=\(.*\)$,\1="\2",g' > coq_environment.txt
@@ -87,8 +87,8 @@ for coqdir in "${CI_BASE_BUILD_DIR}"/coq-{failing,passing}; do
         wrap_file "$i"
     done
     popd >/dev/null
-    # mv "${tmpcoqdir}" "${coqdir}"
-    rm "${tmpcoqdir}"
+    mv "${tmpcoqdir}" "${coqdir}"
+    # rm "${tmpcoqdir}"
 done
 set +x
 printf '::endgroup::\n'
