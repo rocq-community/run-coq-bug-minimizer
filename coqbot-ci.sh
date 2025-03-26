@@ -77,8 +77,8 @@ printf '::endgroup::\n'
 printf '::group::wrap binaries\n'
 for coqdir in "${CI_BASE_BUILD_DIR}"/coq-{failing,passing}; do
     tmpcoqdir="${COQ_CI_BASE_BUILD_DIR}"
-    mv "${coqdir}" "${tmpcoqdir}"
-    # ln -s "${coqdir}" "${tmpcoqdir}"
+    # mv "${coqdir}" "${tmpcoqdir}"
+    ln -s "${coqdir}" "${tmpcoqdir}"
     pushd "${tmpcoqdir}/_install_ci/bin" >/dev/null
     printf "::warning::(%s) %s/coqc --config: %s\n" "${coqdir}" "$(pwd)" "$(./coqc --config | tr '\n' '\r' | sed 's/\r/%0A/g')"
     ./coqc --config | sed "s,${tmpcoqdir}/,${coqdir}/,g; "'s,^\([^=]*\)=\(.*\)$,\1="\2",g' > coq_environment.txt
@@ -87,24 +87,24 @@ for coqdir in "${CI_BASE_BUILD_DIR}"/coq-{failing,passing}; do
         wrap_file "$i"
     done
     popd >/dev/null
-    mv "${tmpcoqdir}" "${coqdir}"
-    # rm "${tmpcoqdir}"
+    # mv "${tmpcoqdir}" "${coqdir}"
+    rm "${tmpcoqdir}"
 done
 set +x
 printf '::endgroup::\n'
 
 printf "::group::make %s (%s) (passing)\n" "${CI_TARGET}" "${CI_TARGETS}"
 set -x
-# mv "${CI_BASE_BUILD_DIR}"/coq-passing "${COQ_CI_BASE_BUILD_DIR}"
-ln -s "${CI_BASE_BUILD_DIR}"/coq-passing "${COQ_CI_BASE_BUILD_DIR}"
+mv "${CI_BASE_BUILD_DIR}"/coq-passing "${COQ_CI_BASE_BUILD_DIR}"
+# ln -s "${CI_BASE_BUILD_DIR}"/coq-passing "${COQ_CI_BASE_BUILD_DIR}"
 pushd "${COQ_CI_BASE_BUILD_DIR}"
 for target in $CI_TARGETS; do
     GITLAB_CI=1 dev/ci/ci-wrapper.sh "${target}";
 done
 # make -f Makefile.ci GITLAB_CI=1 ${CI_TARGET}
 popd
-# mv "${COQ_CI_BASE_BUILD_DIR}" "${CI_BASE_BUILD_DIR}"/coq-passing
-rm "${COQ_CI_BASE_BUILD_DIR}"
+mv "${COQ_CI_BASE_BUILD_DIR}" "${CI_BASE_BUILD_DIR}"/coq-passing
+# rm "${COQ_CI_BASE_BUILD_DIR}"
 set +x
 printf '::endgroup::\n'
 
