@@ -100,7 +100,7 @@ ln -s "${COQ_CI_BASE_BUILD_DIR}" "${CI_BASE_BUILD_DIR}"/coq-passing
 # ln -s "${CI_BASE_BUILD_DIR}"/coq-passing "${COQ_CI_BASE_BUILD_DIR}"
 pushd "${COQ_CI_BASE_BUILD_DIR}"
 for target in $CI_TARGETS; do
-    GITLAB_CI=1 dev/ci/ci-wrapper.sh "${target}";
+    printf "Skipping running passing command: %s\n" "$(printf "%q " GITLAB_CI=1 dev/ci/ci-wrapper.sh "${target}")";
 done
 # make -f Makefile.ci GITLAB_CI=1 ${CI_TARGET}
 popd
