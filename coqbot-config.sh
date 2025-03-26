@@ -195,8 +195,8 @@ printf "%q " "\${args[@]}" > "\${debug_prefix}.exec"
 
 # extra, not strictly needed
 >&2 printf "MINIMIZER_DEBUG_EXTRA: coqc: %s\n" "\$0"
->&2 printf "MINIMIZER_DEBUG_EXTRA: original invocation: %s\n" "$(printf "%q " "\$@")"
->&2 printf "MINIMIZER_DEBUG_EXTRA: new invocation: %s\n" "$(printf "%q " "\${args[@]}")"
+>&2 printf "MINIMIZER_DEBUG_EXTRA: original invocation: %s\n" "\$(printf "%q " "\$@")"
+>&2 printf "MINIMIZER_DEBUG_EXTRA: new invocation: %s\n" "\$(printf "%q " "\${args[@]}")"
 >&2 printf "MINIMIZER_DEBUG_EXTRA: coqpath: %s\n" "\$(cat "\${debug_prefix}.coqpath")"
 >&2 printf "MINIMIZER_DEBUG_EXTRA: ocamlpath: %s\n" "\$(cat "\${debug_prefix}.ocamlpath")"
 >&2 printf "MINIMIZER_DEBUG_EXTRA: pwd: PWD=%s\n" "\$(cat "\${debug_prefix}.pwd")"
