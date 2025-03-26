@@ -96,6 +96,7 @@ printf '::endgroup::\n'
 printf "::group::make %s (%s) (passing)\n" "${CI_TARGET}" "${CI_TARGETS}"
 set -x
 mv "${CI_BASE_BUILD_DIR}"/coq-passing "${COQ_CI_BASE_BUILD_DIR}"
+ln -s "${COQ_CI_BASE_BUILD_DIR}" "${CI_BASE_BUILD_DIR}"/coq-passing
 # ln -s "${CI_BASE_BUILD_DIR}"/coq-passing "${COQ_CI_BASE_BUILD_DIR}"
 pushd "${COQ_CI_BASE_BUILD_DIR}"
 for target in $CI_TARGETS; do
@@ -103,6 +104,7 @@ for target in $CI_TARGETS; do
 done
 # make -f Makefile.ci GITLAB_CI=1 ${CI_TARGET}
 popd
+rm "${CI_BASE_BUILD_DIR}"/coq-passing
 mv "${COQ_CI_BASE_BUILD_DIR}" "${CI_BASE_BUILD_DIR}"/coq-passing
 # rm "${COQ_CI_BASE_BUILD_DIR}"
 set +x
