@@ -153,7 +153,7 @@ for i in "\$@"; do
         next_is_special=no
         next_next_is_special=yes
         ;;
-      -I|-include|-coqlib|-exlcude-dir|-load-ml-object|-load-ml-source|-init-file|-dump-glob|-o|-time-file)
+      -I|-include|-coqlib|-exlcude-dir|-load-ml-object|-load-ml-source|-init-file|-dump-glob|-o|-time-file|-native-output-dir)
         next_is_v_file=no
         next_is_dir=yes
         next_is_special=no
