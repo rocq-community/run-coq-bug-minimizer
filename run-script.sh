@@ -23,6 +23,7 @@ sudo apt-get update -y
 sudo apt-get install -y wget curl
 opam update -y
 eval $(opam env)
+opam install -y coq-core || true
 printf '::endgroup::\n'
 
 printf '::group::opam list\n'
