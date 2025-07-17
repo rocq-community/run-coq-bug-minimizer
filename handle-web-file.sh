@@ -129,6 +129,168 @@ function try_coqc() {
     fi
 }
 
+
+function get_opam_deps() {
+    # Exit if no .v files are found
+    if [ -z "$(find . -name '*.v' -print -quit)" ]; then
+        >&2 echo "No .v files found, skipping opam dependency installation."
+        return 0
+    fi
+
+    local require_lines
+    require_lines=$(find . -name '*.v' -type f -exec sh -c 'for file; do cat "$file"; printf " "; done' sh {} + 2>/dev/null | tr '\r\n\t)' ' ' | tr -s ' ' |
+      sed 's/\. /.~/g' | tr '~' '\n' | grep 'Require ')
+
+    if [ -z "$require_lines" ]; then
+        >&2 echo "No 'Require' statements found, skipping opam dependency installation."
+        return 0
+    fi
+
+    local paths=()
+    while IFS= read -r line; do
+        line=$(echo "$line" | sed 's/^[ \t]*//;s/[ \t]*$//')
+        if echo "$line" | grep -q '^From .* Require '; then
+            local path=$(echo "$line" | sed 's/^From \(.*\) Require .*/\1/')
+            paths+=("$path")
+        elif echo "$line" | grep -q '^Require '; then
+            local path=$(echo "$line" | sed 's/^Require //')
+            paths+=("$path")
+        fi
+    done <<< "$require_lines"
+
+    local all_words=""
+    for path in "${paths[@]}"; do
+        local cleaned=$(printf '%s\n' "$path" | tr -d '~!@#$%^&*()[]{}<>|:;,?`/+=')
+        all_words="$all_words $cleaned"
+    done
+
+    declare -A prefixes
+    for word in $all_words; do
+        local parts=(${word//./ })
+        local prefix="${parts[0]}"
+        if [[ "$prefix" =~ ^[_a-zA-Z] ]]; then
+            prefixes["$prefix"]=1
+        fi
+        # Handle mathcomp submodules - if we see mathcomp.foo.bar, also include mathcomp.foo
+        if [[ "$prefix" == "mathcomp" ]] && [ ${#parts[@]} -ge 2 ]; then
+            local mathcomp_prefix="mathcomp.${parts[1]}"
+            prefixes["$mathcomp_prefix"]=1
+        fi
+    done
+
+    local all_prefixes=("${!prefixes[@]}")
+
+    printf '%s\n' "${all_prefixes[@]}" | sort
+}
+
+function try_install_opam_deps() {
+    # A map of Coq path prefixes to the opam packages that provide them.
+    # TODO: integrate more packages as per https://g.co/gemini/share/b905fa403f88
+    # Auto-generated mapping of Coq logical paths to OPAM package names.
+    # Generated on: Thursday, July 17, 2025
+    declare -A OPAM_PACKAGE_MAP=(
+    ["MetaCoq"]="coq-metacoq"
+    ["Crypto"]="coq-fiat-crypto"
+    ["Bedrock"]="coq-bedrock2"
+    # MathComp packages often have a dotted logical path
+    ["mathcomp.abel"]="coq-mathcomp-abel"
+    ["mathcomp.algebra"]="coq-mathcomp-algebra"
+    ["mathcomp.algebra.all"]="coq-mathcomp-algebra"
+    ["mathcomp.analysis"]="coq-mathcomp-analysis"
+    ["mathcomp.apery"]="coq-mathcomp-apery"
+    ["mathcomp.bigenough"]="coq-mathcomp-bigenough"
+    ["mathcomp.character"]="coq-mathcomp-character"
+    ["mathcomp.classical"]="coq-mathcomp-classical"
+    ["mathcomp.field"]="coq-mathcomp-field"
+    ["mathcomp.fingroup"]="coq-mathcomp-fingroup"
+    ["mathcomp.finmap"]="coq-mathcomp-finmap"
+    ["mathcomp.multinomials"]="coq-mathcomp-multinomials"
+    ["mathcomp.real_closed"]="coq-mathcomp-real-closed"
+    ["mathcomp.solvable"]="coq-mathcomp-solvable"
+    ["mathcomp.ssreflect"]="coq-mathcomp-ssreflect"
+    )
+
+    local all_prefixes=($(get_opam_deps))
+
+    if [ ${#all_prefixes[@]} -eq 0 ]; then
+        >&2 echo "No opam dependencies found, skipping opam dependency installation."
+        return 0
+    fi
+
+    # Map prefixes to packages and build a deduplicated list.
+    declare -A pkg_sources
+    local no_pkg_prefixes=()
+    local package_candidates=""
+    for prefix in "${prefixes[@]}"; do
+        local pkgs="${OPAM_PACKAGE_MAP[$prefix]:-""}"
+        if [ -z "$pkgs" ]; then
+            no_pkg_prefixes+=("$prefix")
+        else
+            package_candidates="$package_candidates $pkgs"
+            for pkg in $pkgs; do
+                if [ -z "${pkg_sources[$pkg]:-}" ]; then
+                    pkg_sources[$pkg]="$prefix"
+                else
+                    pkg_sources[$pkg]="${pkg_sources[$pkg]} $prefix"
+                fi
+            done
+        fi
+    done
+
+    local final_package_list
+    final_package_list=$(echo "$package_candidates" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+
+    if [ -z "$final_package_list" ]; then
+        >&2 echo "Found prefixes, but none mapped to known opam packages."
+        return 0
+    fi
+
+    local succeeded=()
+    local failed=()
+    for pkg in "${!pkg_sources[@]}"; do
+        echo "::group::Installing $pkg"
+        if opam install -y "$pkg"; then
+            succeeded+=("$pkg")
+        elif [[ "$pkg" == coq-* ]] && opam install -y "rocq-${pkg#coq-}"; then
+            succeeded+=("rocq-${pkg#coq-}")
+        elif [[ "$pkg" == coq-*coq* ]] && opam install -y "${pkg//coq/rocq}"; then
+            succeeded+=("${pkg//coq/rocq}")
+        else
+            failed+=("$pkg")
+        fi
+        echo "::endgroup::"
+    done
+
+    # Write a summary to the GitHub Actions summary file, if available.
+    if [ -n "${GITHUB_STEP_SUMMARY:-}" ] && [ -w "$GITHUB_STEP_SUMMARY" ]; then
+        {
+            echo "### 📦 Opam Dependency Installation Summary"
+            echo
+            if [ ${#succeeded[@]} -eq 0 ] && [ ${#failed[@]} -eq 0 ]; then
+                echo "No opam packages were identified for installation."
+            else
+                echo "**Prefixes found:** \`$(printf '%s ' "${prefixes[@]}" | tr ' ' '\n' | sort | tr '\n' ' ' | sed 's/ /, /g')\`"
+                echo
+                echo "**Attempted Package Installations:**"
+                echo "| Package | Status | Triggered By Prefixes |"
+                echo "|---------|--------|-----------------------|"
+                for pkg in $(printf '%s\n' "${succeeded[@]}" | sort); do
+                    echo "| \`$pkg\` | ✅ Success | \`$(echo "${pkg_sources[$pkg]}" | tr ' ' '\n' | sort | tr '\n' ' ' | sed 's/ /, /g')\` |"
+                done
+                for pkg in $(printf '%s\n' "${failed[@]}" | sort); do
+                    echo "| \`$pkg\` | ❌ Failure | \`$(echo "${pkg_sources[$pkg]}" | tr ' ' '\n' | sort | tr '\n' ' ' | sed 's/ /, /g')\` |"
+                done
+                echo
+            fi
+            if [ ${#no_pkg_prefixes[@]} -gt 0 ]; then
+                echo "**Unrecognized Prefixes:**"
+                echo "> The following prefixes were found but did not map to any known opam package: \`$(printf '%s ' "${no_pkg_prefixes[@]}" | tr ' ' '\n' | sort | tr '\n' ' ' | sed 's/ /, /g')\`"
+                echo
+            fi
+        } >> "$GITHUB_STEP_SUMMARY"
+    fi
+}
+
 trial_extract tar -xvf "../$fname"
 trial_extract unzip "../$fname"
 trial_extract_raw "file ../$qfname | grep -q text && cp ../$qfname downloaded_bug.v"
@@ -144,4 +306,5 @@ if [ "$success" == "no" ]; then
 fi
 
 cd bug-output
+try_install_opam_deps || true
 try_autogen_configure_make || try_coq_makefile || try_coqc
