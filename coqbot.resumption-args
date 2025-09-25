@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:old_ubuntu_lts-V2025-07-28-d6bf0e8e6c
+ci-bbv
+bbv
+4.14.0
+https://gitlab.inria.fr/coq/coq/-/jobs/6273816/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6273795/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6273830/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/6271170/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6271148/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6271184/artifacts/download
+c2df8d8a4268eb2c328844c84bc8ee4af0a6c566
+d7968027046c925a874cfa09efad16ffd9a6e9c9
+
