@@ -19,6 +19,8 @@ function cleanup() {
     cp -f "${BUG_FILE}" "${FINAL_BUG_FILE}" || RC=$?
     cp -f "${TMP_FILE}" "${FINAL_TMP_FILE}" || touch "${FINAL_TMP_FILE}"
     cp -f "${TMP_LOG}" "${FINAL_TMP_LOG}" || touch "${FINAL_TMP_LOG}"
+    chmod a+rw "${FINAL_BUG_FILE}" || RC=$?
+    chmod a+rw "${FINAL_TMP_FILE}" "${FINAL_TMP_LOG}" || true
     mkdir -p "${FINAL_TMP_FOLDER}"
     find /tmp | xargs ls -la
     cp -a /tmp "${FINAL_TMP_FOLDER}" || true
