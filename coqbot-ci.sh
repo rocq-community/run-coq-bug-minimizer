@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+set -o pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
@@ -118,7 +119,7 @@ pushd "${COQ_CI_BASE_BUILD_DIR}"
 set +x
 # { make -f Makefile.ci GITLAB_CI=1 ${CI_TARGET} 2>&1 | sed "s|${COQ_CI_BASE_BUILD_DIR}/|${CI_BASE_BUILD_DIR}/coq-failing/|g"; } || true
 for target in $CI_TARGETS; do
-    { GITLAB_CI=1 dev/ci/ci-wrapper.sh "${target}" 2>&1 | sed "s|${COQ_CI_BASE_BUILD_DIR}/|${CI_BASE_BUILD_DIR}/coq-failing/|g"; } || true
+    { GITLAB_CI=1 dev/ci/ci-wrapper.sh "${target}" 2>&1 | sed "s|${COQ_CI_BASE_BUILD_DIR}/|${CI_BASE_BUILD_DIR}/coq-failing/|g"; } || break
 done
 popd
 # mv "${COQ_CI_BASE_BUILD_DIR}" "${CI_BASE_BUILD_DIR}"/coq-failing
