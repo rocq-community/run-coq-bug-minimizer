@@ -24,7 +24,7 @@ sudo apt-get install -y wget curl
 opam update -y
 eval $(opam env)
 opam install -y coq-core || true
-( cd coq-tools && "${PYTHON}" -m pip install --deps-only . )
+( cd coq-tools && "${PYTHON}" -m pip install --no-build-isolation -e . )
 printf '::endgroup::\n'
 
 printf '::group::opam list\n'
