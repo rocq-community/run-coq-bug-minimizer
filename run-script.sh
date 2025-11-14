@@ -20,10 +20,15 @@ fi
 
 printf '::group::install general dependencies\n'
 sudo apt-get update -y
-sudo apt-get install -y wget curl python3-pip
+sudo apt-get install -y wget curl python3-pip python3-venv
 opam update -y
 eval $(opam env)
 opam install -y coq-core || true
+printf '::endgroup::\n'
+printf '::group::set up venv\n'
+"${PYTHON}" -m venv .venv
+. .venv/bin/activate
+PYTHON="$(which python3 || which python)"
 "${PYTHON}" -m pip install -r coq-tools/requirements.txt
 printf '::endgroup::\n'
 
