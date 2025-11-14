@@ -20,7 +20,7 @@ fi
 
 printf '::group::install general dependencies\n'
 sudo apt-get update -y
-sudo apt-get install -y wget curl
+sudo apt-get install -y wget curl python3-pip
 opam update -y
 eval $(opam env)
 opam install -y coq-core || true
