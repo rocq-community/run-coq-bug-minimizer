@@ -32,7 +32,7 @@ jobs:
 
     - name: Upload output file
       id: upload-bug-v
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: bug.v
         path: bug.v
@@ -40,7 +40,7 @@ jobs:
 
     - name: Upload output log
       id: upload-bug-log
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: bug.log
         path: bug.log
@@ -48,7 +48,7 @@ jobs:
 
     - name: Upload verbose output log
       id: upload-bug-verbose-log
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: bug.verbose.log
         path: bug.verbose.log
@@ -56,7 +56,7 @@ jobs:
 
     - name: Upload build log
       id: upload-build-log
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: build.log
         path: build.log
@@ -64,7 +64,7 @@ jobs:
 
     - name: Upload temp file
       id: upload-tmp-v
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: tmp.v
         path: tmp.v
@@ -72,7 +72,7 @@ jobs:
 
     - name: Upload temp log file
       id: upload-tmp-log
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: tmp.log
         path: tmp.log
@@ -80,7 +80,7 @@ jobs:
 
     - name: Upload metadata file
       id: upload-metadata
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: metadata
         path: metadata
@@ -117,7 +117,7 @@ jobs:
 
     - name: Upload a Build Artifact
       id: upload-artifact-tar-gz
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         # Artifact name
         name: artifact
