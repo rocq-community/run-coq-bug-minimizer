@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:edge_ubuntu-V2025-12-02-e6edb0cc32
+ci-paco
+paco
+4.14.2+flambda
+https://gitlab.inria.fr/coq/coq/-/jobs/6583825/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6583793/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6583827/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/6583248/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6583216/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6583250/artifacts/download
+f2a0e567c0448873df70443e2e86122bbb7f53b7
+fa138fc84336e4c9af03c5eaca769bfacfd4c3a6
+
