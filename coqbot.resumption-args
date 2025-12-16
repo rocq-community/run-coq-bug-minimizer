@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:edge_ubuntu-V2025-12-02-e6edb0cc32
+ci-fiat_crypto
+fiat_crypto
+4.14.2+flambda
+https://gitlab.inria.fr/coq/coq/-/jobs/6602983/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6602898/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6602980/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6603170/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6602921/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6603171/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6602979/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6603003/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6602932/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6603174/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/6600270/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6600185/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6600267/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6600252/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6600208/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6600213/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6600266/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6600290/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6600219/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6600240/artifacts/download
+04e69d1b158ef3a730479e26aa821fe0ad8dcaf3
+c95aea8a84f922090ddc40428ef51fc7de6992ef
+
