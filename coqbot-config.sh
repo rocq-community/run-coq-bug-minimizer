@@ -88,7 +88,7 @@ function wrap_file() {
     # to something not in the current directory; coqchk uses -o for
     # something other than file output, so we just exclude these three
     # files
-    if [[ "$file" != *.orig ]] && [[ "$file" != *coqdep* ]] && [[ "$file" != *coq_makefile* ]] && [[ "$file" != *coqchk* ]] && [[ "$file" != *.txt ]] && [[ "$file" != *rocqdep* ]] && [[ "$file" != *rocq_makefile* ]] && [[ "$file" != *rocqchk* ]]; then
+    if [[ "$file" != *.orig ]] && [[ "$file" != *coqdep* ]] && [[ "$file" != *coq_makefile* ]] && [[ "$file" != *.txt ]] && [[ "$file" != *rocqdep* ]] && [[ "$file" != *rocq_makefile* ]]; then
         # if [[ "$file" == *coqc* ]] || [[ "$file" == *coqtop* ]]; then
         #     config="$(./"$file" --config)"
         # elif [[ "$file" == *rocq* ]]; then
@@ -108,12 +108,17 @@ function wrap_file() {
         #     ocamlpath_fragment="export OCAMLPATH=\"$(dirname "$coqcorelib")\${OCAMLPATH:+:\$OCAMLPATH}\""
         # fi
         extra_fragment=""
+        command=""
         if [[ "$file" == *rocq ]] || [[ "$file" == *rocq.byte ]]; then
             { extra_fragment=$(cat); } <<EOF
-if [[ "\$1" != "c" ]] && [[ "\$1" != "compile" ]]; then
+command="\$1"
+if [[ "\$1" != "c" ]] && [[ "\$1" != "compile" ]] && [[ "\$1" != "check" ]]; then
     exec "\$progname" "\$@"
 fi
 EOF
+        fi
+        if [[ "$file" != *coqchk* ]] && [[ "$file" != *rocqchk* ]]; then
+            command="check"
         fi
         cat > "$file.new" <<EOF
 #!/usr/bin/env bash
@@ -123,6 +128,7 @@ DIR="\$( cd "\$( dirname "\${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 progname="\$DIR/$file.orig"
 baseargs=("\$progname")
 args=("\$progname")
+command="${command}"
 ${extra_fragment}
 
 next_is_dir=no
@@ -140,7 +146,7 @@ for i in "\$@"; do
     args+=("\$i")
     next_is_special="\${next_next_is_special}"
     next_next_is_special=no
-  elif [ "\${next_is_v_file}" == "yes" ] || [[ "\$i" == *".v" ]]; then
+  elif [ "\${next_is_v_file}" == "yes" ] || [[ "\$i" == *".v" ]] || [[ "\$i" == *".vo" ]]; then
     fname="\$fname \$i \$(readlink -f "\$i")"
     args+=("\$i") # ("\$(readlink -f "\$i")") # we absolutize this later instead of now, to preserve output tests in HB
     next_is_v_file=no
@@ -153,7 +159,15 @@ for i in "\$@"; do
         next_is_special=no
         next_next_is_special=yes
         ;;
-      -I|-include|-coqlib|-exlcude-dir|-load-ml-object|-load-ml-source|-init-file|-dump-glob|-o|-time-file|-native-output-dir)
+      -o)
+        if [[ "\$command" != "check" ]]; then
+            next_is_v_file=no
+            next_is_dir=yes
+            next_is_special=no
+            next_next_is_special=no
+        fi
+        ;;
+      -I|-include|-coqlib|-exlcude-dir|-load-ml-object|-load-ml-source|-init-file|-dump-glob|-time-file|-native-output-dir)
         next_is_v_file=no
         next_is_dir=yes
         next_is_special=no
@@ -167,6 +181,11 @@ for i in "\$@"; do
         ;;
       -arg|-compat|-w|-color|-diffs|-mangle-names|-set|-unset|-top|-topfile|-bytecode-compiler|-native-compiler)
         next_is_special=yes
+        ;;
+      -admit|-norec|-d)
+        if [[ "\$command" == "check" ]]; then
+            next_is_special=yes
+        fi
         ;;
       -schedule-vio2vo|-schedule-vio-checking)
         next_is_special=yes
@@ -231,7 +250,7 @@ export -f wrap_file
 function unwrap_file() {
     local file="$1"
     # we only unwrap files that we have wrapped
-    if [[ "$file" != *.orig ]] && [[ "$file" != *coqdep* ]] && [[ "$file" != *coq_makefile* ]] && [[ "$file" != *coqchk* ]] && [[ "$file" != *rocqdep* ]] && [[ "$file" != *rocq_makefile* ]] && [[ "$file" != *rocqchk* ]]; then
+    if [[ "$file" != *.orig ]] && [[ "$file" != *coqdep* ]] && [[ "$file" != *coq_makefile* ]] && [[ "$file" != *rocqdep* ]] && [[ "$file" != *rocq_makefile* ]]; then
         if [ -f "$file.orig" ]; then
             mv -f "$file.orig" "$file" || exit $?
         fi
