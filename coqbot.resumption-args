@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:edge_ubuntu-V2025-12-02-e6edb0cc32
+ci-category_theory
+category_theory
+4.14.2+flambda
+https://gitlab.inria.fr/coq/coq/-/jobs/6614918/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6614854/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6614888/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6614901/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/6612867/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6612803/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6612837/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6612850/artifacts/download
+a72c3c01d48ee17d7101002f351cf87ca7921af1
+7d514c24be40678a0a6c81b15ea5b216fedc6683
+
