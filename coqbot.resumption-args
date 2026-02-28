@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:edge_ubuntu-V2025-12-02-e6edb0cc32
+ci-rewriter
+rewriter
+4.14.2+flambda
+https://gitlab.inria.fr/coq/coq/-/jobs/6919617/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6919562/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6919596/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/6918910/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6918855/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/6918889/artifacts/download
+384b676275b73defc4a9d1fb4947fcef71290d86
+e8d41ee24d9510983fc6ed5525344781ba8bb99b
+
