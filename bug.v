@@ -1,0 +1,4304 @@
+
+(* -*- mode: coq; coq-prog-args: ("-emacs" "-q" "-w" "-deprecated-native-compiler-option" "-native-compiler" "no" "-coqlib" "/github/workspace/builds/coq/coq-failing/_install_ci/lib/coq//" "-R" "/github/workspace/builds/coq/coq-failing/_build_ci/metarocq/utils/theories" "MetaRocq.Utils" "-R" "/github/workspace/builds/coq/coq-failing/_build_ci/metarocq/common/theories" "MetaRocq.Common" "-R" "/github/workspace/builds/coq/coq-failing/_build_ci/metarocq/pcuic/theories" "MetaRocq.PCUIC" "-Q" "/github/workspace/cwd" "Top" "-Q" "/github/workspace/builds/coq/coq-failing/_install_ci/lib/coq///user-contrib/Equations" "Equations" "-Q" "/github/workspace/builds/coq/coq-failing/_install_ci/lib/coq///user-contrib/Ltac2" "Ltac2" "-Q" "/github/workspace/builds/coq/coq-failing/_install_ci/lib/coq///user-contrib/Stdlib" "Stdlib" "-top" "Top.bug_01") -*- *)
+(* File reduced by coq-bug-minimizer from original input, then from 745 lines to 213 lines, then from 227 lines to 1933 lines, then from 1940 lines to 512 lines, then from 526 lines to 1231 lines, then from 1238 lines to 537 lines, then from 551 lines to 3237 lines, then from 3239 lines to 686 lines, then from 700 lines to 1833 lines, then from 1839 lines to 869 lines, then from 883 lines to 2943 lines, then from 2944 lines to 890 lines, then from 904 lines to 3361 lines, then from 3363 lines to 1437 lines, then from 1443 lines to 996 lines, then from 1008 lines to 1838 lines, then from 1843 lines to 1118 lines, then from 1130 lines to 2645 lines, then from 2646 lines to 1143 lines, then from 1154 lines to 1809 lines, then from 1816 lines to 1164 lines, then from 1176 lines to 3035 lines, then from 3038 lines to 1442 lines, then from 1454 lines to 2107 lines, then from 2113 lines to 1519 lines, then from 1530 lines to 4343 lines, then from 4342 lines to 3505 lines, then from 3451 lines to 1670 lines, then from 1682 lines to 3364 lines, then from 3369 lines to 1890 lines, then from 1902 lines to 2709 lines, then from 2713 lines to 1896 lines, then from 1907 lines to 5009 lines, then from 4975 lines to 4110 lines, then from 4064 lines to 1868 lines, then from 1880 lines to 3052 lines, then from 3055 lines to 1972 lines, then from 1984 lines to 2818 lines, then from 2825 lines to 2041 lines, then from 2053 lines to 2407 lines, then from 2414 lines to 2053 lines, then from 2065 lines to 2599 lines, then from 2605 lines to 2080 lines, then from 2091 lines to 2374 lines, then from 2381 lines to 2091 lines, then from 2108 lines to 2054 lines, then from 2066 lines to 6629 lines, then from 6630 lines to 2104 lines, then from 2116 lines to 2599 lines, then from 2603 lines to 2129 lines, then from 2141 lines to 3907 lines, then from 3907 lines to 2195 lines, then from 2206 lines to 2566 lines, then from 2573 lines to 2213 lines, then from 2224 lines to 2926 lines, then from 2933 lines to 2282 lines, then from 2293 lines to 2607 lines, then from 2614 lines to 2283 lines, then from 2295 lines to 2532 lines, then from 2539 lines to 2575 lines, then from 2567 lines to 2226 lines, then from 2238 lines to 2532 lines, then from 2539 lines to 2245 lines, then from 2256 lines to 3427 lines, then from 3418 lines to 2501 lines, then from 2513 lines to 3812 lines, then from 3811 lines to 2797 lines, then from 2809 lines to 3177 lines, then from 3183 lines to 2876 lines, then from 2888 lines to 3227 lines, then from 3231 lines to 2904 lines, then from 2916 lines to 3065 lines, then from 3072 lines to 2907 lines, then from 2918 lines to 3064 lines, then from 3071 lines to 2911 lines, then from 2922 lines to 4190 lines, then from 4192 lines to 2920 lines, then from 2931 lines to 3498 lines, then from 3502 lines to 2997 lines, then from 3008 lines to 3254 lines, then from 3261 lines to 3038 lines, then from 3049 lines to 5074 lines, then from 5077 lines to 3345 lines, then from 3357 lines to 3975 lines, then from 3982 lines to 3869 lines, then from 3881 lines to 5179 lines, then from 5186 lines to 3872 lines, then from 3884 lines to 4281 lines, then from 4283 lines to 4020 lines, then from 4038 lines to 3887 lines, then from 3899 lines to 4915 lines, then from 4922 lines to 4233 lines, then from 4246 lines to 5517 lines, then from 5523 lines to 4471 lines, then from 4483 lines to 4915 lines, then from 4921 lines to 4654 lines, then from 4666 lines to 6952 lines, then from 6956 lines to 4730 lines, then from 4742 lines to 5141 lines, then from 5147 lines to 4844 lines, then from 4856 lines to 4870 lines, then from 4876 lines to 4845 lines, then from 4857 lines to 5308 lines, then from 5313 lines to 4857 lines, then from 4869 lines to 5467 lines, then from 5473 lines to 4915 lines, then from 4927 lines to 5996 lines, then from 5993 lines to 5072 lines, then from 5085 lines to 5189 lines, then from 5195 lines to 5091 lines, then from 5103 lines to 6288 lines, then from 6287 lines to 5131 lines, then from 5143 lines to 5380 lines, then from 5387 lines to 5194 lines, then from 5197 lines to 3643 lines, then from 3655 lines to 7788 lines, then from 7768 lines to 3670 lines, then from 3681 lines to 5125 lines, then from 5130 lines to 3923 lines, then from 3935 lines to 4049 lines, then from 4056 lines to 3958 lines, then from 3969 lines to 4059 lines, then from 4066 lines to 3968 lines, then from 3980 lines to 4214 lines, then from 4221 lines to 3994 lines, then from 4006 lines to 4146 lines, then from 4153 lines to 4015 lines, then from 4027 lines to 4156 lines, then from 4163 lines to 4036 lines, then from 4048 lines to 4248 lines, then from 4255 lines to 4058 lines, then from 4070 lines to 4393 lines, then from 4400 lines to 4082 lines, then from 4094 lines to 4338 lines, then from 4345 lines to 4105 lines, then from 4117 lines to 4559 lines, then from 4566 lines to 4129 lines, then from 4140 lines to 4423 lines, then from 4430 lines to 4152 lines, then from 4163 lines to 4323 lines, then from 4330 lines to 4175 lines, then from 4186 lines to 4532 lines, then from 4539 lines to 4299 lines *)
+(* coqc version 9.3+alpha compiled with OCaml 4.14.2
+   coqtop version 9.3+alpha
+   Expected coqc runtime on this file: 1.928 sec
+   Expected coqc peak memory usage on this file: 3091300.0 kb *)
+
+
+
+
+
+
+
+
+
+Require Corelib.Program.Tactics.
+Require Corelib.extraction.Extraction.
+Require Corelib.Classes.CRelationClasses.
+Require Corelib.ssr.ssreflect.
+Require Corelib.ssr.ssrbool.
+Require Corelib.Lists.ListDef.
+Require Corelib.Init.Ltac.
+Require Corelib.Program.Basics.
+Require Corelib.Setoids.Setoid.
+Require Corelib.Classes.RelationClasses.
+Require Corelib.Relations.Relation_Definitions.
+Require Corelib.Floats.PrimFloat.
+Require Corelib.Classes.Morphisms_Prop.
+Require Corelib.Classes.Morphisms.
+Require Corelib.Strings.PrimStringAxioms.
+Require Stdlib.Logic.Decidable.
+Require Stdlib.Logic.HLevelsBase.
+Require Equations.Init.
+Require Stdlib.Classes.CRelationClasses.
+Require Stdlib.Classes.Morphisms.
+Require Stdlib.Classes.Morphisms_Prop.
+Require Stdlib.Classes.DecidableClass.
+Require Stdlib.Classes.RelationClasses.
+Require Stdlib.Lists.ListDef.
+Require Stdlib.Program.Tactics.
+Require Stdlib.Program.Basics.
+Require Stdlib.Relations.Relation_Definitions.
+Require Stdlib.Setoids.Setoid.
+Require Stdlib.extraction.Extraction.
+Require Stdlib.ssr.ssreflect.
+Require Stdlib.ssr.ssrbool.
+Require Equations.Prop.SigmaNotations.
+Require Equations.Signature.
+Require Stdlib.Bool.Bool.
+Require Stdlib.Relations.Relation_Operators.
+Require Equations.CoreTactics.
+Require Stdlib.Relations.Operators_Properties.
+Require Stdlib.Relations.Relations.
+Require Equations.Type.Logic.
+Require Equations.Prop.Logic.
+Require Equations.Type.Relation.
+Require Stdlib.Numbers.NumPrelude.
+Require Equations.Type.Relation_Properties.
+Require Equations.Prop.Classes.
+Require MetaRocq.Utils.MRProd.
+Require Stdlib.Structures.Equalities.
+Require Equations.Prop.EqDec.
+Require MetaRocq.Utils.MRRelations.
+Require Equations.Prop.DepElim.
+Require Stdlib.Structures.Orders.
+Require Equations.Prop.Constants.
+Require Stdlib.Structures.OrdersTac.
+Require Stdlib.Structures.OrdersFacts.
+Require Stdlib.Structures.GenericMinMax.
+Require Stdlib.Numbers.NatInt.NZAxioms.
+Require Stdlib.Numbers.NatInt.NZBase.
+Require Stdlib.Numbers.NatInt.NZAdd.
+Require Stdlib.Numbers.NatInt.NZMul.
+Require Stdlib.Numbers.NatInt.NZOrder.
+Require Stdlib.Numbers.NatInt.NZAddOrder.
+Require Stdlib.Numbers.NatInt.NZMulOrder.
+Require Stdlib.Numbers.NatInt.NZDiv.
+Require Stdlib.Numbers.NatInt.NZGcd.
+Require Stdlib.Numbers.NatInt.NZParity.
+Require Stdlib.Numbers.NatInt.NZPow.
+Require Stdlib.Numbers.NatInt.NZSqrt.
+Require Stdlib.Numbers.NatInt.NZLog.
+Require Stdlib.Numbers.NatInt.NZBits.
+Require Stdlib.Numbers.Integer.Abstract.ZAxioms.
+Require Stdlib.Numbers.Natural.Abstract.NAxioms.
+Require Stdlib.Numbers.Integer.Abstract.ZBase.
+Require Stdlib.Numbers.Natural.Abstract.NBase.
+Require Stdlib.Numbers.Integer.Abstract.ZAdd.
+Require Stdlib.Numbers.Natural.Abstract.NAdd.
+Require Stdlib.Numbers.Integer.Abstract.ZMul.
+Require Stdlib.Numbers.Natural.Abstract.NOrder.
+Require Stdlib.Numbers.Integer.Abstract.ZLt.
+Require Stdlib.Numbers.Natural.Abstract.NAddOrder.
+
+Module Export AdmitTactic.
+Module Import LocalFalse.
+Inductive False : Prop := .
+End LocalFalse.
+Axiom proof_admitted : False.
+Import Coq.Init.Ltac.
+Tactic Notation "admit" := abstract case proof_admitted.
+End AdmitTactic.
+
+Module Export Stdlib_DOT_Numbers_DOT_Integer_DOT_Abstract_DOT_ZAddOrder_WRAPPED.
+
+
+
+
+
+
+
+
+
+
+
+Export Stdlib.Numbers.Integer.Abstract.ZLt.
+
+Module ZAddOrderProp (Import Z : ZAxiomsMiniSig').
+Include ZOrderProp Z.
+
+Section PosNeg.
+
+End PosNeg.
+
+End ZAddOrderProp.
+Module Export Stdlib_DOT_Numbers_DOT_Integer_DOT_Abstract_DOT_ZAddOrder.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Integer.
+Module Export Abstract.
+Module Export ZAddOrder.
+End ZAddOrder.
+
+End Abstract.
+
+End Integer.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Integer_DOT_Abstract_DOT_ZAddOrder.
+Export Stdlib.Numbers.Natural.Abstract.NAddOrder.
+
+Module NMulOrderProp (Import N : NAxiomsMiniSig').
+Include NAddOrderProp N.
+
+End NMulOrderProp.
+Module Export Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NMulOrder.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Natural.
+Module Export Abstract.
+Module Export NMulOrder.
+End NMulOrder.
+
+End Abstract.
+
+End Natural.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NMulOrder.
+Export Stdlib.Numbers.Integer.Abstract.ZAddOrder.
+
+Module Type ZMulOrderProp (Import Z : ZAxiomsMiniSig').
+Include ZAddOrderProp Z.
+
+End ZMulOrderProp.
+Module Export Stdlib_DOT_Numbers_DOT_Integer_DOT_Abstract_DOT_ZMulOrder.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Integer.
+Module Export Abstract.
+Module Export ZMulOrder.
+End ZMulOrder.
+
+End Abstract.
+
+End Integer.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Integer_DOT_Abstract_DOT_ZMulOrder.
+Export Stdlib.Numbers.Natural.Abstract.NMulOrder.
+
+Module Type NSubProp (Import N : NAxiomsMiniSig').
+Include NMulOrderProp N.
+
+End NSubProp.
+Module Export Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NSub.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Natural.
+Module Export Abstract.
+Module Export NSub.
+End NSub.
+
+End Abstract.
+
+End Natural.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NSub.
+Import Stdlib.Numbers.Integer.Abstract.ZMulOrder.
+
+Module Type ZMaxMinProp (Import Z : ZAxiomsMiniSig').
+Include ZMulOrderProp Z.
+
+End ZMaxMinProp.
+Module Export Stdlib_DOT_Numbers_DOT_Integer_DOT_Abstract_DOT_ZMaxMin.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Integer.
+Module Export Abstract.
+Module Export ZMaxMin.
+End ZMaxMin.
+
+End Abstract.
+
+End Integer.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Integer_DOT_Abstract_DOT_ZMaxMin.
+Import Stdlib.Numbers.Natural.Abstract.NSub.
+
+Module Type NGcdProp
+ (Import A : NAxiomsSig')
+ (Import B : NSubProp A).
+
+End NGcdProp.
+Module Export Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NGcd.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Natural.
+Module Export Abstract.
+Module Export NGcd.
+End NGcd.
+
+End Abstract.
+
+End Natural.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NGcd.
+Import Stdlib.Numbers.Natural.Abstract.NSub.
+
+Module Type NMaxMinProp (Import N : NAxiomsMiniSig').
+Include NSubProp N.
+
+End NMaxMinProp.
+Module Export Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NMaxMin.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Natural.
+Module Export Abstract.
+Module Export NMaxMin.
+End NMaxMin.
+
+End Abstract.
+
+End Natural.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NMaxMin.
+Import Stdlib.Numbers.Natural.Abstract.NSub.
+
+Module Type NParityProp (Import N : NAxiomsSig')(Import NP : NSubProp N).
+
+End NParityProp.
+Module Export Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NParity.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Natural.
+Module Export Abstract.
+Module Export NParity.
+End NParity.
+
+End Abstract.
+
+End Natural.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NParity.
+Import Stdlib.Numbers.Natural.Abstract.NSub.
+
+Module NSqrtProp (Import A : NAxiomsSig')(Import B : NSubProp A).
+
+End NSqrtProp.
+Module Export Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NSqrt.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Natural.
+Module Export Abstract.
+Module Export NSqrt.
+End NSqrt.
+
+End Abstract.
+
+End Natural.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NSqrt.
+Import Stdlib.Numbers.Natural.Abstract.NSub.
+Import Stdlib.Numbers.Natural.Abstract.NParity.
+
+Module Type NPowProp
+ (Import A : NAxiomsSig')
+ (Import B : NSubProp A)
+ (Import C : NParityProp A B).
+
+End NPowProp.
+Module Export Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NPow.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Natural.
+Module Export Abstract.
+Module Export NPow.
+End NPow.
+
+End Abstract.
+
+End Natural.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NPow.
+Import Stdlib.Numbers.Natural.Abstract.NSub.
+Import Stdlib.Numbers.Natural.Abstract.NPow.
+Import Stdlib.Numbers.Natural.Abstract.NParity.
+
+Module Type NLog2Prop
+ (A : NAxiomsSig)
+ (B : NSubProp A)
+ (C : NParityProp A B)
+ (D : NPowProp A B C).
+End NLog2Prop.
+Module Export NLog.
+End NLog.
+Export Stdlib.Numbers.Natural.Abstract.NAxioms.
+Import Stdlib.Numbers.Natural.Abstract.NMaxMin.
+Import Stdlib.Numbers.Natural.Abstract.NParity.
+Import Stdlib.Numbers.Natural.Abstract.NPow.
+Import Stdlib.Numbers.Natural.Abstract.NSqrt.
+Import Stdlib.Numbers.Natural.Abstract.NGcd.
+
+Module Type NBasicProp (N:NAxiomsMiniSig) := NMaxMinProp N.
+
+Module Type NExtraPreProp (N:NAxiomsSig)(P:NBasicProp N) :=
+ NParityProp N P <+ NPowProp N P <+ NSqrtProp N P <+ NLog2Prop N P <+ NGcdProp N P.
+
+Module Type NExtraProp0 (N:NAxiomsSig)(P:NBasicProp N)(D0:NZDivSpec0 N N N)(E:NExtraPreProp N P).
+End NExtraProp0.
+Module Export Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NProperties.
+Module Export Stdlib.
+Module Export Numbers.
+Module Export Natural.
+Module Export Abstract.
+Module Export NProperties.
+End NProperties.
+
+End Abstract.
+
+End Natural.
+
+End Numbers.
+
+End Stdlib.
+
+End Stdlib_DOT_Numbers_DOT_Natural_DOT_Abstract_DOT_NProperties.
+Import Stdlib.Structures.OrdersFacts.
+
+Module Nat
+  <: NAxiomsSig
+  <: UsualDecidableTypeFull
+  <: OrderedTypeFull
+  <: TotalOrder.
+
+Include Corelib.Init.Nat.
+Definition eq_equiv : Equivalence (@eq nat).
+exact (eq_equivalence).
+Defined.
+#[local] Obligation Tactic := simpl_relation.
+#[global] Program Instance succ_wd : Proper (eq==>eq) S.
+#[global] Program Instance pred_wd : Proper (eq==>eq) pred.
+#[global] Program Instance add_wd : Proper (eq==>eq==>eq) plus.
+#[global] Program Instance sub_wd : Proper (eq==>eq==>eq) minus.
+#[global] Program Instance mul_wd : Proper (eq==>eq==>eq) mult.
+#[global] Program Instance pow_wd : Proper (eq==>eq==>eq) pow.
+#[global] Program Instance div_wd : Proper (eq==>eq==>eq) div.
+#[global] Program Instance mod_wd : Proper (eq==>eq==>eq) modulo.
+#[global] Program Instance lt_wd : Proper (eq==>eq==>iff) lt.
+#[global] Program Instance testbit_wd : Proper (eq==>eq==>eq) testbit.
+
+Theorem bi_induction :
+  forall A : nat -> Prop, Proper (eq==>iff) A ->
+    A 0 -> (forall n : nat, A n <-> A (S n)) -> forall n : nat, A n.
+Admitted.
+
+Definition eq := @Logic.eq nat.
+Definition le := Peano.le.
+Definition lt := Peano.lt.
+
+Lemma pred_succ n : pred (S n) = n.
+Admitted.
+
+Lemma pred_0 : pred 0 = 0.
+Admitted.
+
+Lemma one_succ : 1 = S 0.
+Admitted.
+
+Lemma two_succ : 2 = S 1.
+Admitted.
+
+Lemma add_0_l n : 0 + n = n.
+Admitted.
+
+Lemma add_succ_l n m : (S n) + m = S (n + m).
+Admitted.
+
+Lemma sub_0_r n : n - 0 = n.
+Admitted.
+
+Lemma sub_succ_r n m : n - (S m) = pred (n - m).
+Admitted.
+
+Lemma mul_0_l n : 0 * n = 0.
+Admitted.
+
+Lemma mul_succ_l n m : S n * m = n * m + m.
+Admitted.
+
+Lemma lt_succ_r n m : n < S m <-> n <= m.
+Admitted.
+
+Lemma eqb_eq n m : eqb n m = true <-> n = m.
+Admitted.
+
+Lemma leb_le n m : (n <=? m) = true <-> n <= m.
+Admitted.
+
+Lemma ltb_lt n m : (n <? m) = true <-> n < m.
+Admitted.
+
+Lemma eq_dec : forall n m : nat, {n = m} + {n <> m}.
+Admitted.
+
+Lemma compare_eq_iff n m : (n ?= m) = Eq <-> n = m.
+Admitted.
+
+Lemma compare_lt_iff n m : (n ?= m) = Lt <-> n < m.
+Admitted.
+
+Lemma compare_le_iff n m : (n ?= m) <> Gt <-> n <= m.
+Admitted.
+
+Lemma compare_antisym n m : (m ?= n) = CompOpp (n ?= m).
+Admitted.
+
+Lemma max_l : forall n m, m <= n -> max n m = n.
+Admitted.
+
+Lemma max_r : forall n m, n <= m -> max n m = m.
+Admitted.
+
+Lemma min_l : forall n m, n <= m -> min n m = n.
+Admitted.
+
+Lemma min_r : forall n m, m <= n -> min n m = m.
+Admitted.
+
+Include BoolOrderFacts.
+
+Include NBasicProp <+ UsualMinMaxLogicalProperties <+ UsualMinMaxDecProperties.
+
+Lemma pow_neg_r a b : b<0 -> a^b = 0.
+Admitted.
+
+Lemma pow_0_r a : a^0 = 1.
+Admitted.
+
+Lemma pow_succ_r a b : 0<=b -> a^(S b) = a * a^b.
+Admitted.
+
+Lemma square_spec n : square n = n * n.
+Admitted.
+
+Definition Even n := exists m, n = 2*m.
+Definition Odd n := exists m, n = 2*m+1.
+
+Lemma even_spec : forall n, even n = true <-> Even n.
+Admitted.
+
+Lemma odd_spec : forall n, odd n = true <-> Odd n.
+Admitted.
+
+Lemma div_mod x y : y <> 0 -> x = y*(x/y) + x mod y.
+Admitted.
+
+Lemma mod_bound_pos x y : 0<=x -> 0<y -> 0 <= x mod y < y.
+Admitted.
+
+Lemma sqrt_specif n : (sqrt n)*(sqrt n) <= n < S (sqrt n) * S (sqrt n).
+Admitted.
+
+Definition sqrt_spec a (Ha:0<=a) := sqrt_specif a.
+
+Lemma sqrt_neg a : a<0 -> sqrt a = 0.
+Admitted.
+
+Lemma log2_spec n : 0<n ->
+  2^(log2 n) <= n < 2^(S (log2 n)).
+Admitted.
+
+Lemma log2_nonpos n : n<=0 -> log2 n = 0.
+Admitted.
+
+Definition divide x y := exists z, y=z*x.
+Notation "( x | y )" := (divide x y) (at level 0) : nat_scope.
+
+Lemma gcd_divide_l : forall a b, (gcd a b | a).
+Admitted.
+
+Lemma gcd_divide_r : forall a b, (gcd a b | b).
+Admitted.
+
+Lemma gcd_greatest : forall a b c, (c|a) -> (c|b) -> (c|gcd a b).
+Admitted.
+
+Lemma gcd_nonneg a b : 0<=gcd a b.
+Admitted.
+
+Module Type PrivateBitwiseSpec.
+
+  Parameter testbit_odd_0 : forall a : nat, testbit (add (mul 2 a) 1) 0 = true.
+  Parameter testbit_even_0 : forall a : nat, testbit (mul 2 a) 0 = false.
+  Parameter testbit_odd_succ : forall a n : nat, le 0 n ->
+    testbit (add (mul 2 a) 1) (succ n) = testbit a n.
+  Parameter testbit_even_succ : forall a n : nat, le 0 n ->
+    testbit (mul 2 a) (succ n) = testbit a n.
+  Parameter testbit_neg_r : forall a n : nat, lt n 0 -> testbit a n = false.
+  Parameter shiftr_spec : forall a n m : nat, le 0 m ->
+    testbit (shiftr a n) m = testbit a (add m n).
+  Parameter shiftl_spec_high :
+    forall a n m : nat, le 0 m ->
+    le n m -> testbit (shiftl a n) m = testbit a (sub m n).
+  Parameter shiftl_spec_low :
+    forall a n m : nat, lt m n -> testbit (shiftl a n) m = false.
+  Parameter land_spec :
+    forall a b n : nat, testbit (land a b) n = testbit a n && testbit b n.
+  Parameter lor_spec :
+    forall a b n : nat, testbit (lor a b) n = testbit a n || testbit b n.
+  Parameter ldiff_spec :
+    forall a b n : nat,
+    testbit (ldiff a b) n = testbit a n && negb (testbit b n).
+  Parameter lxor_spec :
+    forall a b n : nat, testbit (lxor a b) n = xorb (testbit a n) (testbit b n).
+  Parameter div2_spec :
+    forall a : nat, eq (div2 a) (shiftr a 1).
+End PrivateBitwiseSpec.
+
+Module PrivateImplementsBitwiseSpec : PrivateBitwiseSpec.
+
+Lemma testbit_odd_0 a : testbit (2*a+1) 0 = true.
+Admitted.
+
+Lemma testbit_even_0 a : testbit (2*a) 0 = false.
+Admitted.
+
+Lemma testbit_odd_succ' a n : testbit (2*a+1) (S n) = testbit a n.
+Admitted.
+
+Lemma testbit_even_succ' a n : testbit (2*a) (S n) = testbit a n.
+Admitted.
+
+Lemma shiftr_specif : forall a n m,
+  testbit (shiftr a n) m = testbit a (m+n).
+Admitted.
+
+Lemma shiftl_specif_high : forall a n m, n<=m ->
+  testbit (shiftl a n) m = testbit a (m-n).
+Admitted.
+
+Lemma shiftl_spec_low : forall a n m, m<n ->
+  testbit (shiftl a n) m = false.
+Admitted.
+
+Lemma land_spec a b n :
+  testbit (land a b) n = testbit a n && testbit b n.
+Admitted.
+
+Lemma ldiff_spec a b n :
+  testbit (ldiff a b) n = testbit a n && negb (testbit b n).
+Admitted.
+
+Lemma lor_spec a b n :
+  testbit (lor a b) n = testbit a n || testbit b n.
+Admitted.
+
+Lemma lxor_spec a b n :
+  testbit (lxor a b) n = xorb (testbit a n) (testbit b n).
+Admitted.
+
+Lemma div2_spec a : div2 a = shiftr a 1.
+Admitted.
+
+Definition testbit_odd_succ a n (_:0<=n) := testbit_odd_succ' a n.
+
+Definition testbit_even_succ a n (_:0<=n) := testbit_even_succ' a n.
+
+Lemma testbit_neg_r a n (H:n<0) : testbit a n = false.
+Admitted.
+
+Definition shiftl_spec_high a n m (_:0<=m) := shiftl_specif_high a n m.
+
+Definition shiftr_spec a n m (_:0<=m) := shiftr_specif a n m.
+End PrivateImplementsBitwiseSpec.
+Include PrivateImplementsBitwiseSpec.
+
+End Nat.
+Infix "<=?" := Nat.leb (at level 70) : nat_scope.
+Module Export Stdlib.
+Module Export Arith.
+Module Export PeanoNat.
+End PeanoNat.
+Module Export List.
+Export Stdlib.Lists.ListDef.
+
+Set Implicit Arguments.
+Notation "[ ]" := nil (format "[ ]") : list_scope.
+Notation "[ x ]" := (cons x nil) : list_scope.
+
+Section Lists.
+
+  Variable A : Type.
+Fixpoint In (a:A) (l:list A) : Prop.
+Admitted.
+
+End Lists.
+
+Section Elts.
+
+  Variable A : Type.
+Fixpoint nth_error (l:list A) (n:nat) {struct n} : option A.
+Admitted.
+
+End Elts.
+
+Section ListOps.
+
+  Variable A : Type.
+Fixpoint rev (l:list A) : list A.
+Admitted.
+
+End ListOps.
+Notation map := map.
+
+Section Fold_Left_Recursor.
+  Variables (A : Type) (B : Type).
+  Variable f : A -> B -> A.
+Fixpoint fold_left (l:list B) (a0:A) : A.
+Admitted.
+
+End Fold_Left_Recursor.
+
+  Section Bool.
+    Variable A : Type.
+    Variable f : A -> bool.
+Fixpoint forallb (l:list A) : bool.
+Admitted.
+
+  End Bool.
+Notation skipn := skipn.
+
+  Section Forall2.
+
+  Variables A B : Type.
+  Variable R : A -> B -> Prop.
+
+  Inductive Forall2 : list A -> list B -> Prop :=
+    | Forall2_nil : Forall2 [] []
+    | Forall2_cons : forall x y l l',
+      R x y -> Forall2 l l' -> Forall2 (x::l) (y::l').
+End Forall2.
+
+Notation length := length (only parsing).
+
+End List.
+Module Export SetoidList.
+Set Implicit Arguments.
+
+Section Type_with_equality.
+Variable A : Type.
+Variable eqA : A -> A -> Prop.
+
+Inductive InA (x : A) : list A -> Prop :=
+  | InA_cons_hd : forall y l, eqA x y -> InA x (y :: l)
+  | InA_cons_tl : forall y l, InA x l -> InA x (y :: l).
+End Type_with_equality.
+
+End SetoidList.
+Module Export MSetInterface.
+Export Stdlib.Bool.Bool.
+Export Stdlib.Structures.OrdersFacts.
+
+Module Type TypElt.
+ Parameters t elt : Type.
+End TypElt.
+
+Module Type HasWOps (Import T:TypElt).
+
+  Parameter is_empty : t -> bool.
+
+  Parameter mem : elt -> t -> bool.
+
+End HasWOps.
+
+Module Type WOps (E : DecidableType).
+  Definition elt := E.t.
+  Parameter t : Type.
+
+  Include HasWOps.
+End WOps.
+
+Module Type WSetsOn (E : DecidableType).
+
+End WSetsOn.
+
+Module Type WSets.
+  Declare Module E : DecidableType.
+End WSets.
+
+Module Type HasOrdOps (Import T:TypElt).
+
+End HasOrdOps.
+
+Module Type Ops (E : OrderedType) := WOps E <+ HasOrdOps.
+
+Module Type SetsOn (E : OrderedType).
+
+End SetsOn.
+
+Module Type Sets.
+  Declare Module E : OrderedType.
+End Sets.
+
+Module Type S := Sets.
+
+Module Type WRawSets (E : DecidableType).
+
+  Include WOps E.
+
+  Parameter IsOk : t -> Prop.
+  Class Ok (s:t) : Prop := ok : IsOk s.
+
+  Parameter In : elt -> t -> Prop.
+Definition eq : t -> t -> Prop.
+Admitted.
+
+End WRawSets.
+
+Module WRaw2SetsOn (E:DecidableType)(M:WRawSets E) <: WSetsOn E.
+
+ Definition elt := E.t.
+
+ Record t_ := Mkt {this :> M.t; is_ok : M.Ok this}.
+ Definition t := t_.
+
+ Definition In (x : elt)(s : t) := M.In x (this s).
+ Definition For_all (P : elt -> Prop)(s : t) := forall x, In x s -> P x.
+
+ Definition mem (x : elt)(s : t) := M.mem x s.
+Definition empty : t.
+Admitted.
+ Definition is_empty (s : t) := M.is_empty s.
+
+End WRaw2SetsOn.
+
+Module WRaw2Sets (D:DecidableType)(M:WRawSets D) <: WSets with Module E := D.
+  Module E := D.
+End WRaw2Sets.
+
+Module Type RawSets (E : OrderedType).
+  Include WRawSets E <+ HasOrdOps <+ HasLt <+ IsStrOrder.
+
+End RawSets.
+
+Module Raw2SetsOn (O:OrderedType)(M:RawSets O) <: SetsOn O.
+  Include WRaw2SetsOn O M.
+
+End Raw2SetsOn.
+
+Module Raw2Sets (O:OrderedType)(M:RawSets O) <: Sets with Module E := O.
+  Module E := O.
+  Include Raw2SetsOn O M.
+End Raw2Sets.
+
+Module Type IN (O:OrderedType).
+End IN.
+
+Module MakeSetOrdering (O:OrderedType)(Import M:IN O).
+
+End MakeSetOrdering.
+
+Module MakeListOrdering (O:OrderedType).
+
+ #[local] Notation t := (list O.t).
+ #[local] Notation In := (InA O.eq).
+
+ Definition eq s s' := forall x, In x s <-> In x s'.
+
+ Inductive lt_list : t -> t -> Prop :=
+    | lt_nil : forall x s, lt_list nil (x :: s)
+    | lt_cons_lt : forall x y s s',
+        O.lt x y -> lt_list (x :: s) (y :: s')
+    | lt_cons_eq : forall x y s s',
+        O.eq x y -> lt_list s s' -> lt_list (x :: s) (y :: s').
+
+ Definition lt := lt_list.
+
+End MakeListOrdering.
+Export Stdlib.Numbers.Integer.Abstract.ZAxioms.
+Export Stdlib.Numbers.Integer.Abstract.ZMaxMin.
+
+Module Type ZBasicProp (Z:ZAxiomsMiniSig) := ZMaxMinProp Z.
+Module Export MSetList.
+
+Module Ops (X:OrderedType) <: WOps X.
+
+  Definition elt := X.t.
+  Definition t := list elt.
+
+  Definition is_empty (l : t) := if l then true else false.
+
+  Fixpoint mem x s :=
+    match s with
+    | nil => false
+    | y :: l =>
+        match X.compare x y with
+        | Lt => false
+        | Eq => true
+        | Gt => mem x l
+        end
+    end.
+
+End Ops.
+
+Module MakeRaw (X: OrderedType) <: RawSets X.
+
+  Include Ops X.
+
+  Definition inf x l :=
+   match l with
+   | nil => true
+   | y::_ => match X.compare x y with Lt => true | _ => false end
+   end.
+
+  Fixpoint isok l :=
+   match l with
+   | nil => true
+   | x::l => inf x l && isok l
+   end.
+
+  Notation Sort l := (isok l = true).
+
+  Definition IsOk s := Sort s.
+
+  Class Ok (s:t) : Prop := ok : Sort s.
+
+  Definition In := InA X.eq.
+
+  Module L := MakeListOrdering X.
+  Definition eq := L.eq.
+  Definition lt l1 l2 :=
+    exists l1' l2', Ok l1' /\ Ok l2' /\ eq l1 l1' /\ eq l2 l2' /\ L.lt l1' l2'.
+
+#[global]
+  Instance lt_strorder : StrictOrder lt.
+Admitted.
+
+#[global]
+  Instance lt_compat : Proper (eq==>eq==>iff) lt.
+Admitted.
+
+End MakeRaw.
+
+Module Make (X: OrderedType) <: S with Module E := X.
+ Module Raw := MakeRaw X.
+ Include Raw2Sets X Raw.
+End Make.
+
+Module Type OrderedTypeWithLeibniz.
+  Include OrderedType.
+End OrderedTypeWithLeibniz.
+
+Module Type SWithLeibniz.
+  Declare Module E : OrderedTypeWithLeibniz.
+End SWithLeibniz.
+
+Module MakeWithLeibniz (X: OrderedTypeWithLeibniz) <: SWithLeibniz with Module E := X.
+  Module E := X.
+  Module Raw := MakeRaw X.
+  Include Raw2SetsOn X Raw.
+
+End MakeWithLeibniz.
+
+Export Stdlib.Arith.PeanoNat.
+Export Corelib.BinNums.PosDef.
+Module Export BinPosDef.
+
+#[local] Open Scope positive_scope.
+
+Module Export Pos.
+
+Include BinNums.PosDef.Pos.
+
+Definition t := positive.
+
+Infix "+" := add : positive_scope.
+
+Definition pow (x:positive) := iter (mul x) 1.
+
+Fixpoint square p :=
+  match p with
+    | p~1 => (square p + p)~0~1
+    | p~0 => (square p)~0~0
+    | 1 => 1
+  end.
+
+Fixpoint size_nat p : nat :=
+  match p with
+    | 1 => S O
+    | p~1 => S (size_nat p)
+    | p~0 => S (size_nat p)
+  end.
+
+Fixpoint size p :=
+  match p with
+    | 1 => 1
+    | p~1 => succ (size p)
+    | p~0 => succ (size p)
+  end.
+
+Infix "?=" := compare (at level 70, no associativity) : positive_scope.
+
+Definition ltb x y :=
+ match x ?= y with Lt => true | _ => false end.
+
+Infix "=?" := eqb (at level 70, no associativity) : positive_scope.
+Infix "<=?" := leb (at level 70, no associativity) : positive_scope.
+Infix "<?" := ltb (at level 70, no associativity) : positive_scope.
+Fixpoint gcdn (n : nat) (a b : positive) : positive.
+Admitted.
+
+Definition gcd (a b : positive) := gcdn (size_nat a + size_nat b)%nat a b.
+
+Definition shiftl (p:positive)(n:N) :=
+  match n with
+    | N0 => p
+    | Npos n => iter xO p n
+  end.
+
+Fixpoint testbit (p:positive)(n:N) :=
+  match p, n with
+    | p~0, N0 => false
+    | _, N0 => true
+    | 1, _ => false
+    | p~0, Npos n => testbit p (pred_N n)
+    | p~1, Npos n => testbit p (pred_N n)
+  end.
+
+#[local] Notation ten := 1~0~1~0.
+
+Fixpoint of_uint_acc (d:Decimal.uint)(acc:positive) :=
+  match d with
+  | Decimal.Nil => acc
+  | Decimal.D0 l => of_uint_acc l (mul ten acc)
+  | Decimal.D1 l => of_uint_acc l (add 1 (mul ten acc))
+  | Decimal.D2 l => of_uint_acc l (add 1~0 (mul ten acc))
+  | Decimal.D3 l => of_uint_acc l (add 1~1 (mul ten acc))
+  | Decimal.D4 l => of_uint_acc l (add 1~0~0 (mul ten acc))
+  | Decimal.D5 l => of_uint_acc l (add 1~0~1 (mul ten acc))
+  | Decimal.D6 l => of_uint_acc l (add 1~1~0 (mul ten acc))
+  | Decimal.D7 l => of_uint_acc l (add 1~1~1 (mul ten acc))
+  | Decimal.D8 l => of_uint_acc l (add 1~0~0~0 (mul ten acc))
+  | Decimal.D9 l => of_uint_acc l (add 1~0~0~1 (mul ten acc))
+  end.
+Fixpoint of_uint (d:Decimal.uint) : N.
+exact (match d with
+  | Decimal.Nil => N0
+  | Decimal.D0 l => of_uint l
+  | Decimal.D1 l => Npos (of_uint_acc l 1)
+  | Decimal.D2 l => Npos (of_uint_acc l 1~0)
+  | Decimal.D3 l => Npos (of_uint_acc l 1~1)
+  | Decimal.D4 l => Npos (of_uint_acc l 1~0~0)
+  | Decimal.D5 l => Npos (of_uint_acc l 1~0~1)
+  | Decimal.D6 l => Npos (of_uint_acc l 1~1~0)
+  | Decimal.D7 l => Npos (of_uint_acc l 1~1~1)
+  | Decimal.D8 l => Npos (of_uint_acc l 1~0~0~0)
+  | Decimal.D9 l => Npos (of_uint_acc l 1~0~0~1)
+  end).
+Defined.
+Fixpoint of_hex_uint (d:Hexadecimal.uint) : N.
+Admitted.
+
+Fixpoint to_little_uint p :=
+  match p with
+  | 1 => Decimal.D1 Decimal.Nil
+  | p~1 => Decimal.Little.succ_double (to_little_uint p)
+  | p~0 => Decimal.Little.double (to_little_uint p)
+  end.
+
+Definition to_uint p := Decimal.rev (to_little_uint p).
+
+End Pos.
+
+End BinPosDef.
+Module Export BinPos.
+
+#[local] Open Scope positive_scope.
+
+Module Pos
+ <: UsualOrderedTypeFull
+ <: UsualDecidableTypeFull
+ <: TotalOrder.
+
+Include BinPosDef.Pos.
+
+Definition eq := @Logic.eq positive.
+Definition eq_equiv := @eq_equivalence positive.
+Include BackportEq.
+
+Definition lt x y := (x ?= y) = Lt.
+Definition le x y := (x ?= y) <> Gt.
+
+Infix "<=" := le : positive_scope.
+Infix "<" := lt : positive_scope.
+
+Lemma eq_dec : forall x y:positive, {x = y} + {x <> y}.
+Admitted.
+
+Theorem eqb_eq p q : (p =? q) = true <-> p=q.
+Admitted.
+
+Theorem ltb_lt p q : (p <? q) = true <-> p < q.
+Admitted.
+
+Theorem leb_le p q : (p <=? q) = true <-> p <= q.
+Admitted.
+
+Lemma compare_eq_iff p q : (p ?= q) = Eq <-> p = q.
+Admitted.
+
+Lemma compare_antisym p q : (q ?= p) = CompOpp (p ?= q).
+Admitted.
+
+Lemma compare_lt_iff p q : (p ?= q) = Lt <-> p < q.
+Admitted.
+
+Lemma compare_le_iff p q : (p ?= q) <> Gt <-> p <= q.
+Admitted.
+
+Include BoolOrderFacts.
+
+Definition le_lteq := lt_eq_cases.
+
+#[global]
+Instance lt_strorder : StrictOrder lt.
+Admitted.
+
+#[global]
+Instance lt_compat : Proper (Logic.eq==>Logic.eq==>iff) lt.
+Admitted.
+
+Lemma lt_total p q : p < q \/ p = q \/ q < p.
+Admitted.
+
+End Pos.
+Infix "*" := Pos.mul : positive_scope.
+Infix "^" := Pos.pow : positive_scope.
+
+End BinPos.
+Module Export BinNatDef.
+
+#[local] Open Scope N_scope.
+
+#[local] Notation "0" := N0.
+#[local] Notation "1" := (Npos 1).
+#[local] Notation "2" := (Npos 2).
+
+Module Export N.
+
+Include BinNums.NatDef.N.
+
+Definition t := N.
+
+#[global] Notation pos := Npos.
+
+Definition zero := 0.
+Definition one := 1.
+Definition two := 2.
+
+Definition succ n :=
+  match n with
+  | 0 => 1
+  | pos p => pos (Pos.succ p)
+  end.
+
+Definition pred n :=
+  match n with
+  | 0 => 0
+  | pos p => Pos.pred_N p
+  end.
+
+Definition add n m :=
+  match n, m with
+  | 0, _ => m
+  | _, 0 => n
+  | pos p, pos q => pos (p + q)
+  end.
+
+Infix "+" := add : N_scope.
+
+Infix "-" := sub : N_scope.
+
+Definition mul n m :=
+  match n, m with
+  | 0, _ => 0
+  | _, 0 => 0
+  | pos p, pos q => pos (p * q)
+  end.
+
+Infix "*" := mul : N_scope.
+
+Infix "?=" := compare (at level 70, no associativity) : N_scope.
+
+Definition eqb n m :=
+  match n, m with
+    | 0, 0 => true
+    | pos p, pos q => Pos.eqb p q
+    | _, _ => false
+  end.
+
+Definition ltb x y :=
+ match x ?= y with Lt => true | _ => false end.
+Infix "<=?" := leb (at level 70, no associativity) : N_scope.
+Infix "<?" := ltb (at level 70, no associativity) : N_scope.
+
+Definition min n n' := match n ?= n' with
+ | Lt | Eq => n
+ | Gt => n'
+ end.
+
+Definition max n n' := match n ?= n' with
+ | Lt | Eq => n'
+ | Gt => n
+ end.
+
+Definition div2 n :=
+  match n with
+  | 0 => 0
+  | 1 => 0
+  | pos (p~0) => pos p
+  | pos (p~1) => pos p
+  end.
+
+Definition even n :=
+  match n with
+    | 0 => true
+    | pos (xO _) => true
+    | _ => false
+  end.
+
+Definition odd n := negb (even n).
+
+Definition pow n p :=
+  match p, n with
+    | 0, _ => 1
+    | _, 0 => 0
+    | pos p, pos q => pos (q^p)
+  end.
+
+Infix "^" := pow : N_scope.
+
+Definition square n :=
+  match n with
+    | 0 => 0
+    | pos p => pos (Pos.square p)
+  end.
+
+Definition log2 n :=
+ match n with
+   | 0 => 0
+   | 1 => 0
+   | pos (p~0) => pos (Pos.size p)
+   | pos (p~1) => pos (Pos.size p)
+ end.
+Definition div_eucl (a b:N) : N * N.
+Admitted.
+
+Definition div a b := fst (div_eucl a b).
+Definition modulo a b := snd (div_eucl a b).
+
+Infix "/" := div : N_scope.
+Infix "mod" := modulo (at level 40, no associativity) : N_scope.
+
+Definition gcd a b :=
+ match a, b with
+  | 0, _ => b
+  | _, 0 => a
+  | pos p, pos q => pos (Pos.gcd p q)
+ end.
+
+Definition sqrt n :=
+ match n with
+  | 0 => 0
+  | pos p => pos (Pos.sqrt p)
+ end.
+
+Definition shiftl a n :=
+  match a with
+    | 0 => 0
+    | pos a => pos (Pos.shiftl a n)
+  end.
+
+Definition shiftr a n :=
+  match n with
+    | 0 => a
+    | pos p => Pos.iter div2 a p
+  end.
+
+Definition testbit a n :=
+  match a with
+    | 0 => false
+    | pos p => Pos.testbit p n
+  end.
+
+Definition of_num_uint (d:Number.uint) :=
+  match d with
+  | Number.UIntDecimal d => of_uint d
+  | Number.UIntHexadecimal d => of_hex_uint d
+  end.
+
+Definition to_uint n :=
+  match n with
+  | 0 => Decimal.zero
+  | pos p => Pos.to_uint p
+  end.
+
+Definition to_num_uint n := Number.UIntDecimal (to_uint n).
+Number Notation N of_num_uint to_num_uint : N_scope.
+
+End N.
+
+End BinNatDef.
+Module Export BinNat.
+Import Stdlib.Numbers.Natural.Abstract.NProperties.
+
+#[local] Open Scope N_scope.
+
+Module N
+ <: NAxiomsSig
+ <: UsualOrderedTypeFull
+ <: UsualDecidableTypeFull
+ <: TotalOrder.
+
+Include BinNatDef.N.
+
+Definition eq := @Logic.eq N.
+Definition eq_equiv := @eq_equivalence N.
+
+Definition lt x y := (x ?= y) = Lt.
+Definition le x y := (x ?= y) <> Gt.
+
+Infix "<=" := le : N_scope.
+Infix "<" := lt : N_scope.
+Notation "x <= y < z" := (x <= y /\ y < z) : N_scope.
+
+Definition divide p q := exists r, q = r*p.
+Notation "( p | q )" := (divide p q) (at level 0) : N_scope.
+
+Definition Even n := exists m, n = 2*m.
+Definition Odd n := exists m, n = 2*m+1.
+Program Definition succ_wd : Proper (eq==>eq) succ.
+Admitted.
+Program Definition pred_wd : Proper (eq==>eq) pred.
+Admitted.
+Program Definition add_wd : Proper (eq==>eq==>eq) add.
+Admitted.
+Program Definition sub_wd : Proper (eq==>eq==>eq) sub.
+Admitted.
+Program Definition mul_wd : Proper (eq==>eq==>eq) mul.
+Admitted.
+Program Definition lt_wd : Proper (eq==>eq==>iff) lt.
+Admitted.
+Program Definition div_wd : Proper (eq==>eq==>eq) div.
+Admitted.
+Program Definition mod_wd : Proper (eq==>eq==>eq) modulo.
+Admitted.
+Program Definition pow_wd : Proper (eq==>eq==>eq) pow.
+Admitted.
+Program Definition testbit_wd : Proper (eq==>eq==>Logic.eq) testbit.
+Admitted.
+
+Definition eq_dec : forall n m : N, { n = m } + { n <> m }.
+Admitted.
+
+Theorem bi_induction :
+  forall A : N -> Prop, Proper (Logic.eq==>iff) A ->
+    A 0 -> (forall n, A n <-> A (succ n)) -> forall n : N, A n.
+Admitted.
+
+Lemma one_succ : 1 = succ 0.
+Admitted.
+
+Lemma two_succ : 2 = succ 1.
+Admitted.
+
+Lemma pred_0 : pred 0 = 0.
+Admitted.
+
+Theorem pred_succ n : pred (succ n) = n.
+Admitted.
+
+Theorem add_0_l n : 0 + n = n.
+Admitted.
+
+Theorem add_succ_l n m : succ n + m = succ (n + m).
+Admitted.
+
+Theorem sub_0_r n : n - 0 = n.
+Admitted.
+
+Theorem sub_succ_r n m : n - succ m = pred (n - m).
+Admitted.
+
+Theorem mul_0_l n : 0 * n = 0.
+Admitted.
+
+Theorem mul_succ_l n m : (succ n) * m = n * m + m.
+Admitted.
+
+Lemma eqb_eq n m : eqb n m = true <-> n=m.
+Admitted.
+
+Lemma ltb_lt n m : (n <? m) = true <-> n < m.
+Admitted.
+
+Lemma leb_le n m : (n <=? m) = true <-> n <= m.
+Admitted.
+
+Theorem compare_eq_iff n m : (n ?= m) = Eq <-> n = m.
+Admitted.
+
+Theorem compare_lt_iff n m : (n ?= m) = Lt <-> n < m.
+Admitted.
+
+Theorem compare_le_iff n m : (n ?= m) <> Gt <-> n <= m.
+Admitted.
+
+Theorem compare_antisym n m : (m ?= n) = CompOpp (n ?= m).
+Admitted.
+
+Include BoolOrderFacts.
+
+Theorem min_l n m : n <= m -> min n m = n.
+Admitted.
+
+Theorem min_r n m : m <= n -> min n m = m.
+Admitted.
+
+Theorem max_l n m : m <= n -> max n m = n.
+Admitted.
+
+Theorem max_r n m : n <= m -> max n m = m.
+Admitted.
+
+Lemma lt_succ_r n m : n < succ m <-> n<=m.
+Admitted.
+
+Include NBasicProp <+ UsualMinMaxLogicalProperties <+ UsualMinMaxDecProperties.
+
+Lemma pow_0_r n : n ^ 0 = 1.
+Admitted.
+
+Lemma pow_succ_r n p : 0<=p -> n^(succ p) = n * n^p.
+Admitted.
+
+Lemma pow_neg_r n p : p<0 -> n^p = 0.
+Admitted.
+
+Lemma square_spec n : square n = n * n.
+Admitted.
+
+Lemma log2_spec n : 0 < n ->
+ 2^(log2 n) <= n < 2^(succ (log2 n)).
+Admitted.
+
+Lemma log2_nonpos n : n<=0 -> log2 n = 0.
+Admitted.
+
+Lemma even_spec n : even n = true <-> Even n.
+Admitted.
+
+Lemma odd_spec n : odd n = true <-> Odd n.
+Admitted.
+
+Theorem div_mod a b : b<>0 -> a = b * (a/b) + (a mod b).
+Admitted.
+
+Theorem mod_bound_pos a b : 0<=a -> 0<b -> 0 <= a mod b < b.
+Admitted.
+
+Lemma sqrt_spec n : 0<=n ->
+ let s := sqrt n in s*s <= n < (succ s)*(succ s).
+Admitted.
+
+Lemma sqrt_neg n : n<0 -> sqrt n = 0.
+Admitted.
+
+Lemma gcd_divide_l a b : (gcd a b | a).
+Admitted.
+
+Lemma gcd_divide_r a b : (gcd a b | b).
+Admitted.
+
+Lemma gcd_greatest a b c : (c|a) -> (c|b) -> (c|gcd a b).
+Admitted.
+
+Lemma gcd_nonneg a b : 0 <= gcd a b.
+Admitted.
+
+Lemma testbit_even_0 a : testbit (2*a) 0 = false.
+Admitted.
+
+Lemma testbit_odd_0 a : testbit (2*a+1) 0 = true.
+Admitted.
+
+Lemma testbit_odd_succ a n : 0<=n ->
+ testbit (2*a+1) (succ n) = testbit a n.
+Admitted.
+
+Lemma testbit_even_succ a n : 0<=n ->
+ testbit (2*a) (succ n) = testbit a n.
+Admitted.
+
+Lemma testbit_neg_r a n : n<0 -> testbit a n = false.
+Admitted.
+
+Lemma shiftr_spec a n m : 0<=m ->
+ testbit (shiftr a n) m = testbit a (m+n).
+Admitted.
+
+Lemma shiftl_spec_high a n m : 0<=m -> n<=m ->
+ testbit (shiftl a n) m = testbit a (m-n).
+Admitted.
+
+Lemma shiftl_spec_low a n m : m<n ->
+ testbit (shiftl a n) m = false.
+Admitted.
+
+Lemma div2_spec a : div2 a = shiftr a 1.
+Admitted.
+
+Lemma lxor_spec a a' n :
+ testbit (lxor a a') n = xorb (testbit a n) (testbit a' n).
+Admitted.
+
+Lemma lor_spec a a' n :
+ testbit (lor a a') n = (testbit a n) || (testbit a' n).
+Admitted.
+
+Lemma land_spec a a' n :
+ testbit (land a a') n = (testbit a n) && (testbit a' n).
+Admitted.
+
+Lemma ldiff_spec a a' n :
+ testbit (ldiff a a') n = (testbit a n) && negb (testbit a' n).
+Admitted.
+
+End N.
+
+End BinNat.
+Module Export BinIntDef.
+
+#[local] Open Scope Z_scope.
+
+#[local] Notation "0" := Z0.
+#[local] Notation "1" := (Zpos 1).
+#[local] Notation "2" := (Zpos 2).
+
+Module Export Z.
+
+Include BinNums.IntDef.Z.
+
+Definition t := Z.
+
+#[global] Notation pos := Zpos.
+#[global] Notation neg := Zneg.
+
+Definition zero := 0.
+Definition one := 1.
+Definition two := 2.
+
+Definition succ x := x + 1.
+
+Definition pred x := x + neg 1.
+
+Definition square x :=
+  match x with
+    | 0 => 0
+    | pos p => pos (Pos.square p)
+    | neg p => pos (Pos.square p)
+  end.
+
+Definition sgn z :=
+  match z with
+    | 0 => 0
+    | pos p => 1
+    | neg p => neg 1
+  end.
+
+Infix "=?" := eqb (at level 70, no associativity) : Z_scope.
+Infix "<=?" := leb (at level 70, no associativity) : Z_scope.
+Infix "<?" := ltb (at level 70, no associativity) : Z_scope.
+
+Definition abs z :=
+  match z with
+    | 0 => 0
+    | pos p => pos p
+    | neg p => pos p
+  end.
+
+Definition of_uint (d:Decimal.uint) := of_N (Pos.of_uint d).
+
+Definition of_hex_uint (d:Hexadecimal.uint) := of_N (Pos.of_hex_uint d).
+
+Definition of_int (d:Decimal.int) :=
+  match d with
+  | Decimal.Pos d => of_uint d
+  | Decimal.Neg d => opp (of_uint d)
+  end.
+
+Definition of_hex_int (d:Hexadecimal.int) :=
+  match d with
+  | Hexadecimal.Pos d => of_hex_uint d
+  | Hexadecimal.Neg d => opp (of_hex_uint d)
+  end.
+
+Definition of_num_int (d:Number.int) :=
+  match d with
+  | Number.IntDecimal d => of_int d
+  | Number.IntHexadecimal d => of_hex_int d
+  end.
+
+Definition to_int n :=
+  match n with
+  | 0 => Decimal.Pos Decimal.zero
+  | pos p => Decimal.Pos (Pos.to_uint p)
+  | neg p => Decimal.Neg (Pos.to_uint p)
+  end.
+
+Definition to_num_int n := Number.IntDecimal (to_int n).
+
+Infix "/" := div : Z_scope.
+Infix "mod" := modulo (at level 40, no associativity) : Z_scope.
+
+Definition odd z :=
+  match z with
+    | 0 => false
+    | pos (xO _) => false
+    | neg (xO _) => false
+    | _ => true
+  end.
+
+Definition log2 z :=
+  match z with
+    | pos (p~1) => pos (Pos.size p)
+    | pos (p~0) => pos (Pos.size p)
+    | _ => 0
+  end.
+
+Definition sqrt n :=
+ match n with
+  | pos p => pos (Pos.sqrt p)
+  | _ => 0
+ end.
+
+Definition gcd a b :=
+  match a,b with
+    | 0, _ => abs b
+    | _, 0 => abs a
+    | pos a, pos b => pos (Pos.gcd a b)
+    | pos a, neg b => pos (Pos.gcd a b)
+    | neg a, pos b => pos (Pos.gcd a b)
+    | neg a, neg b => pos (Pos.gcd a b)
+  end.
+
+Definition testbit a n :=
+ match n with
+   | 0 => odd a
+   | pos p =>
+     match a with
+       | 0 => false
+       | pos a => Pos.testbit a (N.pos p)
+       | neg a => negb (N.testbit (Pos.pred_N a) (N.pos p))
+     end
+   | neg _ => false
+ end.
+
+Definition ldiff a b :=
+ match a, b with
+   | 0, _ => 0
+   | _, 0 => a
+   | pos a, pos b => of_N (Pos.ldiff a b)
+   | neg a, pos b => neg (N.succ_pos (N.lor (Pos.pred_N a) (N.pos b)))
+   | pos a, neg b => of_N (N.land (N.pos a) (Pos.pred_N b))
+   | neg a, neg b => of_N (N.ldiff (Pos.pred_N b) (Pos.pred_N a))
+ end.
+Number Notation Z of_num_int to_num_int : Z_scope.
+
+End Z.
+
+End BinIntDef.
+
+Module Export BinInt.
+
+#[local] Open Scope Z_scope.
+
+Module Z
+ <: ZAxiomsSig
+ <: UsualOrderedTypeFull
+ <: UsualDecidableTypeFull
+ <: TotalOrder.
+
+Include BinIntDef.Z.
+
+Definition eq := @Logic.eq Z.
+Definition eq_equiv := @eq_equivalence Z.
+Notation "x <= y < z" := (x <= y /\ y < z) : Z_scope.
+Notation "x < y <= z" := (x < y /\ y <= z) : Z_scope.
+
+Definition divide x y := exists z, y = z*x.
+Notation "( x | y )" := (divide x y) (at level 0).
+
+Definition Even a := exists b, a = 2*b.
+Definition Odd a := exists b, a = 2*b+1.
+
+Definition eq_dec (x y : Z) : {x = y} + {x <> y}.
+Admitted.
+Program Definition succ_wd : Proper (eq==>eq) succ.
+Admitted.
+Program Definition pred_wd : Proper (eq==>eq) pred.
+Admitted.
+Program Definition opp_wd : Proper (eq==>eq) opp.
+Admitted.
+Program Definition add_wd : Proper (eq==>eq==>eq) add.
+Admitted.
+Program Definition sub_wd : Proper (eq==>eq==>eq) sub.
+Admitted.
+Program Definition mul_wd : Proper (eq==>eq==>eq) mul.
+Admitted.
+Program Definition lt_wd : Proper (eq==>eq==>iff) lt.
+Admitted.
+Program Definition div_wd : Proper (eq==>eq==>eq) div.
+Admitted.
+Program Definition mod_wd : Proper (eq==>eq==>eq) modulo.
+Admitted.
+Program Definition quot_wd : Proper (eq==>eq==>eq) quot.
+Admitted.
+Program Definition rem_wd : Proper (eq==>eq==>eq) rem.
+Admitted.
+Program Definition pow_wd : Proper (eq==>eq==>eq) pow.
+Admitted.
+Program Definition testbit_wd : Proper (eq==>eq==>Logic.eq) testbit.
+Admitted.
+
+Module Import Private_BootStrap.
+
+End Private_BootStrap.
+
+Lemma one_succ : 1 = succ 0.
+Admitted.
+
+Lemma two_succ : 2 = succ 1.
+Admitted.
+
+Lemma add_0_l n : 0 + n = n.
+Admitted.
+
+Lemma add_succ_l n m : succ n + m = succ (n + m).
+Admitted.
+
+Lemma opp_0 : -0 = 0.
+Admitted.
+
+Lemma opp_succ n : -(succ n) = pred (-n).
+Admitted.
+
+Lemma succ_pred n : succ (pred n) = n.
+Admitted.
+
+Lemma pred_succ n : pred (succ n) = n.
+Admitted.
+
+Lemma sub_0_r n : n - 0 = n.
+Admitted.
+
+Lemma sub_succ_r n m : n - succ m = pred (n - m).
+Admitted.
+
+Lemma mul_0_l n : 0 * n = 0.
+Admitted.
+
+Lemma mul_succ_l n m : succ n * m = n * m + m.
+Admitted.
+
+Lemma eqb_eq n m : (n =? m) = true <-> n = m.
+Admitted.
+
+Lemma ltb_lt n m : (n <? m) = true <-> n < m.
+Admitted.
+
+Lemma leb_le n m : (n <=? m) = true <-> n <= m.
+Admitted.
+
+Lemma compare_eq_iff n m : (n ?= m) = Eq <-> n = m.
+Admitted.
+
+Lemma compare_antisym n m : (m ?= n) = CompOpp (n ?= m).
+Admitted.
+
+Lemma compare_lt_iff n m : (n ?= m) = Lt <-> n < m.
+Admitted.
+
+Lemma compare_le_iff n m : (n ?= m) <> Gt <-> n <= m.
+Admitted.
+
+Include BoolOrderFacts.
+
+Lemma lt_succ_r n m : n < succ m <-> n<=m.
+Admitted.
+
+Lemma max_l n m : m<=n -> max n m = n.
+Admitted.
+
+Lemma max_r n m :  n<=m -> max n m = m.
+Admitted.
+
+Lemma min_l n m : n<=m -> min n m = n.
+Admitted.
+
+Lemma min_r n m : m<=n -> min n m = m.
+Admitted.
+
+Lemma bi_induction (P : Z -> Prop) :
+  Proper (eq ==> iff) P ->
+  P 0 ->
+  (forall x, P x <-> P (succ x)) ->
+  forall z, P z.
+Admitted.
+
+Include ZBasicProp <+ UsualMinMaxLogicalProperties <+ UsualMinMaxDecProperties.
+
+Lemma abs_eq n : 0 <= n -> abs n = n.
+Admitted.
+
+Lemma abs_neq n : n <= 0 -> abs n = - n.
+Admitted.
+
+Lemma sgn_null n : n = 0 -> sgn n = 0.
+Admitted.
+
+Lemma sgn_pos n : 0 < n -> sgn n = 1.
+Admitted.
+
+Lemma sgn_neg n : n < 0 -> sgn n = -1.
+Admitted.
+
+Lemma pow_0_r n : n^0 = 1.
+Admitted.
+
+Lemma pow_succ_r n m : 0<=m -> n^(succ m) = n * n^m.
+Admitted.
+
+Lemma pow_neg_r n m : m<0 -> n^m = 0.
+Admitted.
+
+Lemma square_spec n : square n = n * n.
+Admitted.
+
+Lemma sqrt_spec n : 0<=n ->
+ let s := sqrt n in s*s <= n < (succ s)*(succ s).
+Admitted.
+
+Lemma sqrt_neg n : n<0 -> sqrt n = 0.
+Admitted.
+
+Lemma log2_spec n : 0 < n -> 2^(log2 n) <= n < 2^(succ (log2 n)).
+Admitted.
+
+Lemma log2_nonpos n : n<=0 -> log2 n = 0.
+Admitted.
+
+Lemma even_spec n : even n = true <-> Even n.
+Admitted.
+
+Lemma odd_spec n : odd n = true <-> Odd n.
+Admitted.
+
+Lemma div_mod a b : b<>0 -> a = b*(a/b) + (a mod b).
+Admitted.
+
+Lemma mod_pos_bound a b : 0 < b -> 0 <= a mod b < b.
+Admitted.
+
+Definition mod_bound_pos a b (_:0<=a) := mod_pos_bound a b.
+
+Lemma mod_neg_bound a b : b < 0 -> b < a mod b <= 0.
+Admitted.
+
+Lemma quot_rem a b : b<>0 -> a = b*(a÷b) + rem a b.
+Admitted.
+
+Lemma rem_bound_pos a b : 0<=a -> 0<b -> 0 <= rem a b < b.
+Admitted.
+
+Lemma rem_opp_l a b : b<>0 -> rem (-a) b = - (rem a b).
+Admitted.
+
+Lemma rem_opp_r a b : b<>0 -> rem a (-b) = rem a b.
+Admitted.
+
+Lemma gcd_divide_l a b : (gcd a b | a).
+Admitted.
+
+Lemma gcd_divide_r a b : (gcd a b | b).
+Admitted.
+
+Lemma gcd_greatest a b c : (c|a) -> (c|b) -> (c | gcd a b).
+Admitted.
+
+Lemma gcd_nonneg a b : 0 <= gcd a b.
+Admitted.
+
+Lemma div2_spec a : div2 a = shiftr a 1.
+Admitted.
+
+Lemma testbit_neg_r a n : n<0 -> testbit a n = false.
+Admitted.
+
+Lemma testbit_odd_0 a : testbit (2*a+1) 0 = true.
+Admitted.
+
+Lemma testbit_even_0 a : testbit (2*a) 0 = false.
+Admitted.
+
+Lemma testbit_odd_succ a n : 0<=n ->
+ testbit (2*a+1) (succ n) = testbit a n.
+Admitted.
+
+Lemma testbit_even_succ a n : 0<=n ->
+ testbit (2*a) (succ n) = testbit a n.
+Admitted.
+
+Lemma shiftl_spec_low a n m : m<n ->
+                              testbit (shiftl a n) m = false.
+Admitted.
+
+Lemma shiftl_spec_high a n m : 0<=m -> n<=m ->
+                               testbit (shiftl a n) m = testbit a (m-n).
+Admitted.
+
+Lemma shiftr_spec a n m : 0<=m ->
+ testbit (shiftr a n) m = testbit a (m+n).
+Admitted.
+
+Lemma lor_spec a b n :
+ testbit (lor a b) n = testbit a n || testbit b n.
+Admitted.
+
+Lemma land_spec a b n :
+ testbit (land a b) n = testbit a n && testbit b n.
+Admitted.
+
+Lemma ldiff_spec a b n :
+ testbit (ldiff a b) n = testbit a n && negb (testbit b n).
+Admitted.
+
+Lemma lxor_spec a b n :
+ testbit (lxor a b) n = xorb (testbit a n) (testbit b n).
+Admitted.
+
+End Z.
+
+End BinInt.
+Import Equations.CoreTactics.
+Import Equations.Prop.DepElim.
+
+Ltac solve_noconf_prf := intros;
+  on_last_hyp ltac:(fun id => destruct id) ;
+  on_last_hyp ltac:(fun id =>
+                      destruct_sigma id;
+                      destruct id) ;
+  constructor.
+
+Ltac solve_noconf_inv_eq a b :=
+  destruct_sigma a; destruct_sigma b;
+  destruct a ; depelim b; simpl in * |-;
+  on_last_hyp ltac:(fun id => hnf in id; destruct_tele_eq id || destruct id);
+  solve [constructor].
+
+Ltac solve_noconf_inv := intros;
+  match goal with
+    |- ?R ?a ?b => destruct_sigma a; destruct_sigma b;
+                   destruct a ; depelim b; simpl in * |-;
+                 on_last_hyp ltac:(fun id => hnf in id; destruct_tele_eq id || destruct id);
+                 solve [constructor]
+  | |- @eq _ (?f ?a ?b _) _ => solve_noconf_inv_eq a b
+  end.
+
+Ltac solve_noconf_inv_equiv :=
+  intros;
+
+  on_last_hyp ltac:(fun id => destruct id) ;
+
+  on_last_hyp ltac:(fun id => destruct_sigma id; destruct id) ;
+  simpl; constructor.
+
+Ltac solve_noconf := simpl; intros;
+    match goal with
+      [ H : @eq _ _ _ |- @eq _ _ _ ] => try solve_noconf_inv_equiv
+    | [ H : @eq _ _ _ |- _ ] => try solve_noconf_prf
+    | [ |- @eq _ _ _ ] => try solve_noconf_inv
+    end.
+
+Ltac Equations.Init.solve_noconf ::= solve_noconf.
+
+Module Type Int.
+
+  Parameter t : Set.
+
+End Int.
+
+Module MoreInt (Import I:Int).
+
+End MoreInt.
+
+Module Z_as_Int <: Int.
+  Definition t := Z.
+End Z_as_Int.
+Export Equations.Prop.Classes.
+Module Export ReflectEq.
+
+Inductive reflectProp (P : Prop) : bool -> Prop :=
+ | reflectP : P -> reflectProp P true
+ | reflectF : ~ P -> reflectProp P false.
+
+Class ReflectEq A := {
+  eqb : A -> A -> bool ;
+  eqb_spec : forall x y : A, reflectProp (x = y) (eqb x y)
+}.
+
+Import Stdlib.Structures.Orders.
+Definition compare_cont (c : comparison) (d : comparison) : comparison.
+Admitted.
+
+Module BoolOT <: UsualOrderedType.
+  Definition t := bool.
+Definition compare (x y : bool) : comparison.
+Admitted.
+
+  Definition lt (x y : bool) :=
+    if x then False else y = true.
+
+  Definition compare_spec (x y : bool) : CompareSpec (x = y) (lt x y) (lt y x) (compare x y).
+Admitted.
+Definition eq : t -> t -> Prop.
+exact (eq).
+Defined.
+Definition eq_equiv : Equivalence eq.
+exact (_).
+Defined.
+
+  Definition eq_dec (l1 l2 : t) : {l1 = l2}+{l1 <> l2}.
+Admitted.
+
+  Definition lt_strorder : StrictOrder lt.
+Admitted.
+
+  Definition lt_compat : Proper (eq ==> eq ==> iff) lt.
+Admitted.
+
+End BoolOT.
+
+Module ListOrderedType (A : UsualOrderedType) <: UsualOrderedType.
+  Definition t := list A.t.
+Fixpoint compare (l1 l2 : t) : comparison.
+Admitted.
+Definition eq : t -> t -> Prop.
+exact (eq).
+Defined.
+Definition eq_equiv : Equivalence eq.
+exact (_).
+Defined.
+
+  Inductive lt_ : t -> t -> Prop :=
+  | lt_nil_cons hd tl : lt_ [] (hd :: tl)
+  | lt_cons_cons_hd hd tl hd' tl' : A.lt hd hd' -> lt_ (hd :: tl) (hd' :: tl')
+  | lt_cons_cons_tl hd tl tl' : lt_ tl tl' -> lt_ (hd :: tl) (hd :: tl').
+
+  Definition lt := lt_.
+
+  Global Instance lt_strorder : StrictOrder lt.
+Admitted.
+
+  Global Instance lt_compat : Proper (eq ==> eq ==> iff) lt.
+Admitted.
+
+  Definition compare_spec :
+    forall x y : t, CompareSpec (x = y) (lt x y) (lt y x) (compare x y).
+Admitted.
+Definition eqb (l1 l2 : t) : bool.
+Admitted.
+
+  Program Definition eqb_dec (x y : t) : { x = y } + { x <> y } :=
+    match eqb x y with
+    | true => left _
+    | false => right _
+    end.
+Admit Obligations.
+
+  Global Instance eq_dec : EqDec t := { eq_dec := eqb_dec }.
+
+End ListOrderedType.
+Module Export MSetGenTree.
+
+Module Type InfoTyp.
+ Parameter t : Set.
+End InfoTyp.
+
+Module Type Ops (X:OrderedType)(Info:InfoTyp).
+
+Definition elt := X.t.
+
+Inductive tree  : Type :=
+| Leaf : tree
+| Node : Info.t -> tree -> X.t -> tree -> tree.
+
+Definition is_empty t :=
+ match t with
+ | Leaf => true
+ | _ => false
+ end.
+
+Fixpoint mem x t :=
+ match t with
+ | Leaf => false
+ | Node _ l k r =>
+   match X.compare x k with
+     | Lt => mem x l
+     | Eq => true
+     | Gt => mem x r
+   end
+ end.
+
+End Ops.
+
+Module Type Props (X:OrderedType)(Info:InfoTyp)(Import M:Ops X Info).
+
+Inductive InT (x : elt) : tree -> Prop :=
+  | IsRoot : forall c l r y, X.eq x y -> InT x (Node c l y r)
+  | InLeft : forall c l r y, InT x l -> InT x (Node c l y r)
+  | InRight : forall c l r y, InT x r -> InT x (Node c l y r).
+
+Definition In := InT.
+
+Definition Equal s s' := forall a : elt, InT a s <-> InT a s'.
+
+Definition lt_tree x s := forall y, InT y s -> X.lt y x.
+Definition gt_tree x s := forall y, InT y s -> X.lt x y.
+
+Inductive bst : tree -> Prop :=
+  | BSLeaf : bst Leaf
+  | BSNode : forall c x l r, bst l -> bst r ->
+     lt_tree x l -> gt_tree x r -> bst (Node c l x r).
+
+Definition IsOk := bst.
+
+Class Ok (s:tree) : Prop := ok : bst s.
+
+Definition eq := Equal.
+Definition lt (s1 s2 : tree) : Prop.
+Admitted.
+
+#[global]
+Instance lt_strorder : StrictOrder lt.
+Admitted.
+
+#[global]
+Instance lt_compat : Proper (eq==>eq==>iff) lt.
+Admitted.
+
+End Props.
+Module Export MSetAVL.
+
+Module Ops (Import I:Int)(X:OrderedType) <: MSetInterface.Ops X.
+
+Include MSetGenTree.Ops X I.
+
+Definition t := tree.
+
+End Ops.
+
+Module MakeRaw (Import I:Int)(X:OrderedType) <: RawSets X.
+Include Ops I X.
+
+Include MSetGenTree.Props X I.
+
+End MakeRaw.
+
+Module IntMake (I:Int)(X: OrderedType) <: S with Module E := X.
+ Module Raw := MakeRaw I X.
+ Include Raw2Sets X Raw.
+End IntMake.
+
+Module Make (X: OrderedType) <: S with Module E := X
+ :=IntMake(Z_as_Int)(X).
+Class checker_flags := {
+
+  check_univs : bool ;
+
+  prop_sub_type : bool ;
+
+  indices_matter : bool ;
+
+  lets_in_constructor_types : bool
+}.
+Module Export String.
+  Inductive t : Set :=
+  | EmptyString
+  | String (_ : Byte.byte) (_ : t).
+Fixpoint compare (xs ys : t) : comparison.
+Admitted.
+Notation string := String.t.
+
+Module StringOT <: UsualOrderedType.
+  Definition t := string.
+Definition eq : t -> t -> Prop.
+exact (eq).
+Defined.
+Definition eq_equiv : Equivalence eq.
+exact (_).
+Defined.
+
+  Definition compare := String.compare.
+  Definition lt x y : Prop := compare x y = Lt.
+
+  Theorem compare_spec : forall x y, CompareSpec (x = y) (lt x y) (lt y x) (compare x y).
+Admitted.
+Definition eq_dec : forall x y : t, {eq x y} + {not (eq x y)}.
+Admitted.
+
+  Global Instance lt_strorder : StrictOrder lt.
+Admitted.
+
+  Definition lt_compat : Proper (eq ==> eq ==> iff) lt.
+Admitted.
+
+End StringOT.
+Coercion is_true : bool >-> Sortclass.
+
+Notation "'eta_compose'" := (fun g f x => g (f x)).
+
+Notation "g ∘ f" := (eta_compose g f) (at level 40, left associativity).
+
+Notation "'∑' x .. y , p" := (sigT (fun x => .. (sigT (fun y => p%type)) ..))
+  (at level 200, x binder, right associativity,
+   format "'[' '∑'  '/  ' x  ..  y ,  '/  ' p ']'")
+  : type_scope.
+
+Notation "( x ; y )" := (@existT _ _ x y).
+Notation "x .π1" := (@projT1 _ _ x) (at level 3, format "x '.π1'").
+Notation "x .π2" := (@projT2 _ _ x) (at level 3, format "x '.π2'").
+
+Notation "#| l |" := (List.length l) (at level 0, l at level 99, format "#| l |").
+
+Fixpoint mapi_rec {A B} (f : nat -> A -> B) (l : list A) (n : nat) : list B :=
+  match l with
+  | [] => []
+  | hd :: tl => f n hd :: mapi_rec f tl (S n)
+  end.
+
+Definition mapi {A B} (f : nat -> A -> B) (l : list A) := mapi_rec f l 0.
+
+Section map2.
+
+  Context {A B C} (f : A -> B -> C).
+Fixpoint map2 (l : list A) (l' : list B) : list C.
+Admitted.
+
+End map2.
+Definition rev {A} (l : list A) : list A.
+Admitted.
+
+Module Export MetaRocq.
+
+Definition option_default {A B} (f : A -> B) (o : option A) (b : B) :=
+  match o with Some x => f x | None => b end.
+
+Fixpoint map_option_out {A} (l : list (option A)) : option (list A) :=
+  match l with
+  | nil => Some nil
+  | hd :: tl => match hd, map_option_out tl with
+                | Some hd, Some tl => Some (hd :: tl)
+                | _, _ => None
+                end
+  end.
+
+Inductive All {A} (P : A -> Type) : list A -> Type :=
+    All_nil : All P []
+  | All_cons : forall (x : A) (l : list A),
+                  P x -> All P l -> All P (x :: l).
+Arguments All_nil {_ _}.
+Arguments All_cons {_ _ _ _}.
+
+Inductive All2 {A B : Type} (R : A -> B -> Type) : list A -> list B -> Type :=
+  All2_nil : All2 R [] []
+| All2_cons : forall (x : A) (y : B) (l : list A) (l' : list B),
+    R x y -> All2 R l l' -> All2 R (x :: l) (y :: l').
+
+Inductive All2i {A B : Type} (R : nat -> A -> B -> Type) (n : nat)
+  : list A -> list B -> Type :=
+| All2i_nil : All2i R n [] []
+| All2i_cons :
+    forall x y l r,
+      R n x y ->
+      All2i R (S n) l r ->
+      All2i R n (x :: l) (y :: r).
+
+Inductive Forall3 {A B C : Type} (R : A -> B -> C -> Type) : list A -> list B -> list C -> Prop :=
+  Forall3_nil : Forall3 R [] [] []
+| Forall3_cons : forall (x : A) (y : B) (z : C) (l : list A) (l' : list B) (l'' : list C),
+    R x y z -> Forall3 R l l' l'' -> Forall3 R (x :: l) (y :: l') (z :: l'').
+
+Inductive OnOne2 {A : Type} (P : A -> A -> Type) : list A -> list A -> Type :=
+| OnOne2_hd hd hd' tl : P hd hd' -> OnOne2 P (hd :: tl) (hd' :: tl)
+| OnOne2_tl hd tl tl' : OnOne2 P tl tl' -> OnOne2 P (hd :: tl) (hd :: tl').
+
+Definition size := nat.
+
+Section All_size.
+  Context {A} (P : A -> Type) (fn : forall x1, P x1 -> size).
+  Fixpoint all_size {l1 : list A} (f : All P l1) : size :=
+  match f with
+  | All_nil => 0
+  | All_cons px pl => fn _ px + all_size pl
+  end.
+End All_size.
+Variant prim_tag :=
+  | primInt
+  | primFloat
+  | primString
+  | primArray.
+Derive NoConfusion EqDec for prim_tag.
+Export MetaRocq.Utils.MRProd.
+Export MetaRocq.Utils.MRRelations.
+
+Global Set Asymmetric Patterns.
+Notation "A * B" := (prod A B) : type_scope2.
+Global Open Scope type_scope2.
+
+Definition ident   := string.
+
+Definition dirpath := list ident.
+
+Module IdentOT := StringOT.
+
+Module DirPathOT := ListOrderedType IdentOT.
+
+Inductive modpath :=
+| MPfile  (dp : dirpath)
+| MPbound (dp : dirpath) (id : ident) (i : nat)
+| MPdot   (mp : modpath) (id : ident).
+
+Definition kername := modpath × ident.
+
+Module Export ModPathComp.
+
+  Definition mpbound_compare dp id k dp' id' k' :=
+    compare_cont (DirPathOT.compare dp dp')
+      (compare_cont (IdentOT.compare id id') (Nat.compare k k')).
+
+  Fixpoint compare mp mp' :=
+    match mp, mp' with
+    | MPfile dp, MPfile dp' => DirPathOT.compare dp dp'
+    | MPbound dp id k, MPbound dp' id' k' =>
+      mpbound_compare dp id k dp' id' k'
+    | MPdot mp id, MPdot mp' id' =>
+      compare_cont (compare mp mp') (IdentOT.compare id id')
+    | MPfile _, _ => Gt
+    | _, MPfile _ => Lt
+    | MPbound _ _ _, _ => Gt
+    | _, MPbound _ _ _ => Lt
+    end.
+
+End ModPathComp.
+
+  Definition compare kn kn' :=
+    match kn, kn' with
+    | (mp, id), (mp', id') =>
+      compare_cont (ModPathComp.compare mp mp') (IdentOT.compare id id')
+    end.
+
+  Definition eqb kn kn' :=
+    match compare kn kn' with
+    | Eq => true
+    | _ => false
+    end.
+
+Record inductive : Set := mkInd { inductive_mind : kername ;
+                                  inductive_ind : nat }.
+
+Record projection := mkProjection
+  { proj_ind : inductive;
+    proj_npars : nat;
+    proj_arg : nat  }.
+
+Inductive global_reference :=
+| VarRef : ident -> global_reference
+| ConstRef : kername -> global_reference
+| IndRef : inductive -> global_reference
+| ConstructRef : inductive -> nat -> global_reference.
+Module Export BasicAst.
+
+Inductive name : Set :=
+| nAnon
+| nNamed (_ : ident).
+
+Inductive relevance : Set := Relevant | Irrelevant.
+
+Record binder_annot (A : Type) := mkBindAnn { binder_name : A; binder_relevance : relevance }.
+Arguments binder_relevance {_}.
+Definition eq_binder_annot {A B} (b : binder_annot A) (b' : binder_annot B) : Prop.
+Admitted.
+
+Definition aname := binder_annot name.
+
+Record case_info := mk_case_info {
+  ci_ind : inductive;
+  ci_npar : nat;
+
+  ci_relevance : relevance }.
+
+Inductive recursivity_kind :=
+  | Finite
+  | CoFinite
+  | BiFinite .
+
+Inductive conv_pb :=
+  | Conv
+  | Cumul.
+
+Record def term := mkdef {
+  dname : aname;
+  dtype : term;
+  dbody : term;
+  rarg  : nat   }.
+
+Arguments dname {term} _.
+Arguments dtype {term} _.
+Arguments dbody {term} _.
+Arguments rarg {term} _.
+
+Definition map_def {A B} (tyf bodyf : A -> B) (d : def A) :=
+  {| dname := d.(dname); dtype := tyf d.(dtype); dbody := bodyf d.(dbody); rarg := d.(rarg) |}.
+
+Definition mfixpoint term := list (def term).
+
+Record judgment_ {universe Term} := Judge {
+  j_term : option Term;
+  j_typ : Term;
+  j_univ : option universe;
+  j_rel : option relevance;
+}.
+Arguments judgment_ : clear implicits.
+Arguments Judge {universe Term} _ _ _.
+
+Section Contexts.
+  Context {term : Type}.
+
+  Record context_decl := mkdecl {
+    decl_name : aname ;
+    decl_body : option term ;
+    decl_type : term
+  }.
+End Contexts.
+
+Arguments context_decl : clear implicits.
+Notation TypRel typ rel := (Judge None typ None (Some rel)).
+Notation TermTypRel tm ty rel := (Judge (Some tm) ty None (Some rel)).
+Notation TypUnivRel ty u rel := (Judge None ty (Some u) (Some rel)).
+
+Notation j_vass na ty := (TypRel ty na.(binder_relevance)).
+Notation j_vass_s na ty s := (TypUnivRel ty s na.(binder_relevance)).
+Notation j_vdef na b ty := (TermTypRel b ty na.(binder_relevance)).
+Definition map_decl {term term'} (f : term -> term') (d : context_decl term) : context_decl term'.
+Admitted.
+
+Definition snoc {A} (Γ : list A) (d : A) := d :: Γ.
+
+Notation " Γ ,, d " := (snoc Γ d) (at level 20, d at next level).
+
+Definition app_context {A} (Γ Γ': list A) := Γ' ++ Γ.
+
+Notation "Γ ,,, Γ'" := (app_context Γ Γ') (at level 25, Γ' at next level, left associativity).
+
+Section Contexts.
+  Context {term term' term'' : Type}.
+
+  Definition fold_context_k (f : nat -> term -> term') Γ :=
+    List.rev (mapi (fun k' decl => map_decl (f k') decl) (List.rev Γ)).
+Definition forget_types (c : list (BasicAst.context_decl term)) : list aname.
+admit.
+Defined.
+
+End Contexts.
+Module Export Universes.
+
+Implicit Types (cf : checker_flags).
+
+Record valuation :=
+  { valuation_mono : string -> positive ;
+    valuation_poly : nat -> nat }.
+
+Class Evaluable (A : Type) := val : valuation -> A -> nat.
+
+Module Level.
+  Inductive t_ : Set :=
+  | lzero
+  | level (_ : string)
+  | lvar (_ : nat) .
+
+  Definition t := t_.
+Global Instance Evaluable : Evaluable t.
+Admitted.
+Definition compare (l1 l2 : t) : comparison.
+Admitted.
+Definition eq : t -> t -> Prop.
+exact (eq).
+Defined.
+Definition eq_equiv : Equivalence eq.
+Admitted.
+
+  Inductive lt_ : t -> t -> Prop :=
+  | ltSetLevel s : lt_ lzero (level s)
+  | ltSetlvar n : lt_ lzero (lvar n)
+  | ltLevelLevel s s' : StringOT.lt s s' -> lt_ (level s) (level s')
+  | ltLevellvar s n : lt_ (level s) (lvar n)
+  | ltlvarlvar n n' : Nat.lt n n' -> lt_ (lvar n) (lvar n').
+
+  Definition lt := lt_.
+
+  Definition lt_strorder : StrictOrder lt.
+Admitted.
+
+  Definition lt_compat : Proper (eq ==> eq ==> iff) lt.
+Admitted.
+
+  Definition compare_spec :
+    forall x y : t, CompareSpec (x = y) (lt x y) (lt y x) (compare x y).
+Admitted.
+Definition eq_dec : forall (l1 l2 : t), {l1 = l2}+{l1 <> l2}.
+Admitted.
+
+End Level.
+
+Module LevelSet := MSetAVL.Make Level.
+
+Module LevelExpr.
+  Definition t := (Level.t * nat)%type.
+Definition get_level (e : t) : Level.t.
+Admitted.
+Definition eq : t -> t -> Prop.
+exact (eq).
+Defined.
+Definition eq_equiv : Equivalence eq.
+Admitted.
+
+  Inductive lt_ : t -> t -> Prop :=
+  | ltLevelExpr1 l n n' : (n < n')%nat -> lt_ (l, n) (l, n')
+  | ltLevelExpr2 l l' b b' : Level.lt l l' -> lt_ (l, b) (l', b').
+
+  Definition lt := lt_.
+
+  Global Instance lt_strorder : StrictOrder lt.
+Admitted.
+
+  Definition lt_compat : Proper (Logic.eq ==> Logic.eq ==> iff) lt.
+Admitted.
+Definition compare (x y : t) : comparison.
+Admitted.
+
+  Definition compare_spec :
+    forall x y : t, CompareSpec (x = y) (lt x y) (lt y x) (compare x y).
+Admitted.
+Definition eq_dec : forall (l1 l2 : t), {l1 = l2} + {l1 <> l2}.
+Admitted.
+
+End LevelExpr.
+
+Module LevelExprSet := MSetList.MakeWithLeibniz LevelExpr.
+
+Record nonEmptyLevelExprSet
+  := { t_set : LevelExprSet.t ;
+       t_ne  : LevelExprSet.is_empty t_set = false }.
+
+Coercion t_set : nonEmptyLevelExprSet >-> LevelExprSet.t.
+
+Module Export Universe.
+
+  Definition t := nonEmptyLevelExprSet.
+Definition make' (l: Level.t) : t.
+Admitted.
+Global Instance Evaluable : Evaluable Universe.t.
+Admitted.
+Definition lt : t -> t -> Prop.
+Admitted.
+End Universe.
+
+Module Export ConstraintType.
+  Inductive t_ : Set := Le (z : Z) | Eq.
+
+  Definition t := t_.
+
+  Inductive lt_ : t -> t -> Prop :=
+  | LeLe n m : (n < m)%Z -> lt_ (Le n) (Le m)
+  | LeEq n : lt_ (Le n) Eq.
+  Definition lt := lt_.
+End ConstraintType.
+
+Module UnivConstraint.
+Definition t : Set.
+exact (Level.t * ConstraintType.t * Level.t).
+Defined.
+Definition eq : t -> t -> Prop.
+Admitted.
+Definition eq_equiv : Equivalence eq.
+Admitted.
+
+  Inductive lt_ : t -> t -> Prop :=
+  | lt_Level2 l1 t l2 l2' : Level.lt l2 l2' -> lt_ (l1, t, l2) (l1, t, l2')
+  | lt_Cstr l1 t t' l2 l2' : ConstraintType.lt t t' -> lt_ (l1, t, l2) (l1, t', l2')
+  | lt_Level1 l1 l1' t t' l2 l2' : Level.lt l1 l1' -> lt_ (l1, t, l2) (l1', t', l2').
+  Definition lt := lt_.
+
+  Lemma lt_strorder : StrictOrder lt.
+Admitted.
+
+  Lemma lt_compat : Proper (eq ==> eq ==> iff) lt.
+Admitted.
+Definition compare : t -> t -> comparison.
+Admitted.
+
+  Lemma compare_spec x y
+    : CompareSpec (eq x y) (lt x y) (lt y x) (compare x y).
+Admitted.
+
+  Lemma eq_dec x y : {eq x y} + {~ eq x y}.
+Admitted.
+End UnivConstraint.
+
+Module ConstraintSet := MSetAVL.Make UnivConstraint.
+
+Module Export Instance.
+Definition t : Set.
+exact (list Level.t).
+Defined.
+Definition empty : t.
+Admitted.
+End Instance.
+
+Module Export UContext.
+  Definition t := list name × (Instance.t × ConstraintSet.t).
+Definition instance : t -> Instance.t.
+Admitted.
+End UContext.
+
+Module Export AUContext.
+  Definition t := list name × ConstraintSet.t.
+Definition repr (x : t) : UContext.t.
+Admitted.
+End AUContext.
+
+Module Export ContextSet.
+  Definition t := LevelSet.t × ConstraintSet.t.
+End ContextSet.
+
+Module Variance.
+
+  Inductive t :=
+  | Irrelevant : t
+  | Covariant : t
+  | Invariant : t.
+
+End Variance.
+
+Variant opt_variance :=
+  AllEqual | AllIrrelevant | Variance of list Variance.t.
+
+Inductive universes_decl : Type :=
+| Monomorphic_ctx
+| Polymorphic_ctx (cst : AUContext.t).
+
+Inductive satisfies0 (v : valuation) : UnivConstraint.t -> Prop :=
+| satisfies0_Lt (l l' : Level.t) (z : Z) : (Z.of_nat (val v l) <= Z.of_nat (val v l') - z)%Z
+                        -> satisfies0 v (l, ConstraintType.Le z, l')
+| satisfies0_Eq (l l' : Level.t) : val v l = val v l'
+                        -> satisfies0 v (l, ConstraintType.Eq, l').
+
+Definition satisfies v : ConstraintSet.t -> Prop :=
+  ConstraintSet.For_all (satisfies0 v).
+
+Definition leq0_universe_n n φ (u u' : Universe.t) :=
+  forall v, satisfies v φ -> (Z.of_nat (val v u) <= Z.of_nat (val v u') - n)%Z.
+
+Definition leq_universe_n {cf} n φ (u u' : Universe.t) :=
+  if check_univs then leq0_universe_n n φ u u' else True.
+Definition leq_universe {cf} := leq_universe_n 0.
+
+Definition eq0_universe φ (u u' : Universe.t) :=
+  forall v, satisfies v φ -> val v u = val v u'.
+
+Definition eq_universe {cf} φ (u u' : Universe.t) :=
+  if check_univs then eq0_universe φ u u' else True.
+
+Definition valid_constraints0 φ ctrs
+  := forall v, satisfies v φ -> satisfies v ctrs.
+
+Definition valid_constraints {cf} φ ctrs
+  := if check_univs then valid_constraints0 φ ctrs else True.
+
+Definition compare_universe {cf} φ (pb : conv_pb) :=
+  match pb with
+  | Conv => eq_universe φ
+  | Cumul => leq_universe φ
+  end.
+
+Module Export Sort.
+  Inductive t_ {univ} :=
+    sProp | sSProp | sType (_ : univ).
+  Arguments t_ : clear implicits.
+
+  Definition t := t_ Universe.t.
+
+  Inductive family : Set :=
+  | fSProp
+  | fProp
+  | fType.
+
+  Definition on_sort {univ} {T} (P: univ -> T) (def: T) (s : t_ univ) :=
+    match s with
+    | sProp | sSProp => def
+    | sType l => P l
+    end.
+Definition is_sprop {univ} (s : t_ univ) : bool.
+Admitted.
+Definition is_propositional {univ} (s : t_ univ) : bool.
+Admitted.
+Definition type0 : t.
+Admitted.
+Definition super : t -> t.
+Admitted.
+Definition sort_of_product : t -> t -> t.
+Admitted.
+
+  Definition to_family {univ} (s : t_ univ) :=
+    match s with
+    | sSProp => fSProp
+    | sProp => fProp
+    | sType _ => fType
+    end.
+
+  Inductive lt_ {univ univ_lt} : t_ univ -> t_ univ -> Prop :=
+  | ltPropSProp : lt_ sProp sSProp
+  | ltPropType s : lt_ sProp (sType s)
+  | ltSPropType s : lt_ sSProp (sType s)
+  | ltTypeType s1 s2 : univ_lt s1 s2 -> lt_ (sType s1) (sType s2).
+  Arguments lt_ {univ} univ_lt.
+
+  Definition lt := lt_ Universe.lt.
+
+  Module OT <: OrderedType.
+    Definition t := t.
+#[local] Definition eq : t -> t -> Prop.
+exact (eq).
+Defined.
+#[local] Definition eq_equiv : Equivalence eq.
+Admitted.
+    Definition lt := lt.
+    #[local] Instance lt_strorder : StrictOrder lt.
+Admitted.
+
+    Definition lt_compat : Proper (eq ==> eq ==> iff) lt.
+Admitted.
+Definition compare (x y : t) : comparison.
+Admitted.
+    Lemma compare_spec x y : CompareSpec (eq x y) (lt x y) (lt y x) (compare x y).
+Admitted.
+    Definition eq_dec (x y : t) : {x = y} + {x <> y}.
+Admitted.
+  End OT.
+End Sort.
+Notation sort := Sort.t.
+
+Section SortCompare.
+  Context {cf}.
+  Definition leq_sort_n_ {univ} (leq_universe_n : Z -> univ -> univ -> Prop) n s s' : Prop :=
+    match s, s' with
+    | sProp,   sProp
+    | sSProp,  sSProp => (n = 0)%Z
+    | sType u, sType u' => leq_universe_n n u u'
+    | sProp,   sType u => prop_sub_type
+    | _, _ => False
+    end.
+
+  Definition leq_sort_n n φ := leq_sort_n_ (fun n => leq_universe_n n φ) n.
+  Definition leq_sort := leq_sort_n 0.
+
+  Definition eq_sort_ {univ} (eq_universe : univ -> univ -> Prop) s s' : Prop :=
+    match s, s' with
+    | sProp,   sProp
+    | sSProp,  sSProp => True
+    | sType u, sType u' => eq_universe u u'
+    | _, _ => False
+    end.
+
+  Definition eq_sort φ := eq_sort_ (eq_universe φ).
+
+  Definition compare_sort φ (pb : conv_pb) :=
+    match pb with
+    | Conv => eq_sort φ
+    | Cumul => leq_sort φ
+    end.
+End SortCompare.
+
+Definition relevance_of_family (s : Sort.family) :=
+  match s with
+  | Sort.fSProp => Irrelevant
+  | _ => Relevant
+  end.
+Notation relevance_of_sort s := (relevance_of_family (Sort.to_family s)).
+
+Notation isSortRel s rel := (relevance_of_sort s = rel).
+Notation isSortRelOpt s relopt :=
+  (option_default (fun rel => isSortRel s rel) relopt True).
+
+Inductive allowed_eliminations : Set :=
+  | IntoSProp
+  | IntoPropSProp
+  | IntoSetPropSProp
+  | IntoAny.
+
+Definition is_lSet {cf} φ s := eq_sort φ s Sort.type0.
+
+Definition is_allowed_elimination {cf} φ allowed : Sort.t -> Prop :=
+  match allowed with
+  | IntoSProp => Sort.is_sprop
+  | IntoPropSProp => Sort.is_propositional
+  | IntoSetPropSProp => fun s => Sort.is_propositional s \/ is_lSet φ s
+  | IntoAny => fun s => true
+  end.
+
+Class UnivSubst A := subst_instance : Instance.t -> A -> A.
+
+Notation "x @[ u ]" := (subst_instance u x) (at level 3,
+  format "x @[ u ]").
+#[global] Instance subst_instance_cstrs : UnivSubst ConstraintSet.t.
+Admitted.
+
+Definition abstract_instance decl :=
+  match decl with
+  | Monomorphic_ctx => Instance.empty
+  | Polymorphic_ctx auctx => UContext.instance (AUContext.repr auctx)
+  end.
+
+End Universes.
+
+#[global] Instance reflect_recursivity_kind : ReflectEq recursivity_kind.
+Admitted.
+Import Stdlib.ssr.ssrbool.
+
+Module Type Term.
+
+  Parameter Inline term : Type.
+
+  Parameter Inline tRel : nat -> term.
+  Parameter Inline tSort : Sort.t -> term.
+  Parameter Inline tLambda : aname -> term -> term -> term.
+  Parameter Inline tLetIn : aname -> term -> term -> term -> term.
+
+  Parameter Inline lift : nat -> nat -> term -> term.
+  Parameter Inline subst : list term -> nat -> term -> term.
+
+  Notation lift0 n := (lift n 0).
+End Term.
+
+Module Type TermDecide (Import T : Term).
+End TermDecide.
+
+Module TermDecideReflectInstances (Import T : Term) (Import TDec : TermDecide T).
+End TermDecideReflectInstances.
+
+Module Export Retroknowledge.
+
+  Record t := mk_retroknowledge {
+    retro_int63 : option kername;
+    retro_float64 : option kername;
+    retro_string : option kername;
+    retro_array : option kername;
+  }.
+
+Module Environment (T : Term).
+
+  Import T.
+
+  Definition judgment := judgment_ Sort.t term.
+
+  Notation context_decl := (context_decl term).
+
+  Definition vass x A : context_decl :=
+    {| decl_name := x ; decl_body := None ; decl_type := A |}.
+
+  Definition vdef x t A : context_decl :=
+    {| decl_name := x ; decl_body := Some t ; decl_type := A |}.
+
+  Definition context := list context_decl.
+
+  Definition lift_context n k (Γ : context) : context :=
+    fold_context_k (fun k' => lift n (k' + k)) Γ.
+
+  Definition subst_context s k (Γ : context) : context :=
+    fold_context_k (fun k' => subst s (k' + k)) Γ.
+
+  Definition subst_telescope s k (Γ : context) : context :=
+    mapi (fun k' decl => map_decl (subst s (k' + k)) decl) Γ.
+Global Instance subst_instance_context : UnivSubst context.
+Admitted.
+Definition set_binder_name (na : aname) (x : context_decl) : context_decl.
+Admitted.
+Fixpoint context_assumptions (Γ : context) : nat.
+Admitted.
+Fixpoint smash_context (Γ Γ' : context) : context.
+Admitted.
+
+  Fixpoint extended_subst (Γ : context) (n : nat)
+   :=
+  match Γ with
+  | nil => nil
+  | cons d vs =>
+    match decl_body d with
+    | Some b =>
+
+      let s := extended_subst vs n in
+
+      let b' := lift (context_assumptions vs + n) #|s| b in
+
+      let b' := subst s 0 b' in
+
+      b' :: s
+    | None => tRel n :: extended_subst vs (S n)
+    end
+  end.
+
+  Definition expand_lets_k Γ k t :=
+    (subst (extended_subst Γ 0) k (lift (context_assumptions Γ) (k + #|Γ|) t)).
+
+  Definition expand_lets Γ t := expand_lets_k Γ 0 t.
+
+  Definition expand_lets_k_ctx Γ k Δ :=
+    (subst_context (extended_subst Γ 0) k (lift_context (context_assumptions Γ) (k + #|Γ|) Δ)).
+
+  Definition expand_lets_ctx Γ Δ := expand_lets_k_ctx Γ 0 Δ.
+Definition fix_context (m : mfixpoint term) : context.
+Admitted.
+
+  Record constructor_body := {
+
+    cstr_name : ident;
+
+    cstr_args : context;
+
+    cstr_indices : list term;
+
+    cstr_type : term;
+
+    cstr_arity : nat;
+  }.
+
+  Record projection_body := {
+
+    proj_name : ident;
+
+    proj_relevance : relevance;
+
+    proj_type : term;
+  }.
+
+  Record one_inductive_body := {
+
+    ind_name : ident;
+
+    ind_indices : context;
+
+    ind_sort : Sort.t;
+
+    ind_type : term;
+
+    ind_kelim : allowed_eliminations;
+
+    ind_ctors : list constructor_body;
+
+    ind_projs : list projection_body;
+
+    ind_relevance : relevance }.
+
+  Record mutual_inductive_body := {
+
+    ind_finite : recursivity_kind;
+
+    ind_npars : nat;
+
+    ind_params : context;
+
+    ind_bodies : list one_inductive_body ;
+
+    ind_universes : universes_decl;
+
+    ind_variance : option (list Universes.Variance.t) }.
+
+  Record constant_body := {
+
+    cst_type : term;
+
+    cst_body : option term;
+
+    cst_universes : universes_decl;
+
+    cst_relevance : relevance }.
+
+  Inductive global_decl :=
+  | ConstantDecl : constant_body -> global_decl
+  | InductiveDecl : mutual_inductive_body -> global_decl.
+
+  Definition global_declarations := list (kername * global_decl).
+
+  Record global_env := mk_global_env
+    { universes : ContextSet.t;
+      declarations : global_declarations;
+      retroknowledge : Retroknowledge.t }.
+Fixpoint lookup_global (Σ : global_declarations) (kn : kername) : option global_decl.
+Admitted.
+
+  Definition lookup_env (Σ : global_env) (kn : kername) := lookup_global Σ.(declarations) kn.
+Definition primitive_constant (Σ : global_env) (p : prim_tag) : option kername.
+Admitted.
+Definition tImpl (dom codom : term) : term.
+Admitted.
+
+  Definition array_uctx := ([nAnon], ConstraintSet.empty).
+
+  Definition primitive_invariants (p : prim_tag) (cdecl : constant_body) :=
+    match p with
+    | primInt | primFloat | primString =>
+     [/\ cdecl.(cst_type) = tSort Sort.type0, cdecl.(cst_body) = None &
+          cdecl.(cst_universes) = Monomorphic_ctx]
+    | primArray =>
+      let s := sType (Universe.make' (Level.lvar 0)) in
+      [/\ cdecl.(cst_type) = tImpl (tSort s) (tSort s), cdecl.(cst_body) = None &
+        cdecl.(cst_universes) = Polymorphic_ctx array_uctx]
+    end.
+Definition global_env_ext : Type.
+exact (global_env * universes_decl).
+Defined.
+Definition fst_ctx : global_env_ext -> global_env.
+Admitted.
+  Coercion fst_ctx : global_env_ext >-> global_env.
+
+  Definition mkLambda_or_LetIn d t :=
+    match d.(decl_body) with
+    | None => tLambda d.(decl_name) d.(decl_type) t
+    | Some b => tLetIn d.(decl_name) b d.(decl_type) t
+    end.
+
+  Definition it_mkLambda_or_LetIn (l : context) (t : term) :=
+    List.fold_left (fun acc d => mkLambda_or_LetIn d acc) l t.
+Fixpoint reln (l : list term) (p : nat) (Γ0 : list context_decl) {struct Γ0} : list term.
+Admitted.
+
+  Definition to_extended_list_k Γ k := reln [] k Γ.
+  Definition to_extended_list Γ := to_extended_list_k Γ 0.
+
+End Environment.
+
+Module Type EnvironmentSig (T : Term).
+ Include Environment T.
+End EnvironmentSig.
+
+Module Type EnvironmentDecide (T : Term) (Import E : EnvironmentSig T).
+End EnvironmentDecide.
+
+Module EnvironmentDecideReflectInstances (T : Term) (Import E : EnvironmentSig T) (Import EDec : EnvironmentDecide T E).
+End EnvironmentDecideReflectInstances.
+
+Module Type TermUtils (T: Term) (E: EnvironmentSig T).
+
+End TermUtils.
+Module Export EnvironmentTyping.
+
+Module Lookup (T : Term) (E : EnvironmentSig T).
+Import E.
+
+  Definition declared_constant (Σ : global_env) id decl := In (id,ConstantDecl decl) (declarations Σ).
+
+  Definition declared_minductive Σ mind decl := In (mind,InductiveDecl decl) (declarations Σ).
+
+  Definition declared_inductive Σ ind mdecl decl :=
+    declared_minductive Σ (inductive_mind ind) mdecl /\
+    List.nth_error mdecl.(ind_bodies) (inductive_ind ind) = Some decl.
+
+  Definition declared_constructor Σ cstr mdecl idecl cdecl :=
+    declared_inductive Σ (fst cstr) mdecl idecl /\
+    List.nth_error idecl.(ind_ctors) (snd cstr) = Some cdecl.
+
+  Definition declared_projection Σ (proj : projection) mdecl idecl cdecl pdecl
+  : Prop :=
+    declared_constructor Σ (proj.(proj_ind), 0) mdecl idecl cdecl /\
+    List.nth_error idecl.(ind_projs) proj.(proj_arg) = Some pdecl /\
+    mdecl.(ind_npars) = proj.(proj_npars).
+
+  Definition lookup_minductive_gen (lookup : kername -> option global_decl) mind :=
+    match lookup mind with
+    | Some (InductiveDecl decl) => Some decl
+    | _ => None
+    end.
+
+  Definition lookup_inductive_gen lookup ind :=
+    match lookup_minductive_gen lookup (inductive_mind ind) with
+    | Some mdecl =>
+      match nth_error mdecl.(ind_bodies) (inductive_ind ind) with
+      | Some idecl => Some (mdecl, idecl)
+      | None => None
+      end
+    | None => None
+    end.
+
+  Definition lookup_constructor_gen lookup ind k :=
+    match lookup_inductive_gen lookup ind with
+    | Some (mdecl, idecl) =>
+      match nth_error idecl.(ind_ctors) k with
+      | Some cdecl => Some (mdecl, idecl, cdecl)
+      | None => None
+      end
+    | _ => None
+    end.
+Definition global_ext_levels (Σ : global_env_ext) : LevelSet.t.
+Admitted.
+Definition global_ext_constraints (Σ : global_env_ext) : ConstraintSet.t.
+Admitted.
+
+  Coercion global_ext_constraints : global_env_ext >-> ConstraintSet.t.
+
+  Definition consistent_instance `{checker_flags} (lvs : LevelSet.t) (φ : ConstraintSet.t) uctx (u : Instance.t) :=
+    match uctx with
+    | Monomorphic_ctx => List.length u = 0
+    | Polymorphic_ctx c =>
+
+      forallb (fun l => LevelSet.mem l lvs) u /\
+      List.length u = List.length c.1 /\
+      valid_constraints φ (subst_instance_cstrs u c.2)
+    end.
+
+  Definition consistent_instance_ext `{checker_flags} Σ :=
+    consistent_instance (global_ext_levels Σ) (global_ext_constraints Σ).
+
+  Definition wf_universe Σ (u : Universe.t) : Prop :=
+    forall l, LevelExprSet.In l u -> LevelSet.In (LevelExpr.get_level l) (global_ext_levels Σ).
+
+  Definition wf_sort Σ (s : sort) : Prop :=
+    Sort.on_sort (wf_universe Σ) True s.
+
+End Lookup.
+
+Module Type LookupSig (T : Term) (E : EnvironmentSig T).
+End LookupSig.
+
+Module EnvTyping (T : Term) (E : EnvironmentSig T) (TU : TermUtils T E).
+Import T.
+Import E.
+
+  Definition on_def_type (P : context -> judgment -> Type) Γ d :=
+    P Γ (TypRel d.(dtype) d.(dname).(binder_relevance)).
+
+  Definition on_def_body (P : context -> judgment -> Type) types Γ d :=
+    P (Γ ,,, types) (TermTypRel d.(dbody) (lift0 #|types| d.(dtype)) d.(dname).(binder_relevance)).
+
+  Definition lift_sorting checking sorting : judgment -> Type :=
+    fun j => option_default (fun tm => checking tm (j_typ j)) (j_term j) (unit : Type) ×
+                                ∑ s, sorting (j_typ j) s ×
+                                  option_default (fun u => u = s) (j_univ j) True /\
+                                  isSortRelOpt s (j_rel j).
+
+  Notation lift_sorting1 checking sorting := (fun Γ => lift_sorting (checking Γ) (sorting Γ)).
+
+  Section TypeLocal.
+    Context (typing : forall (Γ : context), judgment -> Type).
+
+    Inductive All_local_env : context -> Type :=
+    | localenv_nil :
+        All_local_env []
+
+    | localenv_cons_abs Γ na t :
+        All_local_env Γ ->
+        typing Γ (j_vass na t) ->
+        All_local_env (Γ ,, vass na t)
+
+    | localenv_cons_def Γ na b t :
+        All_local_env Γ ->
+        typing Γ (j_vdef na b t) ->
+        All_local_env (Γ ,, vdef na b t).
+  End TypeLocal.
+
+    Definition All_local_rel P Γ Γ'
+      := (All_local_env (fun Δ j => P (Γ ,,, Δ) j) Γ').
+
+  Section TypeCtxInst.
+    Context (typing : forall (Γ : context), term -> term -> Type).
+
+    Inductive ctx_inst (Γ : context) : list term -> context -> Type :=
+    | ctx_inst_nil : ctx_inst Γ [] []
+    | ctx_inst_ass na t i inst Δ :
+        typing Γ i t ->
+        ctx_inst Γ inst (subst_telescope [i] 0 Δ) ->
+        ctx_inst Γ (i :: inst) (vass na t :: Δ)
+    | ctx_inst_def na b t inst Δ :
+        ctx_inst Γ inst (subst_telescope [b] 0 Δ) ->
+        ctx_inst Γ inst (vdef na b t :: Δ).
+  End TypeCtxInst.
+Definition option_default_size {A f} (fsize : forall (a : A), f a -> size) o (w : option_default f o (unit : Type)) : size.
+admit.
+Defined.
+
+  Section lift_sorting_size_gen.
+    Context {checking : term -> term -> Type}.
+    Context {sorting : term -> sort -> Type}.
+    Context (csize : forall (t T : term), checking t T -> size).
+    Context (ssize : forall (t : term) (u : sort), sorting t u -> size).
+
+    Definition lift_sorting_size_gen base j (w : lift_sorting checking sorting j) : size :=
+      base + option_default_size (fun tm => csize tm _) (j_term j) w.1 + ssize _ _ w.2.π2.1.
+
+  End lift_sorting_size_gen.
+
+  Definition on_def_type_size_gen {c s} (ssize : forall Γ t u, s Γ t u -> size) base
+                                      Γ d (w : on_def_type (lift_sorting1 c s) Γ d) : size :=
+    base + ssize _ _ _ w.2.π2.1.
+  Definition on_def_body_size_gen {c s} (csize : forall Γ t u, c Γ t u -> size) (ssize : forall Γ t u, s Γ t u -> size) base
+                                      types Γ d (w : on_def_body (lift_sorting1 c s) types Γ d) : size :=
+    base + csize _ _ _ w.1 + ssize _ _ _ w.2.π2.1.
+
+  Notation lift_sorting_size csize ssize := (lift_sorting_size_gen csize ssize 1).
+  Notation on_def_type_sorting_size ssize := (on_def_type_size_gen ssize 1).
+  Notation on_def_body_sorting_size csize ssize := (on_def_body_size_gen csize ssize 1).
+
+  Section All_local_env_size.
+    Context {checking : forall (Γ : context), term -> term -> Type}.
+    Context {sorting : forall (Γ : context), term -> sort -> Type}.
+    Context (csize : forall Γ t T, checking Γ t T -> size).
+    Context (ssize : forall Γ t u, sorting Γ t u -> size).
+
+    Fixpoint All_local_env_size_gen base Γ (w : All_local_env (lift_sorting1 checking sorting) Γ) : size :=
+      match w with
+      | localenv_nil => base
+      | localenv_cons_abs Γ' na t w' p => ssize _ _ _ p.2.π2.1 + All_local_env_size_gen base _ w'
+      | localenv_cons_def Γ' na b t w' p => csize _ _ _ p.1 + ssize _ _ _ p.2.π2.1 + All_local_env_size_gen base _ w'
+      end.
+  End All_local_env_size.
+
+  Notation All_local_rel_size_gen c s csize ssize base := (fun Γ Δ (w : All_local_rel (lift_sorting1 c s) Γ Δ) =>
+    All_local_env_size_gen (fun Δ => csize (Γ ,,, Δ)) (fun Δ => ssize (Γ ,,, Δ)) base Δ w).
+
+  Section Bidirectional.
+    Context {checking : context -> term -> term -> Type} {sorting : context -> term -> sort -> Type}.
+    Context (checking_size : forall Γ t T, checking Γ t T -> size).
+    Context (sorting_size : forall Γ t s, sorting Γ t s -> size).
+    Definition All_local_rel_sorting_size := All_local_rel_size_gen _ _ checking_size sorting_size 1.
+  End Bidirectional.
+
+End EnvTyping.
+
+Module Type EnvTypingSig (T : Term) (E : EnvironmentSig T) (TU : TermUtils T E).
+End EnvTypingSig.
+
+Module Conversion (T : Term) (E : EnvironmentSig T) (TU : TermUtils T E) (ET : EnvTypingSig T E TU).
+
+  End Conversion.
+
+Module Type ConversionSig (T : Term) (E : EnvironmentSig T) (TU : TermUtils T E) (ET : EnvTypingSig T E TU).
+End ConversionSig.
+
+Module GlobalMaps (T: Term) (E: EnvironmentSig T) (TU : TermUtils T E) (ET: EnvTypingSig T E TU) (C: ConversionSig T E TU ET) (L: LookupSig T E).
+
+  End GlobalMaps.
+
+Module Type GlobalMapsSig (T: Term) (E: EnvironmentSig T) (TU : TermUtils T E) (ET: EnvTypingSig T E TU) (C: ConversionSig T E TU ET) (L: LookupSig T E).
+End GlobalMapsSig.
+
+Module Type ConversionParSig (T : Term) (E : EnvironmentSig T) (TU : TermUtils T E) (ET : EnvTypingSig T E TU).
+
+End ConversionParSig.
+
+Module Type Typing (T : Term) (E : EnvironmentSig T) (TU : TermUtils T E) (ET : EnvTypingSig T E TU)
+  (CT : ConversionSig T E TU ET) (CS : ConversionParSig T E TU ET).
+
+End Typing.
+Module Export MetaRocq_DOT_PCUIC_DOT_utils_DOT_PCUICPrimitive_WRAPPED.
+Module Export PCUICPrimitive.
+
+Record array_model {term : Type} :=
+  { array_level : Level.t;
+    array_type : term;
+    array_default : term;
+    array_value : list term }.
+
+Arguments array_model : clear implicits.
+
+Inductive prim_model (term : Type) : prim_tag -> Type :=
+| primIntModel (i : PrimInt63.int) : prim_model term primInt
+| primFloatModel (f : PrimFloat.float) : prim_model term primFloat
+| primStringModel (s : PrimString.string) : prim_model term primString
+| primArrayModel (a : array_model term) : prim_model term primArray.
+
+Arguments primIntModel {term}.
+Arguments primFloatModel {term}.
+Arguments primStringModel {term}.
+Arguments primArrayModel {term}.
+
+Definition prim_val term := ∑ t : prim_tag, prim_model term t.
+Definition prim_val_tag {term} (s : prim_val term) := s.π1.
+
+Inductive onPrims {term} (eq_term : term -> term -> Type) Re : prim_val term -> prim_val term -> Type :=
+  | onPrimsInt i : onPrims eq_term Re (primInt; primIntModel i) (primInt; primIntModel i)
+  | onPrimsFloat f : onPrims eq_term Re (primFloat; primFloatModel f) (primFloat; primFloatModel f)
+  | onPrimsString s : onPrims eq_term Re (primString; primStringModel s) (primString; primStringModel s)
+  | onPrimsArray a a' :
+    Re (Universe.make' a.(array_level)) (Universe.make' a'.(array_level)) ->
+    eq_term a.(array_default) a'.(array_default) ->
+    eq_term a.(array_type) a'.(array_type) ->
+    All2 eq_term a.(array_value) a'.(array_value) ->
+    onPrims eq_term Re (primArray; primArrayModel a) (primArray; primArrayModel a').
+Definition mapu_array_model {term term'} (fl : Level.t -> Level.t) (f : term -> term')
+  (ar : array_model term) : array_model term'.
+admit.
+Defined.
+
+Equations mapu_prim {term term'} (f : Level.t -> Level.t) (g : term -> term')
+  (p : PCUICPrimitive.prim_val term) : PCUICPrimitive.prim_val term' :=
+| _, _, (primInt; primIntModel i) => (primInt; primIntModel i)
+| _, _, (primFloat; primFloatModel fl) => (primFloat; primFloatModel fl)
+| _, _, (primString; primStringModel s) => (primString; primStringModel s)
+| f, g, (primArray; primArrayModel ar) =>
+  (primArray; primArrayModel (mapu_array_model f g ar)).
+Notation map_prim := (mapu_prim id).
+
+End PCUICPrimitive.
+Module Export MetaRocq.
+Module Export PCUIC.
+Module Export utils.
+Module Export PCUICPrimitive.
+Include MetaRocq_DOT_PCUIC_DOT_utils_DOT_PCUICPrimitive_WRAPPED.PCUICPrimitive.
+End PCUICPrimitive.
+
+Record predicate {term} := mk_predicate {
+  pparams : list term;
+  puinst : Instance.t;
+  pcontext : list (context_decl term);
+
+  preturn : term;  }.
+Arguments predicate : clear implicits.
+
+Section map_predicate_k.
+  Context {term : Type}.
+  Context (uf : Instance.t -> Instance.t).
+  Context (f : nat -> term -> term).
+
+  Definition map_predicate_k k (p : predicate term) :=
+    {| pparams := map (f k) p.(pparams);
+        puinst := uf p.(puinst);
+        pcontext := p.(pcontext);
+        preturn := f (#|p.(pcontext)| + k) p.(preturn) |}.
+
+End map_predicate_k.
+
+Section Branch.
+  Context {term : Type}.
+
+  Record branch := mk_branch {
+    bcontext : list (context_decl term);
+
+    bbody : term;  }.
+
+End Branch.
+Arguments branch : clear implicits.
+
+Section map_branch_k.
+  Context {term term' : Type}.
+  Context (f : nat -> term -> term').
+  Context (g : list (BasicAst.context_decl term) -> list (BasicAst.context_decl term')).
+  Definition map_branch_k k (b : branch term) :=
+  {| bcontext := g b.(bcontext);
+     bbody := f (#|b.(bcontext)| + k) b.(bbody) |}.
+End map_branch_k.
+
+Notation map_branches_k f h k brs :=
+  (List.map (map_branch_k f h k) brs).
+
+Inductive term :=
+| tRel (n : nat)
+| tVar (i : ident)
+| tEvar (n : nat) (l : list term)
+| tSort (u : sort)
+| tProd (na : aname) (A B : term)
+| tLambda (na : aname) (A t : term)
+| tLetIn (na : aname) (b B t : term)
+| tApp (u v : term)
+| tConst (k : kername) (ui : Instance.t)
+| tInd (ind : inductive) (ui : Instance.t)
+| tConstruct (ind : inductive) (n : nat) (ui : Instance.t)
+| tCase (indn : case_info) (p : predicate term) (c : term) (brs : list (branch term))
+| tProj (p : projection) (c : term)
+| tFix (mfix : mfixpoint term) (idx : nat)
+| tCoFix (mfix : mfixpoint term) (idx : nat)
+| tPrim (prim : prim_val term).
+
+Notation prim_val := (prim_val term).
+
+Fixpoint mkApps t us :=
+  match us with
+  | nil => t
+  | u :: us => mkApps (tApp t u) us
+  end.
+
+Definition isLambda t :=
+  match t with
+  | tLambda _ _ _ => true
+  | _ => false
+  end.
+
+Fixpoint lift n k t : term :=
+  match t with
+  | tRel i => tRel (if Nat.leb k i then (n + i) else i)
+  | tEvar ev args => tEvar ev (List.map (lift n k) args)
+  | tLambda na T M => tLambda na (lift n k T) (lift n (S k) M)
+  | tApp u v => tApp (lift n k u) (lift n k v)
+  | tProd na A B => tProd na (lift n k A) (lift n (S k) B)
+  | tLetIn na b t b' => tLetIn na (lift n k b) (lift n k t) (lift n (S k) b')
+  | tCase ind p c brs =>
+    let p' := map_predicate_k id (lift n) k p in
+    let brs' := map_branches_k (lift n) id k brs in
+    tCase ind p' (lift n k c) brs'
+  | tProj p c => tProj p (lift n k c)
+  | tFix mfix idx =>
+    let k' := List.length mfix + k in
+    let mfix' := List.map (map_def (lift n k) (lift n k')) mfix in
+    tFix mfix' idx
+  | tCoFix mfix idx =>
+    let k' := List.length mfix + k in
+    let mfix' := List.map (map_def (lift n k) (lift n k')) mfix in
+    tCoFix mfix' idx
+  | tPrim p => tPrim (map_prim (lift n k) p)
+  | x => x
+  end.
+
+Notation lift0 n := (lift n 0).
+
+Fixpoint subst s k u :=
+  match u with
+  | tRel n =>
+    if Nat.leb k n then
+      match nth_error s (n - k) with
+      | Some b => lift0 k b
+      | None => tRel (n - List.length s)
+      end
+    else tRel n
+  | tEvar ev args => tEvar ev (List.map (subst s k) args)
+  | tLambda na T M => tLambda na (subst s k T) (subst s (S k) M)
+  | tApp u v => tApp (subst s k u) (subst s k v)
+  | tProd na A B => tProd na (subst s k A) (subst s (S k) B)
+  | tLetIn na b ty b' => tLetIn na (subst s k b) (subst s k ty) (subst s (S k) b')
+  | tCase ind p c brs =>
+    let p' := map_predicate_k id (subst s) k p in
+    let brs' := map_branches_k (subst s) id k brs in
+    tCase ind p' (subst s k c) brs'
+  | tProj p c => tProj p (subst s k c)
+  | tFix mfix idx =>
+    let k' := List.length mfix + k in
+    let mfix' := List.map (map_def (subst s k) (subst s k')) mfix in
+    tFix mfix' idx
+  | tCoFix mfix idx =>
+    let k' := List.length mfix + k in
+    let mfix' := List.map (map_def (subst s k) (subst s k')) mfix in
+    tCoFix mfix' idx
+  | tPrim p => tPrim (map_prim (subst s k) p)
+  | x => x
+  end.
+
+Notation subst0 t := (subst t 0).
+Definition subst1 t k u := subst [t] k u.
+Notation "M { j := N }" := (subst1 N j M) (at level 10, right associativity).
+#[global]
+Instance subst_instance_constr : UnivSubst term.
+Admitted.
+
+Module PCUICTerm <: Term.
+
+  Definition term := term.
+
+  Definition tRel := tRel.
+  Definition tSort := tSort.
+  Definition tLambda := tLambda.
+  Definition tLetIn := tLetIn.
+
+  Definition lift := lift.
+  Definition subst := subst.
+End PCUICTerm.
+
+Module PCUICEnvironment := Environment PCUICTerm.
+Export PCUICEnvironment.
+
+Fixpoint destArity Γ (t : term) :=
+  match t with
+  | tProd na t b => destArity (Γ ,, vass na t) b
+  | tLetIn na b b_ty b' => destArity (Γ ,, vdef na b b_ty) b'
+  | tSort s => Some (Γ, s)
+  | _ => None
+  end.
+
+Definition inds ind u (l : list one_inductive_body) :=
+  let fix aux n :=
+      match n with
+      | 0 => []
+      | S n => tInd (mkInd ind n) u :: aux n
+      end
+  in aux (List.length l).
+
+Module PCUICTermUtils <: TermUtils PCUICTerm PCUICEnvironment.
+
+End PCUICTermUtils.
+
+Module PCUICEnvTyping := EnvironmentTyping.EnvTyping PCUICTerm PCUICEnvironment PCUICTermUtils.
+
+Module PCUICConversion := EnvironmentTyping.Conversion PCUICTerm PCUICEnvironment PCUICTermUtils PCUICEnvTyping.
+
+Module PCUICLookup := EnvironmentTyping.Lookup PCUICTerm PCUICEnvironment.
+Include PCUICLookup.
+Definition set_preturn (p : predicate term) (pret' : term) : predicate term.
+Admitted.
+Definition set_pparams (p : predicate term) (pars' : list term) : predicate term.
+Admitted.
+
+Fixpoint decompose_app_rec (t : term) l :=
+  match t with
+  | tApp f a => decompose_app_rec f (a :: l)
+  | _ => (t, l)
+  end.
+
+Definition decompose_app t := decompose_app_rec t [].
+
+Definition isConstruct_app t :=
+  match fst (decompose_app t) with
+  | tConstruct _ _ _ => true
+  | _ => false
+  end.
+Fixpoint decompose_prod_assum (Γ : context) (t : term) : context * term.
+Admitted.
+
+Coercion ci_ind : case_info >-> inductive.
+
+Definition ind_predicate_context ind mdecl idecl : context :=
+  let ictx := (expand_lets_ctx mdecl.(ind_params) idecl.(ind_indices)) in
+  let indty := mkApps (tInd ind (abstract_instance mdecl.(ind_universes)))
+    (to_extended_list (smash_context [] mdecl.(ind_params) ,,, ictx)) in
+  let inddecl :=
+    {| decl_name :=
+      {| binder_name := nNamed (ind_name idecl); binder_relevance := idecl.(ind_relevance) |};
+       decl_body := None;
+       decl_type := indty |}
+  in (inddecl :: ictx).
+
+Definition inst_case_context params puinst (pctx : context) :=
+  subst_context (List.rev params) 0 (subst_instance puinst pctx).
+
+Definition inst_case_predicate_context (p : predicate term) :=
+  inst_case_context p.(pparams) p.(puinst) p.(pcontext).
+
+Definition inst_case_branch_context (p : predicate term) (br : branch term) :=
+  inst_case_context p.(pparams) p.(puinst) br.(bcontext).
+
+Definition iota_red npar p args br :=
+  subst (List.rev (List.skipn npar args)) 0
+    (expand_lets (inst_case_branch_context p br) (bbody br)).
+
+Definition pre_case_predicate_context_gen ind mdecl idecl params puinst : context :=
+  inst_case_context params puinst (ind_predicate_context ind mdecl idecl).
+
+Definition case_predicate_context_gen ind mdecl idecl params puinst pctx :=
+  map2 set_binder_name pctx (pre_case_predicate_context_gen ind mdecl idecl params puinst).
+
+Definition case_predicate_context ind mdecl idecl p : context :=
+  case_predicate_context_gen ind mdecl idecl p.(pparams) p.(puinst) (forget_types p.(pcontext)).
+
+Definition cstr_branch_context ind mdecl cdecl : context :=
+  expand_lets_ctx mdecl.(ind_params)
+    (subst_context (inds (inductive_mind ind) (abstract_instance mdecl.(ind_universes))
+       mdecl.(ind_bodies)) #|mdecl.(ind_params)|
+      cdecl.(cstr_args)).
+
+Definition pre_case_branch_context_gen ind mdecl cdecl params puinst : context :=
+  inst_case_context params puinst (cstr_branch_context ind mdecl cdecl).
+
+Definition case_branch_context_gen ind mdecl params puinst pctx cdecl :=
+  map2 set_binder_name pctx (pre_case_branch_context_gen ind mdecl cdecl params puinst).
+
+Definition case_branch_type_gen ind mdecl (idecl : one_inductive_body) params puinst bctx ptm i cdecl : context * term :=
+  let cstr := tConstruct ind i puinst in
+  let args := to_extended_list cdecl.(cstr_args) in
+  let cstrapp := mkApps cstr (map (lift0 #|cdecl.(cstr_args)|) params ++ args) in
+  let brctx := case_branch_context_gen ind mdecl params puinst bctx cdecl in
+  let upars := subst_instance puinst mdecl.(ind_params) in
+  let indices :=
+    (map (subst (List.rev params) #|cdecl.(cstr_args)|)
+      (map (expand_lets_k upars #|cdecl.(cstr_args)|)
+        (map (subst (inds (inductive_mind ind) puinst mdecl.(ind_bodies))
+                    (#|mdecl.(ind_params)| + #|cdecl.(cstr_args)|))
+          (map (subst_instance puinst) cdecl.(cstr_indices))))) in
+  let ty := mkApps (lift0 #|cdecl.(cstr_args)| ptm) (indices ++ [cstrapp]) in
+  (brctx, ty).
+
+Definition case_branch_type ind mdecl idecl p (b : branch term) ptm i cdecl : context * term :=
+  case_branch_type_gen ind mdecl idecl p.(pparams) p.(puinst) (forget_types b.(bcontext)) ptm i cdecl.
+
+Definition idecl_binder idecl :=
+  {| decl_name :=
+    {| binder_name := nNamed idecl.(ind_name);
+        binder_relevance := idecl.(ind_relevance) |};
+     decl_body := None;
+     decl_type := idecl.(ind_type) |}.
+
+Definition wf_predicate_gen mdecl idecl (pparams : list term) (pcontext : list aname) : Prop :=
+  let decl := idecl_binder idecl in
+  (#|pparams| = mdecl.(ind_npars)) /\
+  (Forall2 (fun na decl => eq_binder_annot na decl.(decl_name))
+    pcontext (decl :: idecl.(ind_indices))).
+
+Definition wf_predicate mdecl idecl (p : predicate term) : Prop :=
+  wf_predicate_gen mdecl idecl p.(pparams) (forget_types p.(pcontext)).
+
+Definition wf_branch_gen cdecl (bctx : list aname) : Prop :=
+  (Forall2 (fun na decl => eq_binder_annot na decl.(decl_name))
+    bctx cdecl.(cstr_args)).
+
+Definition wf_branch cdecl (b : branch term) : Prop :=
+  wf_branch_gen cdecl (forget_types b.(bcontext)).
+
+Definition wf_branches idecl (brs : list (branch term)) : Prop :=
+  Forall2 wf_branch idecl.(ind_ctors) brs.
+
+Definition fix_subst (l : mfixpoint term) :=
+  let fix aux n :=
+      match n with
+      | 0 => []
+      | S n => tFix l n :: aux n
+      end
+  in aux (List.length l).
+
+Definition unfold_fix (mfix : mfixpoint term) (idx : nat) :=
+  match List.nth_error mfix idx with
+  | Some d => Some (d.(rarg), subst0 (fix_subst mfix) d.(dbody))
+  | None => None
+  end.
+
+Definition cofix_subst (l : mfixpoint term) :=
+  let fix aux n :=
+      match n with
+      | 0 => []
+      | S n => tCoFix l n :: aux n
+      end
+  in aux (List.length l).
+
+Definition unfold_cofix (mfix : mfixpoint term) (idx : nat) :=
+  match List.nth_error mfix idx with
+  | Some d => Some (d.(rarg), subst0 (cofix_subst mfix) d.(dbody))
+  | None => None
+  end.
+
+Definition is_constructor n ts :=
+  match List.nth_error ts n with
+  | Some a => isConstruct_app a
+  | None => false
+  end.
+Definition cmp_universe_instance (cmp_univ : Universe.t -> Universe.t -> Prop) : Instance.t -> Instance.t -> Prop.
+Admitted.
+
+Definition cmp_universe_variance (cmp_univ : conv_pb -> Universe.t -> Universe.t -> Prop) pb v u u' :=
+  match v with
+  | Variance.Irrelevant => True
+  | Variance.Covariant => on_rel (cmp_univ pb) Universe.make' u u'
+  | Variance.Invariant => on_rel (cmp_univ Conv) Universe.make' u u'
+  end.
+
+Definition cmp_universe_instance_variance cmp_univ pb v u u' :=
+  Forall3 (cmp_universe_variance cmp_univ pb) v u u'.
+
+Definition global_variance_gen lookup gr napp :=
+  match gr with
+  | IndRef ind =>
+    match lookup_inductive_gen lookup ind with
+    | Some (mdecl, idecl) =>
+      match destArity [] idecl.(ind_type) with
+      | Some (ctx, _) => if (context_assumptions ctx) <=? napp then
+          match mdecl.(ind_variance) with
+          | Some var => Variance var
+          | None => AllEqual
+          end
+        else AllEqual
+      | None => AllEqual
+      end
+    | None => AllEqual
+    end
+  | ConstructRef ind k =>
+    match lookup_constructor_gen lookup ind k with
+    | Some (mdecl, idecl, cdecl) =>
+      if (cdecl.(cstr_arity) + mdecl.(ind_npars))%nat <=? napp then
+
+        AllIrrelevant
+      else AllEqual
+    | _ => AllEqual
+    end
+  | _ => AllEqual
+  end.
+
+Definition cmp_opt_variance cmp_univ pb v :=
+  match v with
+  | AllEqual => cmp_universe_instance (cmp_univ Conv)
+  | AllIrrelevant => fun l l' => #|l| = #|l'|
+  | Variance v => fun u u' => cmp_universe_instance (cmp_univ Conv) u u' \/ cmp_universe_instance_variance cmp_univ pb v u u'
+  end.
+
+Definition cmp_global_instance_gen Σ cmp_universe pb gr napp :=
+  cmp_opt_variance cmp_universe pb (global_variance_gen Σ gr napp).
+
+Notation cmp_global_instance Σ := (cmp_global_instance_gen (lookup_env Σ)).
+
+Definition cmp_ind_universes {cf:checker_flags} (Σ : global_env_ext) ind n i i' :=
+  cmp_global_instance Σ (compare_universe (global_ext_constraints Σ)) Cumul (IndRef ind) n i i'.
+
+Inductive eq_decl_upto_names : context_decl -> context_decl -> Type :=
+  | compare_vass {na na' T} :
+    eq_binder_annot na na' -> eq_decl_upto_names (vass na T) (vass na' T)
+  | compare_vdef {na na' b T} :
+    eq_binder_annot na na' -> eq_decl_upto_names (vdef na b T) (vdef na' b T).
+
+Notation eq_context_upto_names := (All2 eq_decl_upto_names).
+
+Definition eq_predicate (eq_term : term -> term -> Type) eq_universe p p' :=
+  All2 eq_term p.(pparams) p'.(pparams) ×
+  cmp_universe_instance eq_universe p.(puinst) p'.(puinst) ×
+  eq_context_upto_names p.(pcontext) p'.(pcontext) ×
+  eq_term p.(preturn) p'.(preturn).
+
+Definition eq_branch (eq_term : term -> term -> Type) br br' :=
+  eq_context_upto_names br.(bcontext) br'.(bcontext) ×
+  eq_term br.(bbody) br'.(bbody).
+
+Definition eq_branches eq_term brs brs' := All2 (eq_branch eq_term) brs brs'.
+
+Definition eq_mfixpoint (eq_term : term -> term -> Type) mfix mfix' :=
+  All2 (fun d d' =>
+    eq_term d.(dtype) d'.(dtype) ×
+    eq_term d.(dbody) d'.(dbody) ×
+    d.(rarg) = d'.(rarg) ×
+    eq_binder_annot d.(dname) d'.(dname)
+  ) mfix mfix'.
+
+Reserved Notation " Σ ⊢ t <==[ Rle , napp ] u" (at level 50, t, u at next level,
+  format "Σ  ⊢  t  <==[ Rle , napp ]  u").
+
+Inductive eq_term_upto_univ_napp Σ
+  (cmp_universe : conv_pb -> Universe.t -> Universe.t -> Prop)
+  (cmp_sort : conv_pb -> sort -> sort -> Prop)
+  (pb : conv_pb) (napp : nat) : term -> term -> Type :=
+| eq_Rel : forall n,
+    Σ ⊢ tRel n <==[ pb , napp ] tRel n
+
+| eq_Evar : forall e args args',
+    All2 (fun arg arg' => (Σ ⊢ arg <==[ Conv , 0 ] arg')) args args' ->
+    Σ ⊢ tEvar e args <==[ pb , napp ] tEvar e args'
+
+| eq_Var : forall id,
+    Σ ⊢ tVar id <==[ pb , napp ] tVar id
+
+| eq_Sort : forall s s',
+    cmp_sort pb s s' ->
+    Σ ⊢ tSort s  <==[ pb , napp ] tSort s'
+
+| eq_App : forall t t' u u',
+    Σ ⊢ t <==[ pb , S napp ] t' ->
+    Σ ⊢ u <==[ Conv , 0 ] u' ->
+    Σ ⊢ tApp t u <==[ pb , napp ] tApp t' u'
+
+| eq_Const : forall c u u',
+    cmp_universe_instance (cmp_universe Conv) u u' ->
+    Σ ⊢ tConst c u <==[ pb , napp ] tConst c u'
+
+| eq_Ind : forall i u u',
+    cmp_global_instance Σ cmp_universe pb (IndRef i) napp u u' ->
+    Σ ⊢ tInd i u <==[ pb , napp ] tInd i u'
+
+| eq_Construct : forall i k u u',
+    cmp_global_instance Σ cmp_universe pb (ConstructRef i k) napp u u' ->
+    Σ ⊢ tConstruct i k u <==[ pb , napp ] tConstruct i k u'
+
+| eq_Lambda : forall na na' ty ty' t t',
+    eq_binder_annot na na' ->
+    Σ ⊢ ty <==[ Conv , 0 ] ty' ->
+    Σ ⊢ t <==[ Conv , 0 ] t' ->
+    Σ ⊢ tLambda na ty t <==[ pb , napp ] tLambda na' ty' t'
+
+| eq_Prod : forall na na' a a' b b',
+    eq_binder_annot na na' ->
+    Σ ⊢ a <==[ Conv , 0 ] a' ->
+    Σ ⊢ b <==[ pb , 0 ] b' ->
+    Σ ⊢ tProd na a b <==[ pb , napp ] tProd na' a' b'
+
+| eq_LetIn : forall na na' t t' ty ty' u u',
+    eq_binder_annot na na' ->
+    Σ ⊢ t <==[ Conv , 0 ] t' ->
+    Σ ⊢ ty <==[ Conv , 0 ] ty' ->
+    Σ ⊢ u <==[ Conv , 0 ] u' ->
+    Σ ⊢ tLetIn na t ty u <==[ pb , napp ] tLetIn na' t' ty' u'
+
+| eq_Case : forall indn p p' c c' brs brs',
+    eq_predicate (fun t t' => Σ ⊢ t <==[ Conv , 0 ] t') (cmp_universe Conv) p p' ->
+    Σ ⊢ c <==[ Conv , 0 ] c' ->
+    eq_branches (fun t t' => Σ ⊢ t <==[ Conv , 0 ] t') brs brs' ->
+    Σ ⊢ tCase indn p c brs <==[ pb , napp ] tCase indn p' c' brs'
+
+| eq_Proj : forall p c c',
+    Σ ⊢ c <==[ Conv , 0 ] c' ->
+    Σ ⊢ tProj p c <==[ pb , napp ] tProj p c'
+
+| eq_Fix : forall mfix mfix' idx,
+    eq_mfixpoint (fun t t' => Σ ⊢ t <==[ Conv , 0 ] t') mfix mfix' ->
+    Σ ⊢ tFix mfix idx <==[ pb , napp ] tFix mfix' idx
+
+| eq_CoFix : forall mfix mfix' idx,
+    eq_mfixpoint (fun t t' => Σ ⊢ t <==[ Conv , 0 ] t') mfix mfix' ->
+    Σ ⊢ tCoFix mfix idx <==[ pb , napp ] tCoFix mfix' idx
+
+| eq_Prim i i' :
+    onPrims (fun t t' => Σ ⊢ t <==[ Conv , 0 ] t') (cmp_universe Conv) i i' ->
+    Σ ⊢ tPrim i <==[ pb , napp ] tPrim i'
+where " Σ ⊢ t <==[ pb , napp ] u " := (eq_term_upto_univ_napp Σ _ _ pb napp t u) : type_scope.
+
+Notation eq_term_upto_univ Σ cmp_universe cmp_sort pb := (eq_term_upto_univ_napp Σ cmp_universe cmp_sort pb 0) (only parsing).
+
+Definition compare_term `{checker_flags} Σ φ (pb : conv_pb) (t u : term) :=
+  eq_term_upto_univ Σ (compare_universe φ) (compare_sort φ) pb t u.
+
+Module PCUICConversionParSpec <: EnvironmentTyping.ConversionParSig PCUICTerm PCUICEnvironment PCUICTermUtils PCUICEnvTyping.
+End PCUICConversionParSpec.
+Import Equations.Type.Relation.
+
+Reserved Notation " Σ ;;; Γ |- t ⇝ u " (at level 50, Γ, t, u at next level).
+
+Definition set_array_default (ar : array_model term) (v : term) :=
+  {| array_level := ar.(array_level);
+     array_default := v;
+     array_type := ar.(array_type);
+     array_value := ar.(array_value) |}.
+
+Definition set_array_type (ar : array_model term) (v : term) :=
+  {| array_level := ar.(array_level);
+     array_default := ar.(array_default);
+     array_type := v;
+     array_value := ar.(array_value) |}.
+
+Definition set_array_value (ar : array_model term) (v : list term) :=
+  {| array_level := ar.(array_level);
+     array_default := ar.(array_default);
+     array_type := ar.(array_type);
+     array_value := v |}.
+
+Inductive red1 (Σ : global_env) (Γ : context) : term -> term -> Type :=
+
+| red_beta na t b a :
+  Σ ;;; Γ |- tApp (tLambda na t b) a ⇝ b {0 := a}
+
+| red_zeta na b t b' :
+  Σ ;;; Γ |- tLetIn na b t b' ⇝ b' {0 := b}
+
+| red_rel i body :
+    option_map decl_body (nth_error Γ i) = Some (Some body) ->
+    Σ ;;; Γ |- tRel i ⇝ lift0 (S i) body
+
+| red_iota ci c u args p brs br :
+    nth_error brs c = Some br ->
+    #|args| = (ci.(ci_npar) + context_assumptions br.(bcontext))%nat ->
+    Σ ;;; Γ |- tCase ci p (mkApps (tConstruct ci.(ci_ind) c u) args) brs
+        ⇝ iota_red ci.(ci_npar) p args br
+
+| red_fix mfix idx args narg fn :
+    unfold_fix mfix idx = Some (narg, fn) ->
+    is_constructor narg args = true ->
+    Σ ;;; Γ |- mkApps (tFix mfix idx) args ⇝ mkApps fn args
+
+| red_cofix_case ip p mfix idx args narg fn brs :
+    unfold_cofix mfix idx = Some (narg, fn) ->
+    Σ ;;; Γ |- tCase ip p (mkApps (tCoFix mfix idx) args) brs ⇝
+         tCase ip p (mkApps fn args) brs
+
+| red_cofix_proj p mfix idx args narg fn :
+    unfold_cofix mfix idx = Some (narg, fn) ->
+    Σ ;;; Γ |- tProj p (mkApps (tCoFix mfix idx) args) ⇝ tProj p (mkApps fn args)
+
+| red_delta c decl body (isdecl : declared_constant Σ c decl) u :
+    decl.(cst_body) = Some body ->
+    Σ ;;; Γ |- tConst c u ⇝ subst_instance u body
+
+| red_proj p args u arg:
+    nth_error args (p.(proj_npars) + p.(proj_arg)) = Some arg ->
+    Σ ;;; Γ |- tProj p (mkApps (tConstruct p.(proj_ind) 0 u) args) ⇝ arg
+
+| abs_red_l na M M' N : Σ ;;; Γ |- M ⇝ M' -> Σ ;;; Γ |- tLambda na M N ⇝ tLambda na M' N
+| abs_red_r na M M' N : Σ ;;; Γ ,, vass na N |- M ⇝ M' -> Σ ;;; Γ |- tLambda na N M ⇝ tLambda na N M'
+
+| letin_red_def na b t b' r : Σ ;;; Γ |- b ⇝ r -> Σ ;;; Γ |- tLetIn na b t b' ⇝ tLetIn na r t b'
+| letin_red_ty na b t b' r : Σ ;;; Γ |- t ⇝ r -> Σ ;;; Γ |- tLetIn na b t b' ⇝ tLetIn na b r b'
+| letin_red_body na b t b' r : Σ ;;; Γ ,, vdef na b t |- b' ⇝ r -> Σ ;;; Γ |- tLetIn na b t b' ⇝ tLetIn na b t r
+
+| case_red_param ci p params' c brs :
+    OnOne2 (fun t u => Σ ;;; Γ |- t ⇝ u) p.(pparams) params' ->
+    Σ ;;; Γ |- tCase ci p c brs ⇝ tCase ci (set_pparams p params') c brs
+
+| case_red_return ci p preturn' c brs :
+  Σ ;;; Γ ,,, inst_case_predicate_context p |- p.(preturn) ⇝ preturn' ->
+  Σ ;;; Γ |- tCase ci p c brs ⇝ tCase ci (set_preturn p preturn') c brs
+
+| case_red_discr ci p c c' brs :
+  Σ ;;; Γ |- c ⇝ c' -> Σ ;;; Γ |- tCase ci p c brs ⇝ tCase ci p c' brs
+
+| case_red_brs ci p c brs brs' :
+    OnOne2 (fun br br' =>
+      on_Trel_eq (fun t u => Σ ;;; Γ ,,, inst_case_branch_context p br |- t ⇝ u) bbody bcontext br br')
+      brs brs' ->
+    Σ ;;; Γ |- tCase ci p c brs ⇝ tCase ci p c brs'
+
+| proj_red p c c' : Σ ;;; Γ |- c ⇝ c' -> Σ ;;; Γ |- tProj p c ⇝ tProj p c'
+
+| app_red_l M1 N1 M2 : Σ ;;; Γ |- M1 ⇝ N1 -> Σ ;;; Γ |- tApp M1 M2 ⇝ tApp N1 M2
+| app_red_r M2 N2 M1 : Σ ;;; Γ |- M2 ⇝ N2 -> Σ ;;; Γ |- tApp M1 M2 ⇝ tApp M1 N2
+
+| prod_red_l na M1 M2 N1 : Σ ;;; Γ |- M1 ⇝ N1 -> Σ ;;; Γ |- tProd na M1 M2 ⇝ tProd na N1 M2
+| prod_red_r na M2 N2 M1 : Σ ;;; Γ ,, vass na M1 |- M2 ⇝ N2 ->
+                           Σ ;;; Γ |- tProd na M1 M2 ⇝ tProd na M1 N2
+
+| evar_red ev l l' : OnOne2 (fun t u => Σ ;;; Γ |- t ⇝ u) l l' -> Σ ;;; Γ |- tEvar ev l ⇝ tEvar ev l'
+
+| fix_red_ty mfix0 mfix1 idx :
+    OnOne2 (on_Trel_eq (fun t u => Σ ;;; Γ |- t ⇝ u) dtype (fun x => (dname x, dbody x, rarg x))) mfix0 mfix1 ->
+    Σ ;;; Γ |- tFix mfix0 idx ⇝ tFix mfix1 idx
+
+| fix_red_body mfix0 mfix1 idx :
+    OnOne2 (on_Trel_eq (fun t u => Σ ;;; Γ ,,, fix_context mfix0 |- t ⇝ u) dbody (fun x => (dname x, dtype x, rarg x)))
+           mfix0 mfix1 ->
+    Σ ;;; Γ |- tFix mfix0 idx ⇝ tFix mfix1 idx
+
+| cofix_red_ty mfix0 mfix1 idx :
+    OnOne2 (on_Trel_eq (fun t u => Σ ;;; Γ |- t ⇝ u) dtype (fun x => (dname x, dbody x, rarg x))) mfix0 mfix1 ->
+    Σ ;;; Γ |- tCoFix mfix0 idx ⇝ tCoFix mfix1 idx
+
+| cofix_red_body mfix0 mfix1 idx :
+    OnOne2 (on_Trel_eq (fun t u => Σ ;;; Γ ,,, fix_context mfix0 |- t ⇝ u) dbody (fun x => (dname x, dtype x, rarg x))) mfix0 mfix1 ->
+    Σ ;;; Γ |- tCoFix mfix0 idx ⇝ tCoFix mfix1 idx
+
+| array_red_val arr value :
+    OnOne2 (fun t u => Σ ;;; Γ |- t ⇝ u) arr.(array_value) value ->
+    Σ ;;; Γ |- tPrim (primArray; primArrayModel arr) ⇝
+               tPrim (primArray; primArrayModel (set_array_value arr value))
+
+| array_red_def arr def :
+    Σ ;;; Γ |- arr.(array_default) ⇝ def ->
+    Σ ;;; Γ |- tPrim (primArray; primArrayModel arr) ⇝
+               tPrim (primArray; primArrayModel (set_array_default arr def))
+
+| array_red_type arr ty :
+    Σ ;;; Γ |- arr.(array_type) ⇝ ty ->
+    Σ ;;; Γ |- tPrim (primArray; primArrayModel arr) ⇝
+          tPrim (primArray; primArrayModel (set_array_type arr ty))
+
+where " Σ ;;; Γ |- t ⇝ u " := (red1 Σ Γ t u).
+
+Definition red Σ Γ := clos_refl_trans (fun t u : term => Σ;;; Γ |- t ⇝ u).
+
+Reserved Notation " Σ ;;; Γ |- t <=[ pb ] u" (at level 50, Γ, t, u at next level,
+  format "Σ  ;;;  Γ  |-  t  <=[ pb ] u").
+
+Notation " Σ ⊢ t <===[ pb ] u" := (compare_term Σ Σ pb t u) (at level 50, t, u at next level).
+
+Inductive cumulAlgo_gen `{checker_flags} (Σ : global_env_ext) (Γ : context) (pb : conv_pb) : term -> term -> Type :=
+| cumul_refl t u : Σ ⊢ t <===[ pb ] u -> Σ ;;; Γ |- t <=[pb] u
+| cumul_red_l t u v : Σ ;;; Γ |- t ⇝ v -> Σ ;;; Γ |- v <=[pb] u -> Σ ;;; Γ |- t <=[pb] u
+| cumul_red_r t u v : Σ ;;; Γ |- t <=[pb] v -> Σ ;;; Γ |- u ⇝ v -> Σ ;;; Γ |- t <=[pb] u
+where " Σ ;;; Γ |- t <=[ pb ] u " := (cumulAlgo_gen Σ Γ pb t u) : type_scope.
+Notation " Σ ;;; Γ |- t <= u " := (cumulAlgo_gen Σ Γ Cumul t u) (at level 50, Γ, t, u at next level) : type_scope.
+Notation convAlgo Σ Γ := (cumulAlgo_gen Σ Γ Conv).
+
+Module Export MetaRocq_DOT_PCUIC_DOT_PCUICTyping_WRAPPED.
+Import MetaRocq.PCUIC.utils.PCUICPrimitive.
+
+Implicit Types (cf : checker_flags) (Σ : global_env_ext).
+
+Definition type_of_constructor mdecl (cdecl : constructor_body) (c : inductive * nat) (u : list Level.t) :=
+  let mind := inductive_mind (fst c) in
+  subst0 (inds mind u mdecl.(ind_bodies)) (subst_instance u (cstr_type cdecl)).
+
+Include PCUICEnvTyping.
+
+Inductive FixCoFix : Type := Fix | CoFix.
+
+Class GuardChecker :=
+{
+  guard : FixCoFix -> global_env_ext -> context -> mfixpoint term -> Prop ;
+}.
+
+Axiom guard_checking : GuardChecker.
+#[global]
+Existing Instance guard_checking.
+
+Definition fix_guard := guard Fix.
+Definition cofix_guard := guard CoFix.
+
+Definition destInd (t : term) :=
+  match t with
+  | tInd ind u => Some (ind, u)
+  | _ => None
+  end.
+
+Definition isCoFinite (r : recursivity_kind) :=
+  match r with
+  | CoFinite => true
+  | _ => false
+  end.
+
+Definition check_recursivity_kind
+  (lookup: kername -> option global_decl) ind r :=
+  match lookup ind with
+  | Some (InductiveDecl mib) => ReflectEq.eqb mib.(ind_finite) r
+  | _ => false
+  end.
+
+Definition check_one_fix d :=
+  let '{| dname := na;
+         dtype := ty;
+         dbody := b;
+         rarg := arg |} := d in
+  let '(ctx, ty) := decompose_prod_assum [] ty in
+  match nth_error (List.rev (smash_context [] ctx)) arg with
+  | Some argd =>
+    let (hd, args) := decompose_app argd.(decl_type) in
+    match destInd hd with
+    | Some (mkInd mind _, u) => Some mind
+    | None => None
+    end
+  | None => None
+  end.
+
+Definition wf_fixpoint_gen
+  (lookup: kername -> option global_decl) mfix :=
+  forallb (isLambda ∘ dbody) mfix &&
+  let checks := map check_one_fix mfix in
+  match map_option_out checks with
+  | Some (ind :: inds) =>
+
+    forallb (eqb ind) inds &&
+    check_recursivity_kind lookup ind Finite
+  | _ => false
+  end.
+
+Definition wf_fixpoint (Σ : global_env) := wf_fixpoint_gen (lookup_env Σ).
+
+Definition check_one_cofix d :=
+  let '{| dname := na;
+         dtype := ty;
+         dbody := b;
+         rarg := arg |} := d in
+  let '(ctx, ty) := decompose_prod_assum [] ty in
+  let (hd, args) := decompose_app ty in
+  match destInd hd with
+  | Some (mkInd ind _, u) => Some ind
+  | None => None
+  end.
+
+Definition wf_cofixpoint_gen
+  (lookup: kername -> option global_decl) mfix :=
+  let checks := map check_one_cofix mfix in
+  match map_option_out checks with
+  | Some (ind :: inds) =>
+
+    forallb (eqb ind) inds &&
+    check_recursivity_kind lookup ind CoFinite
+  | _ => false
+  end.
+
+Definition wf_cofixpoint (Σ : global_env) := wf_cofixpoint_gen (lookup_env Σ).
+
+Variant primitive_typing_hyps `{checker_flags}
+  (typingΣ : forall (Γ : context), term -> term -> Type)
+  Σ Γ : prim_val term -> Type :=
+| prim_int_hyps i : primitive_typing_hyps typingΣ Σ Γ (primInt; primIntModel i)
+| prim_float_hyps f : primitive_typing_hyps typingΣ Σ Γ (primFloat; primFloatModel f)
+| prim_string_hyps s : primitive_typing_hyps typingΣ Σ Γ (primString; primStringModel s)
+| prim_array_hyps a
+  (wfl : wf_universe Σ (Universe.make' a.(array_level)))
+  (hty : typingΣ Γ a.(array_type) (tSort (sType (Universe.make' a.(array_level)))))
+  (hdef : typingΣ Γ a.(array_default) a.(array_type))
+  (hvalue : All (fun x => typingΣ Γ x a.(array_type)) a.(array_value)) :
+  primitive_typing_hyps typingΣ Σ Γ (primArray; primArrayModel a).
+
+Equations prim_type (p : prim_val term) (cst : kername) : term :=
+prim_type (primInt; _) cst := tConst cst [];
+prim_type (primFloat; _) cst := tConst cst [];
+prim_type (primString; _) cst := tConst cst [];
+prim_type (primArray; primArrayModel a) cst := tApp (tConst cst [a.(array_level)]) a.(array_type).
+
+Module PCUICTypingDef <: EnvironmentTyping.Typing PCUICTerm PCUICEnvironment PCUICTermUtils PCUICEnvTyping PCUICConversion PCUICConversionParSpec.
+
+End PCUICTypingDef.
+
+Section CtxInstSize.
+  Context {cf} (typing : global_env_ext -> context -> term -> term -> Type)
+  (typing_size : forall {Σ Γ t T}, typing Σ Γ t T -> size).
+
+  Fixpoint ctx_inst_size {Σ Γ args Δ} (c : ctx_inst (typing Σ) Γ args Δ) : size :=
+  match c with
+  | ctx_inst_nil => 0
+  | ctx_inst_ass na t i inst Δ ty ctxi => (typing_size _ _ _ _ ty) + (ctx_inst_size ctxi)
+  | ctx_inst_def na b t inst Δ ctxi => S (ctx_inst_size ctxi)
+  end.
+End CtxInstSize.
+
+Section PrimitiveSize.
+  Context {cf} (typing : global_env_ext -> context -> term -> term -> Type)
+  (typing_size : forall {Σ Γ t T}, typing Σ Γ t T -> size).
+
+  Definition primitive_typing_hyps_size Σ Γ p (h : primitive_typing_hyps (typing Σ) Σ Γ p) : size.
+    destruct h.
+    -
+ exact 0.
+    -
+ exact 0.
+    -
+ exact 0.
+    -
+ exact (Nat.max (typing_size _ _ _ _ hty) (Nat.max (typing_size _ _ _ _ hdef)
+        (all_size _ (fun x p => typing_size _ _ _ _ p) hvalue))).
+  Defined.
+End PrimitiveSize.
+
+End MetaRocq_DOT_PCUIC_DOT_PCUICTyping_WRAPPED.
+
+Implicit Types (cf : checker_flags) (Σ : global_env_ext) (Γ : context).
+
+Reserved Notation " Σ ;;; Γ |- t ▹ T " (at level 50, Γ, t, T at next level).
+Reserved Notation " Σ ;;; Γ |- t ▹□ u " (at level 50, Γ, t, u at next level).
+Reserved Notation " Σ ;;; Γ |- t ▹Π ( na , A , B ) " (at level 50, Γ, t, na, A, B at next level).
+Reserved Notation " Σ ;;; Γ |- t ▹{ ind } ( u , args )" (at level 50, Γ, t, ind, u, args at next level).
+Reserved Notation " Σ ;;; Γ |- t ◃ T " (at level 50, Γ, t, T at next level).
+Reserved Notation "'wf_local_bd' Σ Γ " (at level 9, Σ, Γ at next level).
+Reserved Notation "'wf_local_bd_rel' Σ Γ Γ'" (at level 9, Σ, Γ, Γ' at next level).
+
+Inductive infering `{checker_flags} (Σ : global_env_ext) (Γ : context) : term -> term -> Type :=
+| infer_Rel n decl :
+  nth_error Γ n = Some decl ->
+  Σ ;;; Γ |- tRel n ▹ lift0 (S n) (decl_type decl)
+
+| infer_Sort s :
+  wf_sort Σ s ->
+  Σ ;;; Γ |- tSort s ▹ tSort (Sort.super s)
+
+| infer_Prod na A B s1 s2 :
+  lift_sorting (checking Σ Γ) (infering_sort Σ Γ) (j_vass_s na A s1) ->
+  Σ ;;; Γ ,, vass na A |- B ▹□ s2 ->
+  Σ ;;; Γ |- tProd na A B ▹ tSort (Sort.sort_of_product s1 s2)
+
+| infer_Lambda na A t B :
+  lift_sorting (checking Σ Γ) (infering_sort Σ Γ) (j_vass na A) ->
+  Σ ;;; Γ ,, vass na A |- t ▹ B ->
+  Σ ;;; Γ |- tLambda na A t ▹ tProd na A B
+
+| infer_LetIn na b B t A :
+  lift_sorting (checking Σ Γ) (infering_sort Σ Γ) (j_vdef na b B) ->
+  Σ ;;; Γ ,, vdef na b B |- t ▹ A ->
+  Σ ;;; Γ |- tLetIn na b B t ▹ tLetIn na b B A
+
+| infer_App t na A B u :
+  Σ ;;; Γ |- t ▹Π (na,A,B) ->
+  Σ ;;; Γ |- u ◃ A ->
+  Σ ;;; Γ |- tApp t u ▹ B{0 := u}
+
+| infer_Const cst u :
+  forall decl (isdecl : declared_constant Σ.1 cst decl),
+  consistent_instance_ext Σ (cst_universes decl) u ->
+  Σ ;;; Γ |- tConst cst u ▹ subst_instance u (cst_type decl)
+
+| infer_Ind ind u :
+  forall mdecl idecl (isdecl : declared_inductive Σ.1 ind mdecl idecl),
+  consistent_instance_ext Σ (ind_universes mdecl) u ->
+  Σ ;;; Γ |- tInd ind u ▹ subst_instance u (ind_type idecl)
+
+| infer_Construct ind i u :
+  forall mdecl idecl cdecl (isdecl : declared_constructor Σ.1 (ind, i) mdecl idecl cdecl),
+  consistent_instance_ext Σ (ind_universes mdecl) u ->
+  Σ ;;; Γ |- tConstruct ind i u ▹ type_of_constructor mdecl cdecl (ind, i) u
+
+| infer_Case ci p c brs args u ps mdecl idecl :
+  let predctx := case_predicate_context ci.(ci_ind) mdecl idecl p in
+  let ptm := it_mkLambda_or_LetIn predctx p.(preturn) in
+  Σ ;;; Γ |- c ▹{ci} (u,args) ->
+  declared_inductive Σ.1 ci.(ci_ind) mdecl idecl ->
+  Σ ;;; Γ ,,, predctx |- p.(preturn) ▹□ ps ->
+
+  mdecl.(ind_npars) = ci.(ci_npar) ->
+  eq_context_upto_names p.(pcontext) (ind_predicate_context ci.(ci_ind) mdecl idecl) ->
+  wf_predicate mdecl idecl p ->
+  consistent_instance_ext Σ (ind_universes mdecl) (puinst p) ->
+  wf_local_bd_rel Σ Γ predctx ->
+  is_allowed_elimination Σ (ind_kelim idecl) ps ->
+  isSortRel ps ci.(ci_relevance) ->
+  ctx_inst (checking Σ) Γ (pparams p)
+      (List.rev mdecl.(ind_params)@[p.(puinst)]) ->
+  isCoFinite mdecl.(ind_finite) = false ->
+  cmp_ind_universes Σ ci #|args| u (puinst p) ->
+  All2 (convAlgo Σ Γ) (firstn (ci_npar ci) args) (pparams p) ->
+
+  wf_branches idecl brs ->
+  All2i (fun i cdecl br =>
+    eq_context_upto_names br.(bcontext) (cstr_branch_context ci mdecl cdecl) ×
+    let brctxty := case_branch_type ci.(ci_ind) mdecl idecl p br ptm i cdecl in
+    wf_local_bd_rel Σ Γ brctxty.1 ×
+    Σ ;;; Γ ,,, brctxty.1 |- br.(bbody) ◃ brctxty.2)
+    0 idecl.(ind_ctors) brs ->
+  Σ ;;; Γ |- tCase ci p c brs ▹ mkApps ptm (skipn ci.(ci_npar) args ++ [c])
+
+| infer_Proj p c u mdecl idecl cdecl pdecl args :
+  declared_projection Σ.1 p mdecl idecl cdecl pdecl ->
+  Σ ;;; Γ |- c ▹{p.(proj_ind)} (u,args) ->
+  #|args| = ind_npars mdecl ->
+  Σ ;;; Γ |- tProj p c ▹ subst0 (c :: List.rev args) (subst_instance u pdecl.(proj_type))
+
+| infer_Fix mfix n decl :
+  fix_guard Σ Γ mfix ->
+  nth_error mfix n = Some decl ->
+  All (on_def_type (lift_sorting1 (checking Σ) (infering_sort Σ)) Γ) mfix ->
+  All (on_def_body (lift_sorting1 (checking Σ) (infering_sort Σ)) (fix_context mfix) Γ) mfix ->
+  wf_fixpoint Σ mfix ->
+  Σ ;;; Γ |- tFix mfix n ▹ dtype decl
+
+| infer_CoFix mfix n decl :
+  cofix_guard Σ Γ mfix ->
+  nth_error mfix n = Some decl ->
+  All (on_def_type (lift_sorting1 (checking Σ) (infering_sort Σ)) Γ) mfix ->
+  All (on_def_body (lift_sorting1 (checking Σ) (infering_sort Σ)) (fix_context mfix) Γ) mfix ->
+  wf_cofixpoint Σ mfix ->
+  Σ ;;; Γ |- tCoFix mfix n ▹ dtype decl
+
+| infer_Prim p prim_ty cdecl :
+   primitive_constant Σ (prim_val_tag p) = Some prim_ty ->
+   declared_constant Σ prim_ty cdecl ->
+   primitive_invariants (prim_val_tag p) cdecl ->
+   primitive_typing_hyps (checking Σ) Σ Γ p ->
+   Σ ;;; Γ |- tPrim p ▹ prim_type p prim_ty
+
+with infering_sort `{checker_flags} (Σ : global_env_ext) (Γ : context) : term -> sort -> Type :=
+| infer_sort_Sort t T u:
+  Σ ;;; Γ |- t ▹ T ->
+  red Σ Γ T (tSort u) ->
+  Σ ;;; Γ |- t ▹□ u
+
+with infering_prod `{checker_flags} (Σ : global_env_ext) (Γ : context) : term -> aname -> term -> term -> Type :=
+| infer_prod_Prod t T na A B:
+  Σ ;;; Γ |- t ▹ T ->
+  red Σ Γ T (tProd na A B) ->
+  Σ ;;; Γ |- t ▹Π (na,A,B)
+
+with infering_indu `{checker_flags} (Σ : global_env_ext) (Γ : context) : inductive -> term -> Instance.t -> list term -> Type :=
+| infer_ind_Ind ind t T u args:
+  Σ ;;; Γ |- t ▹ T ->
+  red Σ Γ T (mkApps (tInd ind u) args) ->
+  Σ ;;; Γ |- t ▹{ind} (u,args)
+
+with checking `{checker_flags} (Σ : global_env_ext) (Γ : context) : term -> term -> Type :=
+| check_Cumul t T T':
+  Σ ;;; Γ |- t ▹ T ->
+  Σ ;;; Γ |- T <= T' ->
+  Σ ;;; Γ |- t ◃ T'
+
+where " Σ ;;; Γ |- t ▹ T " := (@infering _ Σ Γ t T) : type_scope
+and " Σ ;;; Γ |- t ▹□ u " := (@infering_sort _ Σ Γ t u) : type_scope
+and " Σ ;;; Γ |- t ▹Π ( na , A , B ) " := (@infering_prod _ Σ Γ t na A B) : type_scope
+and " Σ ;;; Γ |- t ▹{ ind } ( u , args ) " := (@infering_indu _ Σ Γ ind t u args) : type_scope
+and " Σ ;;; Γ |- t ◃ T " := (@checking _ Σ Γ t T) : type_scope
+and "'wf_local_bd' Σ Γ" := (All_local_env (lift_sorting1 (checking Σ) (infering_sort Σ)) Γ)
+and "'wf_local_bd_rel' Σ Γ Γ'" := (All_local_rel (lift_sorting1 (checking Σ) (infering_sort Σ)) Γ Γ').
+
+Definition tybranches {cf} Σ Γ ci mdecl idecl p ptm n ctors brs :=
+  All2i
+  (fun (i : nat) (cdecl : constructor_body) (br : branch term) =>
+    (eq_context_upto_names br.(bcontext) (cstr_branch_context ci mdecl cdecl)) ×
+    let brctxty := case_branch_type ci mdecl idecl p br ptm i cdecl in
+    (wf_local_bd_rel Σ Γ brctxty.1) ×
+    Σ;;; Γ,,, brctxty.1 |- bbody br ◃ brctxty.2)
+  n ctors brs.
+Definition branches_size {cf} {Σ Γ ci mdecl idecl p ptm brs}
+   (checking_size : forall Σ Γ t T, Σ ;;; Γ |- t ◃ T  -> size)
+   (infering_size : forall Σ Γ t s, Σ ;;; Γ |- t ▹□ s -> size)
+  {n ctors}
+  (a : tybranches Σ Γ ci mdecl idecl p ptm n ctors brs) : size.
+admit.
+Defined.
+
+Fixpoint infering_size `{checker_flags} {Σ Γ t T} (d : Σ ;;; Γ |- t ▹ T) {struct d} : size
+with infering_sort_size `{checker_flags} {Σ Γ t u} (d : Σ ;;; Γ |- t ▹□ u) {struct d} : size
+with infering_prod_size `{checker_flags} {Σ Γ t na A B} (d : Σ ;;; Γ |- t ▹Π (na, A,B)) {struct d} : size
+with infering_indu_size `{checker_flags} {Σ Γ ind t ui args} (d : Σ ;;; Γ |- t ▹{ind} (ui,args)) {struct d} : size
+with checking_size `{checker_flags} {Σ Γ t T} (d : Σ ;;; Γ |- t ◃ T) {struct d} : size.
+Proof.
+  all: destruct d ;
+    repeat lazymatch goal with
+          | H : infering _ _ _ _ |- _ => apply infering_size in H
+          | H : infering_sort _ _ _ _ |- _ => apply infering_sort_size in H
+          | H : infering_prod _ _ _ _ _ _ |- _ => apply infering_prod_size in H
+          | H : infering_indu _ _ _ _ _ _ |- _ => apply infering_indu_size in H
+          | H : checking _ _ _ _ |- _ => apply checking_size in H
+          | H : wf_local_bd _ _ |- _ => apply (All_local_env_sorting_size _ _ (checking_size _ _) (infering_sort_size _ _) _) in H
+          | H : wf_local_bd_rel _ _ _ |- _ => apply (All_local_rel_sorting_size (checking_size _ _) (infering_sort_size _ _) _) in H
+          | H : primitive_typing_hyps _ _ _ _ |- _ => apply (primitive_typing_hyps_size _ (checking_size _)) in H
+          end ;
+    match goal with
+    | H : lift_sorting _ _ _, H' : size |- _ => exact (S (Nat.max H' (lift_sorting_size (checking_size _ _ _) (infering_sort_size _ _ _) _ H)))
+    | H : All2i _ _ _ _ |- _ => idtac
+    | H : All _ _ |- _ => idtac
+    | H1 : size, H2 : size, H3 : size |- _ => exact (S (Nat.max H1 (Nat.max H2 H3)))
+    | H1 : size, H2 : size |- _ => exact (S (Nat.max H1 H2))
+    | H1 : size |- _  => exact (S H1)
+    | |- _ => exact 1
+    end.
+    -
+ exact (S (Nat.max a0 (Nat.max i (Nat.max i0 (Nat.max (ctx_inst_size _ (checking_size _) c1) (branches_size (checking_size _) (infering_sort_size _) a2)))))).
+    -
+ exact (S (Nat.max
+        (all_size _ (fun x p => on_def_type_sorting_size (infering_sort_size _ Σ) _ _ p) a)
+        (all_size (on_def_body _ _ _) (fun x p => on_def_body_sorting_size (checking_size _ _) (infering_sort_size _ Σ) _ _ _ p) a0))).
+    -
+ exact (S (Nat.max
+        (all_size _ (fun x p => on_def_type_sorting_size (infering_sort_size _ Σ) _ _ p) a)
+        (all_size (on_def_body _ _ _) (fun x p => on_def_body_sorting_size (checking_size _ _) (infering_sort_size _ Σ) _ _ _ p) a0))).
+  Defined.
