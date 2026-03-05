@@ -189,12 +189,38 @@ printf '::group::process logs\n'
 set +o pipefail
 
 FILE="$(tac "${BUILD_LOG}" | grep --max-count=1 -A 1 '^Error' | grep '^File "[^"]*", line [0-9]*, characters [0-9-]*:' | grep -o '^File "[^"]*' | sed 's/^File "//g; s,^\./\+,,g')"
+# Track whether an error message was found in the build log, so we know
+# whether to pass --error-log to find-bug.py later
+if [ -z "${FILE}" ]; then
+    HAS_ERROR_IN_LOG="no"
+else
+    HAS_ERROR_IN_LOG="yes"
+fi
 DEBUG_PREFIX="$(tac "${BUILD_LOG}" | grep -A 1 -F "$FILE" | grep --max-count=1 -o 'MINIMIZER_DEBUG: info: .*' | sed 's/^MINIMIZER_DEBUG: info: //g')"
 EXEC="$(cat "${DEBUG_PREFIX}.exec" | sed "s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BASE_BUILD_DIR}/coq-failing/,g; s,rocq compile,coqc,g; s,rocq.orig compile,coqc.orig,g; s,rocq c,coqc,g; s,rocq.orig c,coqc.orig,g")"
 COQPATH="$(cat "${DEBUG_PREFIX}.coqpath" | sed "s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BASE_BUILD_DIR}/coq-failing/,g")"
 EXEC_PWD="$(cat "${DEBUG_PREFIX}.pwd" | sed "s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BASE_BUILD_DIR}/coq-failing/,g")"
 COQLIB="$(cat "${DEBUG_PREFIX}.config" | sed "s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BASE_BUILD_DIR}/coq-failing/,g" | grep --max-count=1 '^COQLIB=\|^ROCQLIB=' | sed 's/^COQLIB=//g; s/^ROCQLIB=//g')"
 FAILING_OCAMLPATH="$(cat "${DEBUG_PREFIX}.ocamlpath" | sed "s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BASE_BUILD_DIR}/coq-failing/,g")"
+
+# When there is no error message in the build log (e.g., the build timed out
+# or was killed without printing a Coq error), fall back to the last compiled
+# file extracted from the MINIMIZER_DEBUG information written by the wrapped
+# coqc binary.
+if [ -z "${FILE}" ] && [ -n "${DEBUG_PREFIX}" ]; then
+    printf "::warning::No error found in build log; falling back to last compiled file from debug prefix %s\n" "${DEBUG_PREFIX}"
+    FILE="$(bash -c "split_args_to_lines ${EXEC}" | tail -n +2 | grep '\.v$' | head -1)"
+    if [ -z "${FILE}" ]; then
+        # Second fallback: read filenames from the MINIMIZER_DEBUG: files: line
+        # (prefer absolute paths by using grep '^/')
+        printf "::warning::Could not extract file from exec args; trying MINIMIZER_DEBUG: files: line\n"
+        FILE="$(tac "${BUILD_LOG}" | grep --max-count=1 -o 'MINIMIZER_DEBUG: files: .*' | sed "s/^MINIMIZER_DEBUG: files: //g; s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BASE_BUILD_DIR}/coq-failing/,g" | tr ' ' '\n' | grep '^/.*\.v$' | head -1)"
+        if [ -z "${FILE}" ]; then
+            # Last resort: accept a relative path from the files line
+            FILE="$(tac "${BUILD_LOG}" | grep --max-count=1 -o 'MINIMIZER_DEBUG: files: .*' | sed 's/^MINIMIZER_DEBUG: files: //g' | tr ' ' '\n' | grep '\.v$' | head -1)"
+        fi
+    fi
+fi
 
 FAILING_COQPATH="${COQPATH}"
 FAILING_COQLIB="${COQLIB}"
@@ -256,8 +282,14 @@ if [ -f "${FINAL_BUG_FILE}" ]; then # resume minimization from the final bug fil
     printf "Skipping checking of log file...\n"
     cp -f "${FINAL_BUG_FILE}" "${BUG_FILE}" # attempt to kludge around https://github.com/JasonGross/coq-tools/issues/42 by placing the bug file in a directory that is not a direct ancestor of the library
     args+=("${BUG_FILE}" "${BUG_FILE}" "${TMP_FILE}")
-else
+elif [ "${HAS_ERROR_IN_LOG}" == "yes" ]; then
     args+=("${ABS_FILE}" "${BUG_FILE}" "${TMP_FILE}" --error-log="${BUILD_LOG}" --temp-file-log="${TMP_LOG}")
+else
+    # No error message was found in the build log (e.g., the build was killed
+    # by a timeout before any Coq error was printed).  Minimize without
+    # requiring a specific error string to be maintained.
+    printf "No error found in build log; minimizing without error message matching.\n"
+    args+=("${ABS_FILE}" "${BUG_FILE}" "${TMP_FILE}" --temp-file-log="${TMP_LOG}")
 fi
 args+=(--no-deps --ignore-coq-prog-args --inline-user-contrib --coqc="${FAILING_COQC}" --coqtop="${FAILING_COQTOP}" --coq_makefile="${PASSING_COQ_MAKEFILE}" --coqdep "${PASSING_COQDEP}" --base-dir="${FAILING_EXEC_PWD}" --ocamlpath="${FAILING_OCAMLPATH}" -Q "${BUG_TMP_DIR}" Top --verbose-include-failure-warning --verbose-include-failure-warning-prefix "::warning::" --verbose-include-failure-warning-newline "%0A")
 printf '%s\n' "$(printf 'appending failing args: '; printf '%q ' "${FAILING_ARGS[@]}")"
