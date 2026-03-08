@@ -228,7 +228,7 @@ build_minimizer_debug_msg() {
 }
 
 msg="\$(build_minimizer_debug_msg)"
->&2 printf '%s' "\${msg}"
+>&2 printf '%s\n' "\${msg}"
 
 exec "\${args[@]}"
 EOF
