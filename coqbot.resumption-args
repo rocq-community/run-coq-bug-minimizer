@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:edge_ubuntu-V2026-05-22-20228d7d42
+ci-hott
+hott
+4.14.2+flambda
+https://gitlab.inria.fr/coq/coq/-/jobs/7373302/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/7373272/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/7372052/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/7372022/artifacts/download
+5aa64e5cf240f2f9fd024d16bea418004427bd8a
+4541caeef4c56dea2f96e3e35305bcf64efce812
+
