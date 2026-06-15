@@ -117,9 +117,10 @@ if [[ "\$1" != "c" ]] && [[ "\$1" != "compile" ]] && [[ "\$1" != "check" ]]; the
 fi
 EOF
         fi
-        if [[ "$file" != *coqchk* ]] && [[ "$file" != *rocqchk* ]]; then
+        if [[ "$file" == *coqchk* ]] || [[ "$file" == *rocqchk* ]]; then
             command="check"
         fi
+        coqchk_helper="$DIR/coqchk-as-coqc.sh"
         cat > "$file.new" <<EOF
 #!/usr/bin/env bash
 
@@ -129,7 +130,41 @@ progname="\$DIR/$file.orig"
 baseargs=("\$progname")
 args=("\$progname")
 command="${command}"
+coqchk_helper="${coqchk_helper}"
 ${extra_fragment}
+
+# If this is a checker invocation (coqchk / rocqchk / \`rocq check\`), hand off
+# to the coqchk-as-coqc helper, which turns the coqchk error into a coqc-style
+# error against a freshly-created \`Require <modules>.\` file and emits the
+# appropriate MINIMIZER_DEBUG metadata.  See
+# https://github.com/rocq-community/run-coq-bug-minimizer/issues/53
+if [ "\$command" == "check" ] && [ -f "\$coqchk_helper" ]; then
+    # For \`rocq check ...\`, drop the leading \`check\` subcommand.
+    chk_user_args=("\$@")
+    case "\$progname" in
+        *rocq.orig|*rocq|*rocq.byte) chk_user_args=("\${chk_user_args[@]:1}") ;;
+    esac
+    # Locate the (unwrapped) coqc-equivalent compiler used to build the tmp file.
+    coqc_cmd=()
+    for cand in "\$DIR/coqc.orig" "\$DIR/coqc"; do
+        if [ -x "\$cand" ]; then coqc_cmd=("\$cand"); break; fi
+    done
+    if [ "\${#coqc_cmd[@]}" -eq 0 ]; then
+        for cand in "\$DIR/rocq.orig" "\$DIR/rocq"; do
+            if [ -x "\$cand" ]; then coqc_cmd=("\$cand" c); break; fi
+        done
+    fi
+    # Locate the (unwrapped) standalone checker binary to run and record.
+    coqchk_cmd=()
+    for cand in "\$DIR/coqchk.orig" "\$DIR/coqchk" "\$DIR/rocqchk.orig" "\$DIR/rocqchk"; do
+        if [ -x "\$cand" ]; then coqchk_cmd=("\$cand"); break; fi
+    done
+    if [ "\${#coqchk_cmd[@]}" -eq 0 ]; then coqchk_cmd=("\$progname"); fi
+    if [ "\${#coqc_cmd[@]}" -gt 0 ]; then
+        exec "\$coqchk_helper" "\$(printf '%q ' "\${coqc_cmd[@]}")" "\$(printf '%q ' "\${coqchk_cmd[@]}")" -- "\${chk_user_args[@]}"
+    fi
+    # otherwise fall through to running the checker normally
+fi
 
 next_is_dir=no
 next_is_special=no

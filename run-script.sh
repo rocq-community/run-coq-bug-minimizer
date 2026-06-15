@@ -196,6 +196,24 @@ EXEC_PWD="$(cat "${DEBUG_PREFIX}.pwd" | sed "s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BA
 COQLIB="$(cat "${DEBUG_PREFIX}.config" | sed "s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BASE_BUILD_DIR}/coq-failing/,g" | grep --max-count=1 '^COQLIB=\|^ROCQLIB=' | sed 's/^COQLIB=//g; s/^ROCQLIB=//g')"
 FAILING_OCAMLPATH="$(cat "${DEBUG_PREFIX}.ocamlpath" | sed "s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BASE_BUILD_DIR}/coq-failing/,g")"
 
+# If this failure came from a checker (coqchk / rocqchk / `rocq check`)
+# invocation, the wrapper records the (unwrapped) checker program and the
+# checker-only flags to forward to the minimizer in a `.coqchk` side file; see
+# coqchk-as-coqc.sh.  When present, we pass --chk / --coqchk / --coqchk-args.
+COQCHK_INFO_FILE="${DEBUG_PREFIX}.coqchk"
+HAVE_COQCHK=no
+FAILING_COQCHK=""
+PASSING_COQCHK=""
+COQCHK_FWD_ARGS=()
+if [ -f "${COQCHK_INFO_FILE}" ]; then
+    HAVE_COQCHK=yes
+    mapfile -t COQCHK_TOKENS < <(bash -c "split_args_to_lines $(cat "${COQCHK_INFO_FILE}")")
+    COQCHK_RAW_PROG="${COQCHK_TOKENS[0]}"
+    COQCHK_FWD_ARGS=("${COQCHK_TOKENS[@]:1}")
+    FAILING_COQCHK="$(printf "%s" "${COQCHK_RAW_PROG}" | sed "s,${COQ_CI_BASE_BUILD_DIR}/,${CI_BASE_BUILD_DIR}/coq-failing/,g")"
+    PASSING_COQCHK="$(printf "%s" "${FAILING_COQCHK}" | sed "s,\(${CI_BASE_BUILD_DIR}\)/coq-failing/,\\1/coq-passing/,g")"
+fi
+
 FAILING_COQPATH="${COQPATH}"
 FAILING_COQLIB="${COQLIB}"
 # some people (like Iris) like to use `coqtop -batch -lv` or similar to process a .v file, so we replace coqtop with coqc
@@ -240,7 +258,14 @@ mkdir -p "$(dirname "${TMP_LOG}")"
 
 cd "$(dirname "${BUG_FILE}")"
 
-for VAR in FAILING_COQC FAILING_COQTOP PASSING_COQC PASSING_COQ_MAKEFILE PASSING_COQDEP; do
+CHECK_VARS=(FAILING_COQC FAILING_COQTOP PASSING_COQC PASSING_COQ_MAKEFILE PASSING_COQDEP)
+if [ "${HAVE_COQCHK}" == "yes" ]; then
+    CHECK_VARS+=(FAILING_COQCHK)
+    if [ "${PASSING_COQC}" != "${FAILING_COQC}" ]; then
+        CHECK_VARS+=(PASSING_COQCHK)
+    fi
+fi
+for VAR in "${CHECK_VARS[@]}"; do
     if [ ! -x "${!VAR}" ]; then
         printf "Error: Could not find %s ('%s')\n" "${VAR}" "${!VAR}" | tee -a "${BUG_LOG}" "${VERBOSE_BUG_LOG}" >&2
         printf "Files in '%s':\n" "$(dirname ${!VAR})" | tee -a "${BUG_LOG}" "${VERBOSE_BUG_LOG}" >&2
@@ -260,12 +285,22 @@ else
     args+=("${ABS_FILE}" "${BUG_FILE}" "${TMP_FILE}" --error-log="${BUILD_LOG}" --temp-file-log="${TMP_LOG}")
 fi
 args+=(--no-deps --ignore-coq-prog-args --inline-user-contrib --coqc="${FAILING_COQC}" --coqtop="${FAILING_COQTOP}" --coq_makefile="${PASSING_COQ_MAKEFILE}" --coqdep "${PASSING_COQDEP}" --base-dir="${FAILING_EXEC_PWD}" --ocamlpath="${FAILING_OCAMLPATH}" -Q "${BUG_TMP_DIR}" Top --verbose-include-failure-warning --verbose-include-failure-warning-prefix "::warning::" --verbose-include-failure-warning-newline "%0A")
+if [ "${HAVE_COQCHK}" == "yes" ]; then
+    # the failure came from the checker, so have the minimizer run coqchk too
+    args+=(--chk --coqchk="${FAILING_COQCHK}")
+    if [ "${#COQCHK_FWD_ARGS[@]}" -gt 0 ]; then
+        args+=(--coqchk-args=" ${COQCHK_FWD_ARGS[*]}")
+    fi
+fi
 printf '%s\n' "$(printf 'appending failing args: '; printf '%q ' "${FAILING_ARGS[@]}")"
 args+=("${FAILING_ARGS[@]}")
 if [ "${PASSING_COQC}" != "${FAILING_COQC}" ]; then
     # are running with two versions
     mkdir -p "${CI_BASE_BUILD_DIR}/coq-passing/_build_ci/"
     args+=(--passing-coqc="${PASSING_COQC}" --passing-coqtop="${PASSING_COQTOP}" --passing-base-dir="${EXEC_PWD}" --passing-ocamlpath="${PASSING_OCAMLPATH}")
+    if [ "${HAVE_COQCHK}" == "yes" ]; then
+        args+=(--passing-coqchk="${PASSING_COQCHK}")
+    fi
     printf '%s\n' "$(printf 'appending passing args: '; printf '%q ' "${FAILING_ARGS[@]}")"
     args+=("${PASSING_ARGS[@]}")
 fi

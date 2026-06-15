@@ -1,0 +1,18 @@
+name: test-wrapper
+
+# Unit tests for the coqc/coqchk wrapper logic (coqbot-config.sh +
+# coqchk-as-coqc.sh).  These use fake coqc/coqchk stubs, so they run quickly on
+# a plain Ubuntu runner without installing Coq/Rocq.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-wrapper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run coqchk wrapper tests
+        run: ./test/test-coqchk-wrapper.sh
