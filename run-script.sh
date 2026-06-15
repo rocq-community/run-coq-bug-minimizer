@@ -256,6 +256,21 @@ mkdir -p "$(dirname "${BUG_FILE}")"
 mkdir -p "$(dirname "${TMP_FILE}")"
 mkdir -p "$(dirname "${TMP_LOG}")"
 
+# For coqchk failures the wrapper put the synthetic `Require <modules>.` file in
+# /tmp, which is outside the minimizer's working tree.  coq-tools would then
+# derive a bogus logical name (e.g. `.tmp.coqchkminimizer...`) from the
+# `../../../tmp/...` path and fail to generate the glob file.  Relocate it into
+# BUG_TMP_DIR, which is bound as `-Q "${BUG_TMP_DIR}" Top`, so it gets a valid
+# `Top.*` logical name.
+if [ "${HAVE_COQCHK}" == "yes" ] && [ -f "${ABS_FILE}" ]; then
+    RELOCATED_FILE="${BUG_TMP_DIR}/$(basename "${ABS_FILE}")"
+    if [ "${ABS_FILE}" != "${RELOCATED_FILE}" ]; then
+        cp -f "${ABS_FILE}" "${RELOCATED_FILE}"
+        ABS_FILE="${RELOCATED_FILE}"
+        printf "%s" "${ABS_FILE}" > "$DIR/filename"
+    fi
+fi
+
 cd "$(dirname "${BUG_FILE}")"
 
 CHECK_VARS=(FAILING_COQC FAILING_COQTOP PASSING_COQC PASSING_COQ_MAKEFILE PASSING_COQDEP)
