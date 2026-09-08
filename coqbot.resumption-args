@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:old_ubuntu_lts-V2026-07-06-00242ff07f
+ci-stdlib
+stdlib
+4.14.0
+https://gitlab.inria.fr/coq/coq/-/jobs/7854856/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/7854824/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/7853388/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/7853356/artifacts/download
+91de9d6eb8dbb7dc8ebfe5a26b727226f9b223da
+a4bbe1ebf339563813128b0a949667f11e9bde45
+
