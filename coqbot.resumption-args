@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:edge_ubuntu-V2026-09-25-b378859887
+ci-coqutil
+coqutil
+5.4.1+flambda
+https://gitlab.inria.fr/coq/coq/-/jobs/8056760/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8056738/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8056769/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/8056636/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8056614/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8056645/artifacts/download
+0b9568e12875891c1b9463fa3548f36384ea6f99
+33e1ba2be35279d62bb445d69d2d48c31af5be4d
+
