@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:edge_ubuntu-V2026-09-25-b378859887
+ci-mtac2
+unicoq mtac2
+5.4.1+flambda
+https://gitlab.inria.fr/coq/coq/-/jobs/8059080/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8059033/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8059064/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/8056661/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8056614/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8056645/artifacts/download
+0b9568e12875891c1b9463fa3548f36384ea6f99
+ef3824be06083b5c69dc6b23cb0d546ef707ca95
+
