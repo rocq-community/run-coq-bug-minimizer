@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:edge_ubuntu-V2026-10-31-3d705278df
+ci-color
+color
+5.4.1+flambda
+https://gitlab.inria.fr/coq/coq/-/jobs/8243414/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8243352/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8243383/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8243389/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/8241344/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8241282/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8241313/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8241319/artifacts/download
+4402a03e266932251cbd32d1fc5fd1125e64ce8d
+89c31152f1c2ee178847831199762d06d128b7b4
+
