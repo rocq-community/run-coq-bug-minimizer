@@ -1,0 +1,9 @@
+registry.gitlab.inria.fr/coq/coq:edge_ubuntu-V2026-11-19-e50b04e146
+ci-metarocq
+metarocq
+5.4.1+flambda
+https://gitlab.inria.fr/coq/coq/-/jobs/8453649/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8453571/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8453761/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8453602/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8453613/artifacts/download
+https://gitlab.inria.fr/coq/coq/-/jobs/8451404/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8451326/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8451350/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8451357/artifacts/download https://gitlab.inria.fr/coq/coq/-/jobs/8451368/artifacts/download
+9bb782bb8751ad4ad1a8788e2ea0db33ff5b4838
+e2f89c46d776140b7dbca645ae20401c899508e7
+
